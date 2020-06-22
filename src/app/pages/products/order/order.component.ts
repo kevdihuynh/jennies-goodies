@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CartItem } from 'src/app/interfaces/cart';
+import { OrderForm } from 'src/app/interfaces/order-form';
+import { CartItem } from 'src/app/interfaces/cart-item';
 import { CartService } from 'src/app/services/cart/cart.service';
-import { NgbDateStruct, NgbDate, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -11,6 +11,16 @@ import * as _ from 'lodash';
   styleUrls: ['./order.component.scss']
 })
 export class OrderComponent implements OnInit {
+  orderForm: OrderForm = {
+    name: 'John Doe',
+    email: 'johndoe@example.com',
+    phoneNumber: '206-123-4567',
+    isDelivery: true,
+    address: '1234 Main St Seattle, WA 98125',
+    notes: 'I might be late 15 minutes...',
+    date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
+    time: { hour: 9, minute: 0, second: 0 },
+  };
   cart: CartItem[] = [];
   cartService: CartService;
   totalPrice: number;

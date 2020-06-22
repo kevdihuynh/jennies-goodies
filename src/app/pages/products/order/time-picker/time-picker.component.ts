@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl } from '@angular/forms';
 import * as moment from 'moment';
@@ -10,9 +10,12 @@ import * as _ from 'lodash';
   styleUrls: ['./time-picker.component.scss']
 })
 export class TimePickerComponent implements OnInit {
+  @Input() time: NgbTimeStruct;
+  @Output() timeChangeEmitter: EventEmitter<NgbTimeStruct> = new EventEmitter<NgbTimeStruct>();
+
   minTime: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
   maxTime: NgbTimeStruct = { hour: 21, minute: 0, second: 0 };
-  timePickerModel: NgbTimeStruct = _.cloneDeep(this.minTime);
+  timePickerModel: NgbTimeStruct;
   timePickerMeridian: boolean = true;
   timePickerSeconds: boolean = false;
   timePickerHourStep: number = 1;

@@ -1,6 +1,39 @@
 <section>
-    <app-date-picker></app-date-picker>
-    <app-time-picker></app-time-picker>
+    <pre>{{orderForm | json}}</pre>
+    <app-date-picker [date]="orderForm.date" (dateChangeEmitter)="orderForm.date = $event"></app-date-picker>
+    <app-time-picker [time]="orderForm.time" (timeChangeEmitter)="orderForm.time = $event"></app-time-picker>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputName">Name</label>
+            <input [(ngModel)]="orderForm.name" type="text" class="form-control" id="inputName" placeholder="Enter your name (i.e. John Doe)">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputEmail">Email</label>
+            <input [(ngModel)]="orderForm.email" type="email" class="form-control" id="inputEmail" placeholder="Enter your email (i.e. johndoe@example.com)">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputPhoneNumber">Phone Number</label>
+            <input [(ngModel)]="orderForm.phoneNumber" type="text" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number (i.e. 206-123-4567)">
+        </div>
+        <div class="form-group col-md-6">
+            <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="orderForm.isDelivery">
+                <label ngbButtonLabel class="btn-primary">
+                    <input ngbButton type="radio" [value]="true" (click)="orderForm.address = undefined"> Delivery
+                </label>
+                <label ngbButtonLabel class="btn-primary">
+                    <input ngbButton type="radio" [value]="false" (click)="orderForm.address = undefined"> Pick Up
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" *ngIf="orderForm.isDelivery">
+        <label for="inputAddress">Address</label>
+        <input [(ngModel)]="orderForm.address" type="text" class="form-control" id="inputAddress" placeholder="Enter your address (i.e. 1234 Main St Seattle, WA 98125)">
+    </div>
+    <div class="form-group">
+        <label for="inputNotes">Notes</label>
+        <textarea [(ngModel)]="orderForm.notes" class="form-control" id="inputNotes" rows="3"></textarea>
+    </div>
     <div>
         <p *ngIf="cart.length === 0" class="pr-1 pl-1">No item in cart</p>
         <ul class="list-group border-0">
