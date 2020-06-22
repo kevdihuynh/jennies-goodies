@@ -1,27 +1,31 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { ProductsComponent } from './pages/products/products.component';
+import { environment } from '../environments/environment';
+
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { environment } from '../environments/environment';
-import { AdminComponent } from './pages/admin/admin.component';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { NavComponent } from './common/nav/nav.component';
 import { FooterComponent } from './common/footer/footer.component';
+import { ProductsComponent } from './pages/products/products.component';
+import { AdminComponent } from './pages/admin/admin.component';
 import { CardComponent } from './common/card/card.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { OrderComponent } from './pages/products/order/order.component';
 @NgModule({
   declarations: [
     AppComponent,
-    ProductsComponent,
-    AdminComponent,
     NavComponent,
     FooterComponent,
-    CardComponent
+    ProductsComponent,
+    AdminComponent,
+    CardComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,
