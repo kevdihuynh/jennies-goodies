@@ -1,6 +1,7 @@
 import * as qs from "qs";
 import { PathLike } from "fs";
 
+export const GOOGLE_API_KEY = 'AIzaSyDmGIVY1COhYIaG8llvdXMTUlERkeaozig';
 export const API_BASE_URL = "https://jsonplaceholder.typicode.com/"
 export const apiConfig = {
     returnRejectedPromiseOnError: true,

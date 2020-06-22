@@ -1,5 +1,6 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Api } from '../api';
+import { GOOGLE_API_KEY } from '../api.configs';
 
 export class GeocodeApi extends Api {
     public constructor (config?: AxiosRequestConfig) {
@@ -15,8 +16,13 @@ export class GeocodeApi extends Api {
     //         });
     // }
 
-    public getGeocode(start: any, finish: any): Promise<any> {
+    public getExample(): Promise<any> {
         return this.get<any,AxiosResponse<any>>(`https://jsonplaceholder.typicode.com/todos/1`)
+            .then(this.success)
+    }
+
+    public getGeocode(start: any, finish: any): Promise<any> {
+        return this.get<any,AxiosResponse<any>>(`https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=${GOOGLE_API_KEY}`)
             .then(this.success)
     }
 }

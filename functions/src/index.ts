@@ -1,8 +1,6 @@
 import * as functions from 'firebase-functions';
 import { geocodeApi } from './apis/geocode/geocodeApi';
 
-// const GOOGLE_API_KEY = 'AIzaSyCbM2-4MgaZh4ALiKBpoRUBiFH4yCiMSR4';
-
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 //
