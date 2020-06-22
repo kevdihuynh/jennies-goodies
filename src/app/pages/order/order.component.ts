@@ -1,12 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { Products } from 'src/app/interfaces/products';
+import { CartItem } from 'src/app/interfaces/cart';
+import { CartService } from 'src/app/services/cart/cart.service';
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.scss']
 })
 export class OrderComponent implements OnInit {
+  products: Products[] = [];
 
   items: any[] = [
     {
@@ -47,28 +52,30 @@ export class OrderComponent implements OnInit {
     }
   ];
 
-  cart: any[] = [];
+  cart: CartItem[] = [];
+  cartService: CartService;
+  totalPrice: number;
 
-  total = 0;
-
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(firestore: AngularFirestore, cartService: CartService) {
+    firestore.collection('products').valueChanges().subscribe((res) => {
+      const products: Products[] = res as Products[];
+      this.products = products;
+    });
+    this.cartService = cartService;
   }
 
-  addToCart(id: number, name: string, price: number, qty: number): void {
-    const index = _.findIndex(this.cart, {id});
-    if (index >= 0) {
-      this.cart[index].qty += qty;
-    } else {
-      this.cart.push({
-        id,
-        name,
-        qty,
-        price,
-      });
-    }
-    this.total += price;
-    console.log(this.cart);
+  ngOnInit(): void {
+    this.cartService.cart.subscribe((res) => {
+      this.cart = res;
+      this.totalPrice = this.calcTotal(this.cart);
+    });
+  }
+
+  calcTotal(cart: CartItem[]): number {
+    let total = 0;
+    cart.map((cartItem: CartItem) => {
+      total += cartItem.price;
+    });
+    return total;
   }
 }

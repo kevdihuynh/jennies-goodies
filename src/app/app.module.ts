@@ -11,6 +11,7 @@ import { environment } from '../environments/environment';
 import { AdminComponent } from './pages/admin/admin.component';
 import { NavComponent } from './common/nav/nav.component';
 import { FooterComponent } from './common/footer/footer.component';
+import { CardComponent } from './common/card/card.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { FooterComponent } from './common/footer/footer.component';
     OrderComponent,
     AdminComponent,
     NavComponent,
-    FooterComponent
+    FooterComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,

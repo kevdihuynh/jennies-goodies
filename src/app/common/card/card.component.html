@@ -1,0 +1,24 @@
+<li class="list-group-item">
+    <div class="row">
+        <div class="col-md-9">
+            <h2>{{selectedOption.name}}</h2>
+            <p>{{selectedOption.desc}}</p>
+            <div class="btn-group">
+                <button *ngFor="let option of options; let i = index" (click)="updateSelectedOption(i)" class="btn btn-outline-primary btn-sm" [ngClass]="{'active': i === selectedOptionIndex }">
+                    {{option.qty}} pcs
+                </button>
+            </div>
+            <h3>${{selectedOption.price}}</h3>
+            <br/>
+            <button (click)="addToCart(selectedOption)" type="button" class="btn btn-outline-primary">
+                Add to cart
+                <span>
+                    <i class="fas fa-cart-plus"></i>
+                </span>
+            </button>
+        </div>
+        <div class="col-md-3">
+            <img [src]="selectedOption.imageUrl" class="img-fluid rounded"/>
+        </div>
+    </div>
+</li>
