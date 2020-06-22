@@ -17,6 +17,8 @@ import { ProductsComponent } from './pages/products/products.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { CardComponent } from './common/card/card.component';
 import { OrderComponent } from './pages/products/order/order.component';
+import { TimePickerComponent } from './pages/products/order/time-picker/time-picker.component';
+import { DatePickerComponent } from './pages/products/order/date-picker/date-picker.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +27,9 @@ import { OrderComponent } from './pages/products/order/order.component';
     ProductsComponent,
     AdminComponent,
     CardComponent,
-    OrderComponent
+    OrderComponent,
+    TimePickerComponent,
+    DatePickerComponent
   ],
   imports: [
     BrowserModule,

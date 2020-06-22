@@ -11,7 +11,7 @@
                     {{option.qty}} pcs
                 </button>
             </div>
-            <h3>${{selectedOption.price}}</h3>
+            <h3>{{selectedOption.price | currency}}</h3>
             <br/>
             <button (click)="addToCart(selectedOption)" type="button" class="btn btn-outline-primary">
                 Add to cart
