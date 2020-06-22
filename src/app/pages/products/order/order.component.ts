@@ -43,4 +43,55 @@ export class OrderComponent implements OnInit {
     });
     return total;
   }
+
+  isDisabled(): boolean {
+    // Validate if name is unset
+    if (_.isEmpty(_.get(this.orderForm, 'name'))) {
+      return true;
+    };
+
+    // Validate if email is unset
+    if (_.isEmpty(_.get(this.orderForm, 'email'))) {
+      return true;
+    };
+
+    // Validate if phoneNumber is unset
+    if (_.isEmpty(_.get(this.orderForm, 'phoneNumber'))) {
+      return true;
+    };
+
+    // Validate if isDelivery is unset
+    if (_.isNil(_.get(this.orderForm, 'isDelivery'))) {
+      return true;
+    };
+
+    // Validate if Address is unset only if isDelivery is set
+    if (_.isEmpty(_.get(this.orderForm, 'address')) && !_.isNil(_.get(this.orderForm, 'isDelivery')) && _.get(this.orderForm, 'isDelivery')) {
+      return true;
+    };
+
+    // Validate if date is unset
+    if (_.isEmpty(_.get(this.orderForm, 'date'))) {
+      return true;
+    };
+
+    // Validate if date is unset
+    if (_.isEmpty(_.get(this.orderForm, 'time'))) {
+      return true;
+    };
+
+    // All form validations passed. The Order Form is validated
+    return false;
+  };
+
+  submit(): void {
+    // Extra check to prevent submitting when form validations are invalid
+    if (this.isDisabled()) {
+      return;
+    }
+
+    // removes undefined or null values
+    const finalForm = _.omitBy(this.orderForm, _.isNil);
+    console.log(finalForm);
+  };
 }

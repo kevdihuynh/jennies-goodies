@@ -16,11 +16,12 @@
             <input [(ngModel)]="orderForm.phoneNumber" type="text" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number (i.e. 206-123-4567)">
         </div>
         <div class="form-group col-md-6">
-            <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="orderForm.isDelivery">
-                <label ngbButtonLabel class="btn-primary">
+            <label for="inputIsDelivery">Order Type</label>
+            <div class="btn-group btn-block btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="orderForm.isDelivery">
+                <label ngbButtonLabel class="btn-outline-primary">
                     <input ngbButton type="radio" [value]="true" (click)="orderForm.address = undefined"> Delivery
                 </label>
-                <label ngbButtonLabel class="btn-primary">
+                <label ngbButtonLabel class="btn-outline-primary">
                     <input ngbButton type="radio" [value]="false" (click)="orderForm.address = undefined"> Pick Up
                 </label>
             </div>
@@ -46,5 +47,5 @@
             <span>Total: {{totalPrice | currency}}</span>
         </div>
     </div>
-    <button type="button" class="mt-1 btn btn-outline-primary btn-sm btn-block">Place Order</button>
+    <button type="button" class="mt-1 btn btn-sm btn-block" [ngClass]="{'btn-outline-primary': !isDisabled(), 'btn-dark': isDisabled()}" [disabled]="isDisabled()" (click)="submit()">Place Order</button>
 </section>
