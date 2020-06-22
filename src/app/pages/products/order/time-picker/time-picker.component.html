@@ -1,7 +1,7 @@
 <section>
     <p>This time picker has validation minTime: {{minTime | json}} and maxTime: {{maxTime | json}}</p>
     <div class="form-group">
-        <ngb-timepicker [(ngModel)]="timePickerModel" [formControl]="timePickerFormControl" [meridian]="timePickerMeridian" [seconds]="timePickerSeconds"
+        <ngb-timepicker [(ngModel)]="time" (ngModelChange)="timeChangeEmitter.emit($event)" [formControl]="timePickerFormControl" [meridian]="timePickerMeridian" [seconds]="timePickerSeconds"
             [hourStep]="timePickerHourStep" [minuteStep]="timePickerMinuteStep" [secondStep]="timePickerSecondStep" required>
         </ngb-timepicker>
         <div *ngIf="timePickerFormControl.valid" class="small form-text text-success">Great choice</div>
@@ -11,7 +11,6 @@
             <div *ngIf="timePickerFormControl.errors['tooEarly']">It's a bit too early</div>
         </div>
     </div>
-
     <hr>
     <pre>Selected time: {{timePickerFormControl.value | json}}</pre>
 </section>
