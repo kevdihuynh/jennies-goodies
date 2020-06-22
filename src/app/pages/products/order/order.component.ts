@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { OrderForm } from 'src/app/interfaces/order-form';
-import { CartItem } from 'src/app/interfaces/cart-item';
-import { CartService } from 'src/app/services/cart/cart.service';
+import { OrderForm, Order } from 'src/app/interfaces/orders';
+import { OrderService } from 'src/app/services/order/order.service';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -20,26 +19,27 @@ export class OrderComponent implements OnInit {
     notes: 'I might be late 15 minutes...',
     date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
     time: { hour: 9, minute: 0, second: 0 },
+    orders: []
   };
-  cart: CartItem[] = [];
-  cartService: CartService;
+  orders: Order[] = [];
+  orderService: OrderService;
   totalPrice: number;
 
-  constructor(cartService: CartService) {
-    this.cartService = cartService;
+  constructor(orderService: OrderService) {
+    this.orderService = orderService;
   }
 
   ngOnInit(): void {
-    this.cartService.cart.subscribe((res) => {
-      this.cart = res;
-      this.totalPrice = this.calcTotal(this.cart);
+    this.orderService.orders.subscribe((res) => {
+      this.orders = res;
+      this.totalPrice = this.calcTotal(this.orders);
     });
   }
 
-  calcTotal(cart: CartItem[]): number {
+  calcTotal(order: Order[]): number {
     let total = 0;
-    cart.map((cartItem: CartItem) => {
-      total += cartItem.price;
+    order.map((order: Order) => {
+      total += order.price;
     });
     return total;
   }
