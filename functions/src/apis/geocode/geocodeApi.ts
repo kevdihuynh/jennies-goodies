@@ -1,6 +1,7 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Api } from '../api';
-import { GOOGLE_API_KEY } from '../api.configs';
+import { placeHolderReplace } from '../../Utilities/UtilityFunctions';
+import { urls } from '../api.configs';
 
 export class GeocodeApi extends Api {
     public constructor (config?: AxiosRequestConfig) {
@@ -21,9 +22,14 @@ export class GeocodeApi extends Api {
             .then(this.success)
     }
 
-    public getGeocode(start: any, finish: any): Promise<any> {
-        return this.get<any,AxiosResponse<any>>(`https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=${GOOGLE_API_KEY}`)
+    public getGeocode(customerAddress: string): Promise<any> {
+        const variables = {
+            customerAddress,
+        }
+        const url = placeHolderReplace(urls.geocodeUrl, variables);
+        return this.get<any,AxiosResponse<any>>(url)
             .then(this.success)
+            .catch(this.error);
     }
 }
 
