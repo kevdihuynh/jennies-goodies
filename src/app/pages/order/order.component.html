@@ -1,0 +1,46 @@
+
+<div class="container order-container">
+    <div class="row">
+        <div class="col-md-8 pr-0">
+            <ul class="list-group">        
+                <li class="list-group-item" *ngFor="let item of items">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h2>{{item.name}}</h2>
+                            <p>{{item.desc}}</p>
+                            <h3>${{item.price}} for {{item.qty}}</h3>
+                            <br/>
+                            <button (click)="addToCart(item.id, item.name, item.price, item.qty)" type="button" class="btn btn-outline-primary">
+                                Add to cart
+                                <span>
+                                    <i class="fas fa-cart-plus"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <img [src]="item.url" class="img-fluid rounded"/>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-4 pl-2">
+            <section class="cart">
+                <div class="item-summary">
+                    <p *ngIf="cart.length === 0" class="pr-1 pl-1">No item in cart</p>
+                    <ul class="list-group no-border">
+                        <li class="list-group-item no-border pt-0 pb-0 pr-1 pl-1" *ngFor="let cartItem of cart">
+                            <p class="mb-1">{{cartItem.qty}} {{cartItem.name}}</p>
+                        </li>
+                    </ul>
+                    <hr class="mt-1"/>
+                    <div class="mb-1" *ngIf="total > 0">
+                        <span>Total: ${{total}}</span>
+                    </div>
+                </div>
+                <button type="button" class="mt-1 btn btn-outline-primary btn-sm btn-block">Place Order</button>
+            </section>
+        </div>     
+    </div>
+
+</div>
