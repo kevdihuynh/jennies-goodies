@@ -5,12 +5,33 @@ import { Observable } from 'rxjs';
 import { Products } from 'src/app/interfaces/products';
 import { CartItem } from 'src/app/interfaces/cart';
 import { CartService } from 'src/app/services/cart/cart.service';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.scss']
 })
 export class OrderComponent implements OnInit {
+  datePickerModel: NgbDateStruct;
+
+  timePickerFormControl = new FormControl('', (control: FormControl) => {
+    const value = control.value;
+
+    if (!value) {
+      return null;
+    }
+
+    if (value.hour < 12) {
+      return {tooEarly: true};
+    }
+    if (value.hour > 13) {
+      return {tooLate: true};
+    }
+
+    return null;
+  });
+
   products: Products[] = [];
 
   items: any[] = [
