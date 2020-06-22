@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-8">
             <ul class="list-group" *ngIf="products.length">
-                <app-card *ngFor="let product of products" [options]="product.options"></app-card>
+                <app-product *ngFor="let product of products" [options]="product.options"></app-product>
             </ul>
         </div>
         <div class="col-md-4">

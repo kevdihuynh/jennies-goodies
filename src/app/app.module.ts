@@ -13,9 +13,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavComponent } from './common/nav/nav.component';
 import { FooterComponent } from './common/footer/footer.component';
-import { ProductsComponent } from './pages/products/products.component';
 import { AdminComponent } from './pages/admin/admin.component';
-import { CardComponent } from './common/card/card.component';
+import { ProductsComponent } from './pages/products/products.component';
+import { ProductComponent } from './pages/products/product/product.component';
 import { OrderComponent } from './pages/products/order/order.component';
 import { TimePickerComponent } from './pages/products/order/time-picker/time-picker.component';
 import { DatePickerComponent } from './pages/products/order/date-picker/date-picker.component';
@@ -24,9 +24,9 @@ import { DatePickerComponent } from './pages/products/order/date-picker/date-pic
     AppComponent,
     NavComponent,
     FooterComponent,
-    ProductsComponent,
     AdminComponent,
-    CardComponent,
+    ProductsComponent,
+    ProductComponent,
     OrderComponent,
     TimePickerComponent,
     DatePickerComponent
