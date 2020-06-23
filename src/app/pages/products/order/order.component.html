@@ -51,8 +51,8 @@
     <div>
         <p *ngIf="orderForm.orders.length === 0" class="pr-1 pl-1">No orders</p>
         <ul class="list-group border-0">
-            <li class="list-group-item no-border pt-0 pb-0 pr-1 pl-1" *ngFor="let order of orderForm.orders">
-                <p class="mb-1">{{order.qty}} {{order.name}} - {{order.price | currency}}</p>
+            <li class="list-group-item no-border pt-0 pb-0 pr-1 pl-1" *ngFor="let order of orderForm.orders; let index = index;">
+                <p class="mb-1">{{order.qty}} {{order.name}} - {{order.price | currency}}</p> <i class="fa fa-times-circle" aria-hidden="true" (click)="orderService.removeFromOrders(index)"></i>
             </li>
         </ul>
         <hr class="mt-1" />

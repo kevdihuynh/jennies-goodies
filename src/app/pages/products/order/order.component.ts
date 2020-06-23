@@ -21,12 +21,9 @@ export class OrderComponent implements OnInit {
     time: { hour: 9, minute: 0, second: 0 },
     orders: []
   };
-  orderService: OrderService;
   totalPrice: number;
 
-  constructor(orderService: OrderService) {
-    this.orderService = orderService;
-  }
+  constructor(public orderService: OrderService) {}
 
   ngOnInit(): void {
     this.orderService.orders.subscribe((orders: Order[]) => {
