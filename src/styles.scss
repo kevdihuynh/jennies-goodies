@@ -16,3 +16,15 @@
 .cursor-pointer {
     cursor: pointer;
 }
+
+.modal-100 {
+    .modal-dialog {
+        max-width: unset;
+        margin: unset;
+        .modal-content {
+            border: unset;
+            border-radius: unset;
+            min-height: 100vh;
+        }
+    }
+}

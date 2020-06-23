@@ -16,9 +16,9 @@ import { FooterComponent } from './common/footer/footer.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { ProductsComponent } from './pages/products/products.component';
 import { ProductComponent } from './pages/products/product/product.component';
-import { OrderComponent } from './pages/products/order/order.component';
-import { TimePickerComponent } from './pages/products/order/time-picker/time-picker.component';
-import { DatePickerComponent } from './pages/products/order/date-picker/date-picker.component';
+import { CartComponent } from './common/cart/cart.component';
+import { TimePickerComponent } from './common/cart/time-picker/time-picker.component';
+import { DatePickerComponent } from './common/cart/date-picker/date-picker.component';
 import { AngularFireFunctionsModule, ORIGIN } from '@angular/fire/functions';
 import { HttpClientModule } from '@angular/common/http';
 @NgModule({
@@ -29,7 +29,7 @@ import { HttpClientModule } from '@angular/common/http';
     AdminComponent,
     ProductsComponent,
     ProductComponent,
-    OrderComponent,
+    CartComponent,
     TimePickerComponent,
     DatePickerComponent
   ],

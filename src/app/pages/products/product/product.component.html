@@ -1,32 +1,30 @@
-<li class="list-group-item">
-    <div class="row">
-        <div class="col-xs-12 col-xl-3">
-            <img [src]="selectedOption.imageUrl" class="img-fluid rounded w-100"/>
-        </div>
-        <div class="col-xs-12 col-xl-9">
-            <div class="d-flex flex-column h-100">
-                <div class="product-content-container">
-                    <h2 class="mb-0">{{selectedOption.name}}</h2>
-                    <p class="mb-0">{{selectedOption.desc}}</p>
-                </div>
-                <div class="row mt-auto">
-                    <div class="col-sm-12 col-xl-8">
-                        <div class="btn-group d-block mt-2">
-                            <button *ngFor="let option of options; let i = index" (click)="updateSelectedOption(i)" class="btn btn-outline-primary btn-sm" [ngClass]="{'active': i === selectedOptionIndex }">
-                                {{option.qty}} pieces / {{option.price | currency}}
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-xl-4 mt-2">
-                        <button (click)="addToOrders(selectedOption)" type="button" class="btn btn-block btn-outline-primary">
-                            Add To Cart
-                            <span>
-                                <i class="fas fa-cart-plus"></i>
-                            </span>
+<div class="row mb-3">
+    <div class="col-xs-12 col-md-3 my-auto">
+        <img [src]="selectedOption.imageUrl" class="img-fluid w-100"/>
+    </div>
+    <div class="col-xs-12 col-md-9">
+        <div class="d-flex flex-column h-100">
+            <div class="product-content-container">
+                <h2 class="mb-0">{{selectedOption.name}}</h2>
+                <p class="mb-0">{{selectedOption.desc}}</p>
+            </div>
+            <div class="row mt-auto">
+                <div class="col-sm-12 col-xl-8">
+                    <div class="btn-group d-block mt-2">
+                        <button *ngFor="let option of options; let i = index" (click)="updateSelectedOption(i)" class="btn btn-outline-primary btn-sm" [ngClass]="{'active': i === selectedOptionIndex }">
+                            {{option.qty}} pieces / {{option.price | currency}}
                         </button>
                     </div>
+                </div>
+                <div class="col-sm-12 col-xl-4 mt-2">
+                    <button (click)="addToOrders(selectedOption)" type="button" class="btn btn-sm btn-block btn-outline-primary">
+                        Add To Cart
+                        <span>
+                            <i class="fas fa-cart-plus"></i>
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-</li>
+</div>
