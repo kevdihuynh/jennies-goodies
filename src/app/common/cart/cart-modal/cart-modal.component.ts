@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { OrderForm, Order } from 'src/app/interfaces/cart';
 import { CartService } from 'src/app/services/cart/cart.service';
 import * as moment from 'moment';
@@ -31,7 +32,11 @@ export class CartModalComponent implements OnInit {
   orders: Order[] = [];
   totalPrice: number;
 
-  constructor(public activeModal: NgbActiveModal, public cartService: CartService, public googleMapsService: GoogleMapsService) {
+  constructor(
+    private toastr: ToastrService,
+    public activeModal: NgbActiveModal,
+    public cartService: CartService,
+    public googleMapsService: GoogleMapsService) {
     // If weekend, set default start time to 9am
     if (this.isClosedDays()) {
       this.orderForm.time = { hour: 9, minute: 0, second: 0 };
@@ -180,8 +185,11 @@ export class CartModalComponent implements OnInit {
       console.log('finalDateTime is valid', finalDateTime);
       console.log('finalForm', finalForm);
       this.closeCartModal('payment-success');
+      this.toastr.success(`We have received your order. You will receive an email confirmation soon. Thank you!`, `Order Success!`);
+      this.cartService.clearCart();
     } else {
       console.log('finalDateTime is not valid', finalDateTime);
+      this.toastr.error(`Sorry! It looks like somebody has filled this timeslot. Please choose another available time`, `Schedule Conflict!`);
     }
   };
 

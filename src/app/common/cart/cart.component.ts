@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModalConfig, NgbModal, NgbModalOptions, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { OrderForm, Order } from 'src/app/interfaces/cart';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
@@ -16,7 +17,11 @@ export class CartComponent implements OnInit {
   _ = _;
   numCartItems: number;
 
-  constructor(private config: NgbModalConfig, private modalService: NgbModal, public cartService: CartService) {
+  constructor(
+    private config: NgbModalConfig,
+    private modalService: NgbModal,
+    public cartService: CartService
+  ) {
     this.config.backdrop = 'static';
     this.config.keyboard = false;
     this.config.windowClass = 'modal-100';
@@ -38,10 +43,8 @@ export class CartComponent implements OnInit {
     modalRef.result.then((closeReason?: string) => {
       switch (closeReason) {
         case 'payment-success':
-          console.log('Modal closed after payment success');
+          console.log('payment-success');
       }
-    }, (dismissReason?) => {
-      console.log('Modal dismissed');
-    });
+    }, (dismissReason?) => {});
   }
 }

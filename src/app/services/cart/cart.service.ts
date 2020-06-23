@@ -23,4 +23,8 @@ export class CartService {
     newOrders.splice(index, 1);
     this.ordersSubscriber.next(newOrders);
   }
+
+  clearCart(): void {
+    this.ordersSubscriber.next([]);
+  }
 }

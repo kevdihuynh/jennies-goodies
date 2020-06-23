@@ -1,7 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrModule } from 'ngx-toastr';
 
 import { environment } from '../environments/environment';
 
@@ -44,6 +46,13 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     AngularFireFunctionsModule,
     HttpClientModule,
+    BrowserAnimationsModule, // required animations module for ngx-toastr
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-left',
+      preventDuplicates: true,
+      progressBar: true,
+      disableTimeOut: true
+    }),
   ],
   entryComponents: [],
   schemas: [
