@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -17,8 +17,9 @@ import { AdminComponent } from './pages/admin/admin.component';
 import { ProductsComponent } from './pages/products/products.component';
 import { ProductComponent } from './pages/products/product/product.component';
 import { CartComponent } from './common/cart/cart.component';
-import { TimePickerComponent } from './common/cart/time-picker/time-picker.component';
-import { DatePickerComponent } from './common/cart/date-picker/date-picker.component';
+import { CartModalComponent } from './common/cart/cart-modal/cart-modal.component';
+import { TimePickerComponent } from './common/cart/cart-modal/time-picker/time-picker.component';
+import { DatePickerComponent } from './common/cart/cart-modal/date-picker/date-picker.component';
 import { AngularFireFunctionsModule, ORIGIN } from '@angular/fire/functions';
 import { HttpClientModule } from '@angular/common/http';
 @NgModule({
@@ -30,6 +31,7 @@ import { HttpClientModule } from '@angular/common/http';
     ProductsComponent,
     ProductComponent,
     CartComponent,
+    CartModalComponent,
     TimePickerComponent,
     DatePickerComponent
   ],
@@ -42,6 +44,10 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     AngularFireFunctionsModule,
     HttpClientModule,
+  ],
+  entryComponents: [],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ],
   providers: [],
   bootstrap: [AppComponent]
