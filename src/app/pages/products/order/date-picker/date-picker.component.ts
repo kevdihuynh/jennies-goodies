@@ -12,6 +12,7 @@ export class DatePickerComponent implements OnInit {
   @Input() date: NgbDateStruct;
   @Output() dateChangeEmitter: EventEmitter<NgbDateStruct> = new EventEmitter<NgbDateStruct>();
 
+  readOnly: boolean = true;
   minDaysFromToday: number = 2;
   maxDaysFromToday: number = 90;
   minDateFromToday = moment().add(this.minDaysFromToday, 'day');

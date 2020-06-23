@@ -44,7 +44,19 @@ export class OrderComponent implements OnInit {
     return total;
   }
 
-  isDisabled(): boolean {
+
+  isDateTimePickerDisabled(): boolean {
+    return !_.isObject(this.orderForm.date) || !_.isObject(this.orderForm.time);
+  }
+
+  validateDateTimePicker(): void {
+    if (this.isDateTimePickerDisabled()) {
+      return;
+    }
+    console.log(this.orderForm.date, this.orderForm.time);
+  }
+
+  isOrderFormDisabled(): boolean {
     // Validate if name is unset
     if (_.isEmpty(_.get(this.orderForm, 'name'))) {
       return true;
@@ -86,7 +98,7 @@ export class OrderComponent implements OnInit {
 
   submit(): void {
     // Extra check to prevent submitting when form validations are invalid
-    if (this.isDisabled()) {
+    if (this.isOrderFormDisabled()) {
       return;
     }
 
