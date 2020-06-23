@@ -12,13 +12,15 @@ import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./order.component.scss']
 })
 export class OrderComponent implements OnInit {
+  _ = _;
+  DEFAULT_PICKUP_ADDRESS: string = '1234 Main St Seattle, WA 98125';
   dateTimePickerFormControl: any = {};
   orderForm: OrderForm = {
     name: 'John Doe',
     email: 'johndoe@example.com',
     phoneNumber: '206-123-4567',
     isDelivery: true,
-    address: '1234 Main St Seattle, WA 98125',
+    address: '13515 27th ave NE, Seattle, WA 98125',
     notes: 'I might be late 15 minutes...',
     date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
     time: { hour: 17, minute: 0, second: 0 },

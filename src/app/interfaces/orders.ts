@@ -5,7 +5,7 @@ export interface OrderForm {
     email: string,
     phoneNumber: string,
     isDelivery: boolean;
-    address?: string;
+    address: string;
     notes?: string;
     date: NgbDateStruct,
     time: NgbTimeStruct,
