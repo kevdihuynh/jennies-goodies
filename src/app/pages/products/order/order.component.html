@@ -1,18 +1,24 @@
 <section>
     <div class="responsive-google-calendar mb-4">
-        <iframe src="https://calendar.google.com/calendar/b/1/embed?height=600&amp;wkst=1&amp;bgcolor=%23a497e4&amp;ctz=America%2FLos_Angeles&amp;src=amVubmllc2dvb2RpZXMxOTk0QGdtYWlsLmNvbQ&amp;src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;color=%23039BE5&amp;color=%2333B679&amp;color=%230B8043"
-        style="border:solid 1px #777" frameborder="0" scrolling="no"></iframe>
+        <iframe src="https://calendar.google.com/calendar/b/2/embed?height=600&amp;wkst=2&amp;bgcolor=%23ffffff&amp;ctz=America%2FLos_Angeles&amp;src=amVubmllc2dvb2RpZXMxOTk0QGdtYWlsLmNvbQ&amp;color=%23039BE5&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=1&amp;mode=WEEK&amp;showTitle=0&amp;title=Jennie&#39;s%20Goodies" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
     </div>
-    <div class="form-row">
-        <div class="form-group col-md-5 my-auto">
+    <p class="small font-weight-bold">
+        We currently deliver anytime on Friday-Sunday and after 5pm Monday-Thursday.
+    </p>
+    <div class="form-row mb-4">
+        <div class="form-group col-md-6 my-auto">
             <app-date-picker [date]="orderForm.date" (dateChangeEmitter)="orderForm.date = $event"></app-date-picker>
         </div>
-        <div class="form-group col-md-5 my-auto">
+        <div class="form-group col-md-6 my-auto">
             <app-time-picker [time]="orderForm.time" (timeChangeEmitter)="orderForm.time = $event"></app-time-picker>
         </div>
-        <div class="form-group col-md-2 my-auto">
-            <button type="button" class="mt-1 btn btn-block" [ngClass]="{'btn-outline-primary': !isDateTimePickerDisabled(), 'btn-dark': isDateTimePickerDisabled()}"
-                [disabled]="isDateTimePickerDisabled()" (click)="validateDateTimePicker()">Validate</button>
+        <div class="form-group col-md-12 my-auto">
+            <div *ngIf="dateTimePickerFormControl" class="small text-center form-text text-danger my-3">
+                <div *ngIf="dateTimePickerFormControl['tooLate']">Oh no, it's way too late</div>
+                <div *ngIf="dateTimePickerFormControl['tooEarly']">It's a bit too early</div>
+            </div>
+            <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-primary': !isDateTimePickerInValid(), 'btn-dark': isDateTimePickerInValid()}"
+                [disabled]="isDateTimePickerInValid()" (click)="validateDateTimePicker()">Validate {{getDateTimeText()}}</button>
         </div>
     </div>
     <div class="form-row">
@@ -29,7 +35,7 @@
             <input [(ngModel)]="orderForm.phoneNumber" type="text" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number (i.e. 206-123-4567)">
         </div>
         <div class="form-group col-md-6">
-            <label for="inputIsDelivery">Order Type</label>
+            <label for="inputIsDelivery">Service Type</label>
             <div class="btn-group btn-block btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="orderForm.isDelivery">
                 <label ngbButtonLabel class="btn-outline-primary">
                     <input ngbButton type="radio" [value]="true" (click)="orderForm.address = undefined"> Delivery
@@ -49,15 +55,16 @@
         <textarea [(ngModel)]="orderForm.notes" class="form-control" id="inputNotes" rows="3"></textarea>
     </div>
     <div>
-        <p *ngIf="orderForm.orders.length === 0" class="pr-1 pl-1">No orders</p>
-        <ul class="list-group border-0">
-            <li class="list-group-item no-border pt-0 pb-0 pr-1 pl-1" *ngFor="let order of orderForm.orders; let index = index;">
-                <p class="mb-1">
-                    {{order.qty}} {{order.name}} - {{order.price | currency}}
-                    <i class="fa fa-times-circle text-danger" aria-hidden="true" (click)="orderService.removeFromOrders(index)"></i>
-                </p>
-            </li>
-        </ul>
+        <h5>Orders</h5>
+        <p *ngIf="orderForm.orders.length === 0" class="text-center font-weight-bold">You have not selected any orders</p>
+        <div class="row no-gutters my-4" *ngFor="let order of orderForm.orders; let index = index;">
+            <div class="col-10">
+                {{order.qty}} {{order.name}} - {{order.price | currency}}
+            </div>
+            <div class="col-2 text-right">
+                <i class="fa fa-times-circle text-danger cursor-pointer" aria-hidden="true" (click)="orderService.removeFromOrders(index)"></i>
+            </div>
+        </div>
         <hr class="mt-1" />
         <div class="mb-1" *ngIf="totalPrice > 0">
             <span>Total: {{totalPrice | currency}}</span>

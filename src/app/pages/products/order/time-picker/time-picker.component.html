@@ -1,11 +1,5 @@
-<section class="mt-4">
-    <ngb-timepicker name="timepicker" [(ngModel)]="time" (ngModelChange)="timeChangeEmitter.emit($event)" [formControl]="timePickerFormControl" [meridian]="timePickerMeridian" [seconds]="timePickerSeconds"
+<section>
+    <ngb-timepicker name="timepicker" [(ngModel)]="time" (ngModelChange)="timeChangeEmitter.emit($event)" [meridian]="timePickerMeridian" [seconds]="timePickerSeconds"
         [hourStep]="timePickerHourStep" [minuteStep]="timePickerMinuteStep" [secondStep]="timePickerSecondStep" required>
     </ngb-timepicker>
-    <div *ngIf="timePickerFormControl.valid" class="small form-text text-success">Great choice</div>
-    <div *ngIf="timePickerFormControl.errors" class="small form-text text-danger">
-        <div *ngIf="timePickerFormControl.errors['required']">Select some time during lunchtime</div>
-        <div *ngIf="timePickerFormControl.errors['tooLate']">Oh no, it's way too late</div>
-        <div *ngIf="timePickerFormControl.errors['tooEarly']">It's a bit too early</div>
-    </div>
 </section>

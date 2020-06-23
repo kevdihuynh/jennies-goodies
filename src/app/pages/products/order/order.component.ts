@@ -4,6 +4,7 @@ import { OrderService } from 'src/app/services/order/order.service';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
+import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-order',
@@ -11,6 +12,7 @@ import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.serv
   styleUrls: ['./order.component.scss']
 })
 export class OrderComponent implements OnInit {
+  dateTimePickerFormControl: any = {};
   orderForm: OrderForm = {
     name: 'John Doe',
     email: 'johndoe@example.com',
@@ -19,7 +21,7 @@ export class OrderComponent implements OnInit {
     address: '1234 Main St Seattle, WA 98125',
     notes: 'I might be late 15 minutes...',
     date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
-    time: { hour: 9, minute: 0, second: 0 },
+    time: { hour: 17, minute: 0, second: 0 },
     orders: []
   };
   orders: Order[] = [];
@@ -28,6 +30,10 @@ export class OrderComponent implements OnInit {
   constructor(public orderService: OrderService, public googleMapsService: GoogleMapsService) {
     this.orderService = orderService;
     this.googleMapsService = googleMapsService;
+    // If weekend, set default start time to 9am
+    if (this.isWeekend()) {
+      this.orderForm.time = { hour: 9, minute: 0, second: 0 };
+    }
   }
 
   ngOnInit(): void {
@@ -47,13 +53,59 @@ export class OrderComponent implements OnInit {
     return total;
   }
 
+  getMomentDate() {
+    const date = this.orderForm.date;
+    return moment(`${date.year}-${date.month}-${date.day}`);
+  }
 
-  isDateTimePickerDisabled(): boolean {
-    return !_.isObject(this.orderForm.date) || !_.isObject(this.orderForm.time);
+  isWeekend() {
+    if (!this.orderForm.date) {
+      return false;
+    }
+    const dateTime = this.getMomentDate();
+    const isWeekend = _.includes(['Saturday', 'Sunday'], dateTime.format('dddd'));
+    return isWeekend;
+  }
+
+  getDateTimeText() {
+    if (_.isNil(this.orderForm.time) || _.isNil(this.orderForm.time)) {
+      return 'Date & Time';
+    }
+    const date = this.orderForm.date;
+    const time = this.orderForm.time;
+    return moment(`${date.year}-${date.month}-${date.day} ${time.hour}:${time.minute}:${time.second}`).format('LLL');
+  }
+
+  isDateTimePickerInValid() {
+    const date = this.orderForm.date;
+    const time = this.orderForm.time;
+    this.dateTimePickerFormControl = {};
+    if (!_.isObject(date) || !_.isObject(time)) {
+      return true;
+    };
+
+    let minTime: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
+    let maxTime: NgbTimeStruct = { hour: 21, minute: 0, second: 0 };
+
+    if (!this.isWeekend()) {
+      minTime = { hour: 17, minute: 0, second: 0 };
+    }
+
+    if (this.orderForm.time.hour < minTime.hour) {
+      this.dateTimePickerFormControl.tooEarly = true;
+      return true;
+    }
+
+    if ((time.hour > maxTime.hour) || (_.isEqual(time.hour, maxTime.hour) && (time.minute > maxTime.minute))) {
+      this.dateTimePickerFormControl.tooLate = true;
+      return true;
+    }
+
+    return false;
   }
 
   validateDateTimePicker(): void {
-    if (this.isDateTimePickerDisabled()) {
+    if (this.isDateTimePickerInValid()) {
       return;
     }
     console.log(this.orderForm.date, this.orderForm.time);
@@ -85,13 +137,8 @@ export class OrderComponent implements OnInit {
       return true;
     };
 
-    // Validate if date is unset
-    if (_.isEmpty(_.get(this.orderForm, 'date'))) {
-      return true;
-    };
-
-    // Validate if date is unset
-    if (_.isEmpty(_.get(this.orderForm, 'time'))) {
+    // Validate if date and time are invalid
+    if (this.isDateTimePickerInValid()) {
       return true;
     };
 

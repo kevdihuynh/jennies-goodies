@@ -1,70 +1,16 @@
-<footer class="mt-3 pt-4 border-top container-fluid bg-custom-primary">
-    <div class="row mb-2">
-        <div class="col-6 col-md">
-            <h5>Features</h5>
-            <ul class="list-unstyled text-small">
-                <li>
-                    <a class="text-dark" href="#">Cool stuff</a>
-                </li>
-                <li>
-                    <a class="text-dark" href="#">Random feature</a>
-                </li>
-                <li>
-                    <a class="text-dark" href="#">Team feature</a>
-                </li>
-                <li>
-                    <a class="text-dark" href="#">Stuff for developers</a>
-                </li>
-                <li>
-                    <a class="text-dark" href="#">Another one</a>
-                </li>
-                <li>
-                    <a class="text-dark" href="#">Last time</a>
-                </li>
-            </ul>
-        </div>
-        <div class="col-6 col-md">
-            <h5>Resources</h5>
-            <ul class="list-unstyled text-small">
-                <li>
-                    <a class="text-dark" href="#">Resource</a>
-                </li>
-                <li>
-                    <a class="text-dark" href="#">Resource name</a>
-                </li>
-                <li>
-                    <a class="text-dark" href="#">Another resource</a>
-                </li>
-                <li>
-                    <a class="text-dark" href="#">Final resource</a>
-                </li>
-            </ul>
-        </div>
-        <div class="col-6 col-md">
-            <h5>About</h5>
-            <ul class="list-unstyled text-small">
-                <li>
-                    <a class="text-dark" href="#">Team</a>
-                </li>
-                <li>
-                    <a class="text-dark" href="#">Locations</a>
-                </li>
-                <li>
-                    <a class="text-dark" href="#">Privacy</a>
-                </li>
-                <li>
-                    <a class="text-dark" href="#">Terms</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="row text-center">
-        <div class="col-12 col-md">
-            <a [routerLink]="['']" [title]="globalConstants.companyName">
-                <img class="mb-2" width="24" height="24" alt="{{globalConstants.companyName + ' Logo'}}" [src]="globalConstants.companyLogo"
-                />
-            </a>
-            <small class="d-block mb-3 text-dark">&copy; 2020 {{globalConstants.companyName}}. All rights reserved.</small>
-        </div>
-    </div>
+<footer class="text-dark bg-custom-primary">
+    <section class="container border-muted d-flex flex-wrap justify-content-center align-items-center py-4">
+        <a class="mx-3 my-4 text-dark" [title]="item.title" [href]="item.url" target="__blank" rel="noopener noreferrer" *ngFor="let item of socialMedia">
+            <i [class]="item.iconClass" aria-hidden="true" [title]="item.title"></i>
+        </a>
+    </section>
+    <hr class="border-secondary my-0"/>
+    <section class="container border-muted d-flex flex-wrap justify-content-center align-items-center p-4">
+        <a class="mx-3 my-4 text-dark" [title]="item.title" [href]="item.url" rel="noopener noreferrer" *ngFor="let item of links">
+            {{item.title}}
+        </a>
+    </section>
+    <section class="text-center pb-4">
+        <p class="text-dark mb-4">&copy; 2020 {{globalConstants.companyName}}. All rights reserved.</p>
+    </section>
 </footer>
