@@ -13,7 +13,7 @@
                     <div class="col-sm-12 col-xl-8">
                         <div class="btn-group d-block mt-2">
                             <button *ngFor="let option of options; let i = index" (click)="updateSelectedOption(i)" class="btn btn-outline-primary btn-sm" [ngClass]="{'active': i === selectedOptionIndex }">
-                                {{option.qty}} pieces / {{selectedOption.price | currency}}
+                                {{option.qty}} pieces / {{option.price | currency}}
                             </button>
                         </div>
                     </div>
