@@ -12,7 +12,7 @@ import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./order.component.scss']
 })
 export class OrderComponent implements OnInit {
-  dateTimePickerFormControl: any;
+  dateTimePickerFormControl: any = {};
   orderForm: OrderForm = {
     name: 'John Doe',
     email: 'johndoe@example.com',
@@ -30,6 +30,10 @@ export class OrderComponent implements OnInit {
   constructor(public orderService: OrderService, public googleMapsService: GoogleMapsService) {
     this.orderService = orderService;
     this.googleMapsService = googleMapsService;
+    // If weekend, set default start time to 9am
+    if (this.isWeekend()) {
+      this.orderForm.time = { hour: 9, minute: 0, second: 0 };
+    }
   }
 
   ngOnInit(): void {
@@ -49,11 +53,27 @@ export class OrderComponent implements OnInit {
     return total;
   }
 
+  getMomentDate() {
+    const date = this.orderForm.date;
+    return moment(`${date.year}-${date.month}-${date.day}`);
+  }
+
+  isWeekend() {
+    if (!this.orderForm.date) {
+      return false;
+    }
+    const dateTime = this.getMomentDate();
+    const isWeekend = _.includes(['Saturday', 'Sunday'], dateTime.format('dddd'));
+    return isWeekend;
+  }
+
   getDateTimeText() {
     if (_.isNil(this.orderForm.time) || _.isNil(this.orderForm.time)) {
       return 'Date & Time';
     }
-    return moment(`${this.orderForm.date.year}-${this.orderForm.date.month}-${this.orderForm.date.day} ${this.orderForm.time.hour}:${this.orderForm.time.minute}:${this.orderForm.time.second}`).format('LLL');
+    const date = this.orderForm.date;
+    const time = this.orderForm.time;
+    return moment(`${date.year}-${date.month}-${date.day} ${time.hour}:${time.minute}:${time.second}`).format('LLL');
   }
 
   isDateTimePickerInValid() {
@@ -64,13 +84,10 @@ export class OrderComponent implements OnInit {
       return true;
     };
 
-    const dateTime = moment(`${date.year}-${date.month}-${date.day} ${time.hour}:${time.minute}:${time.second}`);
-    const isWeekend = _.includes(['Saturday', 'Sunday'], dateTime.format('dddd'));
-
     let minTime: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
     let maxTime: NgbTimeStruct = { hour: 21, minute: 0, second: 0 };
 
-    if (!isWeekend) {
+    if (!this.isWeekend()) {
       minTime = { hour: 17, minute: 0, second: 0 };
     }
 
@@ -79,7 +96,7 @@ export class OrderComponent implements OnInit {
       return true;
     }
 
-    if ((this.orderForm.time.hour > maxTime.hour) || (_.isEqual(this.orderForm.time.hour, maxTime.hour) && (this.orderForm.time.minute > maxTime.minute))) {
+    if ((time.hour > maxTime.hour) || (_.isEqual(time.hour, maxTime.hour) && (time.minute > maxTime.minute))) {
       this.dateTimePickerFormControl.tooLate = true;
       return true;
     }
