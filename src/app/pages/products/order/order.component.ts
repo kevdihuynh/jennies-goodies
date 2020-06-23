@@ -3,6 +3,7 @@ import { OrderForm, Order } from 'src/app/interfaces/orders';
 import { OrderService } from 'src/app/services/order/order.service';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
 
 @Component({
   selector: 'app-order',
@@ -22,11 +23,11 @@ export class OrderComponent implements OnInit {
     orders: []
   };
   orders: Order[] = [];
-  orderService: OrderService;
   totalPrice: number;
 
-  constructor(orderService: OrderService) {
+  constructor(public orderService: OrderService, public googleMapsService: GoogleMapsService) {
     this.orderService = orderService;
+    this.googleMapsService = googleMapsService;
   }
 
   ngOnInit(): void {
@@ -34,11 +35,13 @@ export class OrderComponent implements OnInit {
       this.orders = res;
       this.totalPrice = this.calcTotal(this.orders);
     });
+    // this.googleMapsService.getGeocode('13515 27th ave NE, Seattle, WA 98125');
+    // this.googleMapsService.getDistance(47.456950, -122.289290);
   }
 
-  calcTotal(order: Order[]): number {
+  calcTotal(orders: Order[]): number {
     let total = 0;
-    order.map((order: Order) => {
+    orders.map((order: Order) => {
       total += order.price;
     });
     return total;

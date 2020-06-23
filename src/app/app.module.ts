@@ -19,6 +19,8 @@ import { ProductComponent } from './pages/products/product/product.component';
 import { OrderComponent } from './pages/products/order/order.component';
 import { TimePickerComponent } from './pages/products/order/time-picker/time-picker.component';
 import { DatePickerComponent } from './pages/products/order/date-picker/date-picker.component';
+import { AngularFireFunctionsModule, ORIGIN } from '@angular/fire/functions';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +39,9 @@ import { DatePickerComponent } from './pages/products/order/date-picker/date-pic
     AngularFireModule.initializeApp(environment.firebase),
     NgbModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFireFunctionsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

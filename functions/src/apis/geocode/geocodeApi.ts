@@ -1,6 +1,6 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Api } from '../api';
-import { placeHolderReplace } from '../../Utilities/UtilityFunctions';
+import { placeHolderReplace } from '../../utilities/utilities';
 import { urls } from '../api.configs';
 
 export class GeocodeApi extends Api {
@@ -8,14 +8,6 @@ export class GeocodeApi extends Api {
         super(config);
         this.getGeocode = this.getGeocode.bind(this);
     }
-
-    // public userRegister (user: User): Promise<number> {
-    //     return this.post<number, User, AxiosResponse<number>>("https://www.domain.com/register", user)
-    //         .then(this.success)
-    //         .catch((error: AxiosError<Error>) => {
-    //             throw error;
-    //         });
-    // }
 
     public getExample(): Promise<any> {
         return this.get<any,AxiosResponse<any>>(`https://jsonplaceholder.typicode.com/todos/1`)
