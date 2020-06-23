@@ -1,0 +1,79 @@
+[
+    {
+        "options": [
+            {
+                "flavors": [
+                    "Oreo",
+                    "Lemon",
+                    "Ube"
+                ],
+                "qty": 6,
+                "maxFlavors": 1,
+                "imageUrl": "../../assets/images/cupcakes_ube.jpg",
+                "desc": "test",
+                "name": "Cupcakes",
+                "price": 10
+            },
+            {
+                "qty": 12,
+                "flavors": [
+                    "Oreo",
+                    "Lemon",
+                    "Ube"
+                ],
+                "price": 22,
+                "desc": "test",
+                "maxFlavors": 2,
+                "name": "Cupcakes",
+                "imageUrl": "../../assets/images/cupcakes_ube.jpg"
+            }
+        ]
+    },
+    {
+        "options": [
+            {
+                "imageUrl": "../../assets/images/pandesal_pandan.jpg",
+                "flavors": [
+                    "Ube",
+                    "Pandan",
+                    "Original"
+                ],
+                "price": 8,
+                "qty": 6,
+                "desc": "test",
+                "maxFlavors": 1,
+                "name": "Pandesals"
+            },
+            {
+                "desc": "test",
+                "name": "Pandesals",
+                "maxFlavors": 2,
+                "flavors": [
+                    "Ube",
+                    "Pandan",
+                    "Original"
+                ],
+                "imageUrl": "../../assets/images/pandesal_pandan.jpg",
+                "qty": 12,
+                "price": 17
+            }
+        ]
+    },
+    {
+        "options": [
+            {
+                "name": "Silvanas",
+                "flavors": [
+                    "Original",
+                    "Oreo",
+                    "Ube"
+                ],
+                "price": 10,
+                "desc": "test",
+                "imageUrl": "../../assets/images/ube_cookies.jpg",
+                "qty": 4,
+                "maxFlavors": 1
+            }
+        ]
+    }
+]

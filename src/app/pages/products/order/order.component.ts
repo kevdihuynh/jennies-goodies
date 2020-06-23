@@ -35,8 +35,8 @@ export class OrderComponent implements OnInit {
       this.orderForm.orders = orders;
       this.totalPrice = this.calcTotal(this.orderForm.orders);
     });
-    // this.googleMapsService.getGeocode('13515 27th ave NE, Seattle, WA 98125');
-    // this.googleMapsService.getDistance(47.456950, -122.289290);
+    this.googleMapsService.getGeocode('13515 27th ave NE, Seattle, WA 98125');
+    this.googleMapsService.getDistance(47.456950, -122.289290);
   }
 
   calcTotal(orders: Order[]): number {

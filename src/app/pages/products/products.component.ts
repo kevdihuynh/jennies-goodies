@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Products } from 'src/app/interfaces/products';
+import { getResponse } from 'src/app/utils/utility-functions';
+import productsJson from './../../db_mock/products.json';
 
 @Component({
   selector: 'app-products',
@@ -51,7 +53,9 @@ export class ProductsComponent implements OnInit {
   ];
 
   constructor(firestore: AngularFirestore) {
-    firestore.collection('products').valueChanges().subscribe((res) => {
+    const callback = () => firestore.collection('products').valueChanges();
+
+    getResponse(callback, productsJson).subscribe((res) => {
       const products: Products[] = res as Products[];
       this.products = products;
     });

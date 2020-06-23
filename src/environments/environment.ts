@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  useMock: false,
   firebase: {
     apiKey: 'AIzaSyDmGIVY1COhYIaG8llvdXMTUlERkeaozig',
     authDomain: 'jennies-goodies.firebaseapp.com',

@@ -1,0 +1,26 @@
+{
+    "destination_addresses": [
+        "16233 34th Ave S, SeaTac, WA 98188, USA"
+    ],
+    "origin_addresses": [
+        "13515 27th Ave NE, Seattle, WA 98125, USA"
+    ],
+    "rows": [
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "23.2 mi",
+                        "value": 37295
+                    },
+                    "duration": {
+                        "text": "30 mins",
+                        "value": 1772
+                    },
+                    "status": "OK"
+                }
+            ]
+        }
+    ],
+    "status": "OK"
+}
