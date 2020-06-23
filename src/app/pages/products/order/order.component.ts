@@ -4,6 +4,7 @@ import { OrderService } from 'src/app/services/order/order.service';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
+import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-order',
@@ -11,6 +12,7 @@ import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.serv
   styleUrls: ['./order.component.scss']
 })
 export class OrderComponent implements OnInit {
+  timePickerErrors: any;
   orderForm: OrderForm = {
     name: 'John Doe',
     email: 'johndoe@example.com',
@@ -47,13 +49,46 @@ export class OrderComponent implements OnInit {
     return total;
   }
 
+  getDateTimeText() {
+    if (_.isNil(this.orderForm.time) || _.isNil(this.orderForm.time)) {
+      return 'Date & Time';
+    }
+    return moment(`${this.orderForm.date.year}-${this.orderForm.date.month}-${this.orderForm.date.day} ${this.orderForm.time.hour}:${this.orderForm.time.minute}:${this.orderForm.time.second}`).format('LLL');
+  }
 
-  isDateTimePickerDisabled(): boolean {
-    return !_.isObject(this.orderForm.date) || !_.isObject(this.orderForm.time);
+  isDatePickerInValid(): boolean {
+    return !_.isObject(this.orderForm.date);
+  }
+
+  isTimePickerInValid() {
+    const minTime: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
+    const maxTime: NgbTimeStruct = { hour: 21, minute: 0, second: 0 };
+    this.timePickerErrors = {};
+
+    if (_.isEmpty(this.orderForm.time)) {
+      this.timePickerErrors.required = true;
+      return true;
+    }
+
+    if (this.orderForm.time.hour < minTime.hour) {
+      this.timePickerErrors.tooEarly = true;
+      return true;
+    }
+
+    if ((this.orderForm.time.hour > maxTime.hour) || (_.isEqual(this.orderForm.time.hour, maxTime.hour) && (this.orderForm.time.minute > maxTime.minute))) {
+      this.timePickerErrors.tooLate = true;
+      return true;
+    }
+
+    return false;
+  }
+
+  isDateTimePickerInValid() {
+    return this.isDatePickerInValid() || this.isTimePickerInValid();
   }
 
   validateDateTimePicker(): void {
-    if (this.isDateTimePickerDisabled()) {
+    if (this.isDateTimePickerInValid()) {
       return;
     }
     console.log(this.orderForm.date, this.orderForm.time);
@@ -86,12 +121,12 @@ export class OrderComponent implements OnInit {
     };
 
     // Validate if date is unset
-    if (_.isEmpty(_.get(this.orderForm, 'date'))) {
+    if (this.isDatePickerInValid()) {
       return true;
     };
 
     // Validate if date is unset
-    if (_.isEmpty(_.get(this.orderForm, 'time'))) {
+    if (this.isTimePickerInValid()) {
       return true;
     };
 
