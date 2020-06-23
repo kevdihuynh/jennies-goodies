@@ -1,11 +1,27 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Order Form</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{orderForm.isDelivery ? 'Delivery' : 'Pick Up'}} Order Form</h4>
     <button type="button" class="close" aria-label="Close" (click)="dismissCartModal('Cross click')">
         <i class="fa fa-times-circle text-custom-primary cursor-pointer" aria-hidden="true"></i>
     </button>
 </div>
 <div class="modal-body">
     <section>
+        <section class="items">
+            <h5>Items</h5>
+            <p *ngIf="orderForm.orders.length === 0" class="text-center font-weight-bold mb-4">You have not selected any items. <span class="text-custom-primary cursor-pointer" (click)="dismissCartModal()">Go back to menu</span></p>
+            <div class="row no-gutters my-4" *ngFor="let order of orderForm.orders; let index = index;">
+                <div class="col-10">
+                    {{order.qty}} {{order.name}} - {{order.price | currency}}
+                </div>
+                <div class="col-2 text-right">
+                    <i class="fa fa-times-circle text-danger cursor-pointer" aria-hidden="true" (click)="cartService.removeFromCart(index)"></i>
+                </div>
+            </div>
+            <div class="mb-1" *ngIf="totalPrice > 0">
+                <span>Total: {{totalPrice | currency}}</span>
+            </div>
+        </section>
+        <hr/>
         <section class="order-form">
             <div class="form-row">
                 <div class="form-group col-md-6">
@@ -39,22 +55,6 @@
             <div class="form-group">
                 <label for="inputNotes">Notes</label>
                 <textarea [(ngModel)]="orderForm.notes" class="form-control" id="inputNotes" rows="3"></textarea>
-            </div>
-        </section>
-        <hr/>
-        <section class="items">
-            <h5>Items</h5>
-            <p *ngIf="orderForm.orders.length === 0" class="text-center font-weight-bold mb-4">You have not selected any items</p>
-            <div class="row no-gutters my-4" *ngFor="let order of orderForm.orders; let index = index;">
-                <div class="col-10">
-                    {{order.qty}} {{order.name}} - {{order.price | currency}}
-                </div>
-                <div class="col-2 text-right">
-                    <i class="fa fa-times-circle text-danger cursor-pointer" aria-hidden="true" (click)="cartService.removeFromCart(index)"></i>
-                </div>
-            </div>
-            <div class="mb-1" *ngIf="totalPrice > 0">
-                <span>Total: {{totalPrice | currency}}</span>
             </div>
         </section>
         <hr/>

@@ -15,7 +15,6 @@ import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./cart-modal.component.scss']
 })
 export class CartModalComponent implements OnInit {
-
   _ = _;
   DEFAULT_PICKUP_ADDRESS: string = '1234 Main St Seattle, WA 98125';
   dateTimePickerFormControl: any = {};
