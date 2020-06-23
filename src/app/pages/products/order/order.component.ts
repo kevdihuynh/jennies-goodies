@@ -12,7 +12,7 @@ import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./order.component.scss']
 })
 export class OrderComponent implements OnInit {
-  timePickerErrors: any;
+  dateTimePickerFormControl: any;
   orderForm: OrderForm = {
     name: 'John Doe',
     email: 'johndoe@example.com',
@@ -21,7 +21,7 @@ export class OrderComponent implements OnInit {
     address: '1234 Main St Seattle, WA 98125',
     notes: 'I might be late 15 minutes...',
     date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
-    time: { hour: 9, minute: 0, second: 0 },
+    time: { hour: 17, minute: 0, second: 0 },
     orders: []
   };
   orders: Order[] = [];
@@ -56,35 +56,35 @@ export class OrderComponent implements OnInit {
     return moment(`${this.orderForm.date.year}-${this.orderForm.date.month}-${this.orderForm.date.day} ${this.orderForm.time.hour}:${this.orderForm.time.minute}:${this.orderForm.time.second}`).format('LLL');
   }
 
-  isDatePickerInValid(): boolean {
-    return !_.isObject(this.orderForm.date);
-  }
-
-  isTimePickerInValid() {
-    const minTime: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
-    const maxTime: NgbTimeStruct = { hour: 21, minute: 0, second: 0 };
-    this.timePickerErrors = {};
-
-    if (_.isEmpty(this.orderForm.time)) {
-      this.timePickerErrors.required = true;
+  isDateTimePickerInValid() {
+    const date = this.orderForm.date;
+    const time = this.orderForm.time;
+    this.dateTimePickerFormControl = {};
+    if (!_.isObject(date) || !_.isObject(time)) {
       return true;
+    };
+
+    const dateTime = moment(`${date.year}-${date.month}-${date.day} ${time.hour}:${time.minute}:${time.second}`);
+    const isWeekend = _.includes(['Saturday', 'Sunday'], dateTime.format('dddd'));
+
+    let minTime: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
+    let maxTime: NgbTimeStruct = { hour: 21, minute: 0, second: 0 };
+
+    if (!isWeekend) {
+      minTime = { hour: 17, minute: 0, second: 0 };
     }
 
     if (this.orderForm.time.hour < minTime.hour) {
-      this.timePickerErrors.tooEarly = true;
+      this.dateTimePickerFormControl.tooEarly = true;
       return true;
     }
 
     if ((this.orderForm.time.hour > maxTime.hour) || (_.isEqual(this.orderForm.time.hour, maxTime.hour) && (this.orderForm.time.minute > maxTime.minute))) {
-      this.timePickerErrors.tooLate = true;
+      this.dateTimePickerFormControl.tooLate = true;
       return true;
     }
 
     return false;
-  }
-
-  isDateTimePickerInValid() {
-    return this.isDatePickerInValid() || this.isTimePickerInValid();
   }
 
   validateDateTimePicker(): void {
@@ -120,13 +120,8 @@ export class OrderComponent implements OnInit {
       return true;
     };
 
-    // Validate if date is unset
-    if (this.isDatePickerInValid()) {
-      return true;
-    };
-
-    // Validate if date is unset
-    if (this.isTimePickerInValid()) {
+    // Validate if date and time are invalid
+    if (this.isDateTimePickerInValid()) {
       return true;
     };
 

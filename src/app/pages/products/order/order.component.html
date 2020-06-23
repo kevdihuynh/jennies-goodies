@@ -2,6 +2,9 @@
     <div class="responsive-google-calendar mb-4">
         <iframe src="https://calendar.google.com/calendar/b/2/embed?height=600&amp;wkst=2&amp;bgcolor=%23ffffff&amp;ctz=America%2FLos_Angeles&amp;src=amVubmllc2dvb2RpZXMxOTk0QGdtYWlsLmNvbQ&amp;color=%23039BE5&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=1&amp;mode=WEEK&amp;showTitle=0&amp;title=Jennie&#39;s%20Goodies" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
     </div>
+    <p class="small font-weight-bold">
+        We currently deliver anytime on Friday-Sunday and after 5pm Monday-Thursday.
+    </p>
     <div class="form-row mb-4">
         <div class="form-group col-md-6 my-auto">
             <app-date-picker [date]="orderForm.date" (dateChangeEmitter)="orderForm.date = $event"></app-date-picker>
@@ -10,10 +13,9 @@
             <app-time-picker [time]="orderForm.time" (timeChangeEmitter)="orderForm.time = $event"></app-time-picker>
         </div>
         <div class="form-group col-md-12 my-auto">
-            <div *ngIf="timePickerErrors" class="text-center form-text text-danger my-3">
-                <div *ngIf="timePickerErrors['required']">Select some time during lunchtime</div>
-                <div *ngIf="timePickerErrors['tooLate']">Oh no, it's way too late</div>
-                <div *ngIf="timePickerErrors['tooEarly']">It's a bit too early</div>
+            <div *ngIf="dateTimePickerFormControl" class="small text-center form-text text-danger my-3">
+                <div *ngIf="dateTimePickerFormControl['tooLate']">Oh no, it's way too late</div>
+                <div *ngIf="dateTimePickerFormControl['tooEarly']">It's a bit too early</div>
             </div>
             <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-primary': !isDateTimePickerInValid(), 'btn-dark': isDateTimePickerInValid()}"
                 [disabled]="isDateTimePickerInValid()" (click)="validateDateTimePicker()">Validate {{getDateTimeText()}}</button>
