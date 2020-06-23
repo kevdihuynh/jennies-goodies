@@ -1,14 +1,14 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">{{orderForm.isDelivery ? 'Delivery' : 'Pick Up'}} Order Form</h4>
+    <h4 class="modal-title" id="modal-basic-title">Order Form</h4>
     <button type="button" class="close" aria-label="Close" (click)="dismissCartModal('Cross click')">
         <i class="fa fa-times-circle text-custom-primary cursor-pointer" aria-hidden="true"></i>
     </button>
 </div>
 <div class="modal-body">
-    <section>
-        <section class="items">
+    <p *ngIf="!orderForm.orders.length" class="text-center font-weight-bold my-5">You have not selected any items. <span class="text-custom-primary cursor-pointer" (click)="dismissCartModal()">Go back to menu</span></p>
+    <ng-container *ngIf="orderForm.orders.length">
+        <section class="orderForm.orders.length">
             <h5>Items</h5>
-            <p *ngIf="orderForm.orders.length === 0" class="text-center font-weight-bold mb-4">You have not selected any items. <span class="text-custom-primary cursor-pointer" (click)="dismissCartModal()">Go back to menu</span></p>
             <div class="row no-gutters my-4" *ngFor="let order of orderForm.orders; let index = index;">
                 <div class="col-10">
                     {{order.qty}} {{order.name}} - {{order.price | currency}}
@@ -83,9 +83,9 @@
         </section>
         <hr/>
         <pre class="mt-2">{{orderForm | json}}</pre>
-    </section>
+    </ng-container>
 </div>
-<div class="modal-footer">
+<div class="modal-footer" *ngIf="orderForm.orders.length">
     <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-primary': !isOrderFormDisabled(), 'btn-dark': isOrderFormDisabled()}"
         [disabled]="isOrderFormDisabled()" (click)="submit()">
         Place Order
