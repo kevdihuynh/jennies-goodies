@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { OrderForm, Order } from 'src/app/interfaces/cart';
 import { CartService } from 'src/app/services/cart/cart.service';
 import * as moment from 'moment';
@@ -34,6 +35,7 @@ export class CartModalComponent implements OnInit {
 
   constructor(
     private toastr: ToastrService,
+    private spinner: NgxSpinnerService,
     public activeModal: NgbActiveModal,
     public cartService: CartService,
     public googleMapsService: GoogleMapsService) {
@@ -176,6 +178,7 @@ export class CartModalComponent implements OnInit {
       return;
     }
     // TODO: Perform final call check to Google Calendar API to validate if the date & time selected does not conflict
+    this.spinner.show();
     const finalDateTime = this.getMomentDateTime();
     console.log('finalDateTime', finalDateTime);
     const isDateTimeValid = true;
@@ -187,9 +190,11 @@ export class CartModalComponent implements OnInit {
       this.closeCartModal('payment-success');
       this.toastr.success(`We have received your order. You will receive an email confirmation soon. Thank you!`, `Order Success!`);
       this.cartService.clearCart();
+      this.spinner.hide();
     } else {
       console.log('finalDateTime is not valid', finalDateTime);
       this.toastr.error(`Sorry! It looks like somebody has filled this timeslot. Please choose another available time`, `Schedule Conflict!`);
+      this.spinner.hide();
     }
   };
 
