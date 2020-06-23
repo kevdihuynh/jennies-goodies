@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Option } from 'src/app/interfaces/products';
-import { Order } from 'src/app/interfaces/orders';
-import { OrderService } from 'src/app/services/order/order.service';
+import { Order } from 'src/app/interfaces/cart';
+import { CartService } from 'src/app/services/cart/cart.service';
 
 @Component({
   selector: 'app-product',
@@ -12,11 +12,8 @@ export class ProductComponent implements OnInit {
   @Input() options: Option[];
   selectedOptionIndex = 0;
   selectedOption: any;
-  orderService: OrderService;
 
-  constructor(orderService: OrderService) {
-    this.orderService = orderService;
-  }
+  constructor(public cartService: CartService) {}
 
   ngOnInit(): void {
     console.log(this.options);
@@ -28,7 +25,7 @@ export class ProductComponent implements OnInit {
     this.selectedOption = this.options[this.selectedOptionIndex];
   }
 
-  addToOrders(option: Option) {
+  addToCart(option: Option) {
     const order: Order = {
       imageUrl: option.imageUrl,
       desc: option.desc,
@@ -40,6 +37,6 @@ export class ProductComponent implements OnInit {
       number: 1
     };
 
-    this.orderService.addToOrders(order);
+    this.cartService.addToCart(order);
   }
 }

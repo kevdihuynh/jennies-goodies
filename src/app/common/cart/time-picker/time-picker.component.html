@@ -1,0 +1,5 @@
+<section>
+    <ngb-timepicker name="timepicker" [(ngModel)]="time" (ngModelChange)="timeChangeEmitter.emit($event)" [meridian]="timePickerMeridian" [seconds]="timePickerSeconds"
+        [hourStep]="timePickerHourStep" [minuteStep]="timePickerMinuteStep" [secondStep]="timePickerSecondStep" required>
+    </ngb-timepicker>
+</section>
