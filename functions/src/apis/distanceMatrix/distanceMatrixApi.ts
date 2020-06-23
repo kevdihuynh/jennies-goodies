@@ -1,7 +1,7 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Api } from '../api';
 import { urls, ORIGIN_LAT, ORIGIN_LON } from '../api.configs';
-import { placeHolderReplace } from '../../utilities/utilities';
+import { placeHolderReplace } from '../../utils';
 
 export class DistanceMatrixApi extends Api {
     public constructor (config?: AxiosRequestConfig) {

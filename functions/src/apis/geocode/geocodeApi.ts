@@ -1,7 +1,7 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Api } from '../api';
-import { placeHolderReplace } from '../../utilities/utilities';
 import { urls } from '../api.configs';
+import { placeHolderReplace } from '../../utils';
 
 export class GeocodeApi extends Api {
     public constructor (config?: AxiosRequestConfig) {

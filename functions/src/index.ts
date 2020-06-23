@@ -1,9 +1,8 @@
 import * as functions from 'firebase-functions';
 import { geocodeApi } from './apis/geocode/geocodeApi';
 import { distanceMatrixApi } from './apis/distanceMatrix/distanceMatrixApi';
-import { cors } from './utilities/utilities';
 import _ = require('lodash');
-
+import { cors } from './utils';
 
 export const helloWorld = functions.https.onRequest((request, response) => {
  response.send("Hello from Firebase!");
