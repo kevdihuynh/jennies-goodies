@@ -9,11 +9,11 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'app-cart',
-  templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.scss']
+  selector: 'app-cart-button',
+  templateUrl: './cart-button.component.html',
+  styleUrls: ['./cart-button.component.scss']
 })
-export class CartComponent implements OnInit {
+export class CartButtonComponent implements OnInit {
   _ = _;
   numCartItems: number;
 
@@ -37,6 +37,7 @@ export class CartComponent implements OnInit {
     const modalOptions: NgbModalOptions = {
       backdrop: 'static',
       keyboard: false,
+      size: 'lg',
       windowClass: 'modal-100'
     }
     const modalRef = this.modalService.open(CartModalComponent, modalOptions);

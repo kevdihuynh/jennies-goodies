@@ -19,10 +19,10 @@ import { FooterComponent } from './common/footer/footer.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { ProductsComponent } from './pages/products/products.component';
 import { ProductComponent } from './pages/products/product/product.component';
-import { CartComponent } from './common/cart/cart.component';
-import { CartModalComponent } from './common/cart/cart-modal/cart-modal.component';
-import { TimePickerComponent } from './common/cart/cart-modal/time-picker/time-picker.component';
-import { DatePickerComponent } from './common/cart/cart-modal/date-picker/date-picker.component';
+import { CartButtonComponent } from './common/cart-button/cart-button.component';
+import { CartModalComponent } from './common/cart-button/cart-modal/cart-modal.component';
+import { TimePickerComponent } from './common/cart-button/cart-modal/time-picker/time-picker.component';
+import { DatePickerComponent } from './common/cart-button/cart-modal/date-picker/date-picker.component';
 import { AngularFireFunctionsModule, ORIGIN } from '@angular/fire/functions';
 import { HttpClientModule } from '@angular/common/http';
 @NgModule({
@@ -33,7 +33,7 @@ import { HttpClientModule } from '@angular/common/http';
     AdminComponent,
     ProductsComponent,
     ProductComponent,
-    CartComponent,
+    CartButtonComponent,
     CartModalComponent,
     TimePickerComponent,
     DatePickerComponent

@@ -17,14 +17,17 @@
     cursor: pointer;
 }
 
-.modal-100 {
-    .modal-dialog {
-        max-width: unset;
-        margin: unset;
-        .modal-content {
-            border: unset;
-            border-radius: unset;
-            min-height: 100vh;
+// Large devices (desktops, less than 1200px)
+@media (max-width: 1199.98px) {
+    .modal-100 {
+        .modal-dialog {
+            max-width: unset;
+            margin: unset;
+            .modal-content {
+                border: unset;
+                border-radius: unset;
+                min-height: 100vh;
+            }
         }
     }
 }
