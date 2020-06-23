@@ -1,17 +1,11 @@
 <section>
-    <p>This date picker has validations minDate: {{minDaysFromToday}} days from today and maxDate: {{maxDaysFromToday}} days
-        from today</p>
-    <form class="form-inline">
-        <div class="form-group">
-            <div class="input-group">
-                <input #datepicker class="form-control" placeholder="yyyy-mm-dd" name="dp"
-                [(ngModel)]="date" (ngModelChange)="dateChangeEmitter.emit($event)" [minDate]="datePickerMinDate" [maxDate]="datePickerMaxDate" ngbDatepicker #d="ngbDatepicker">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
-                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                    </button>
-                </div>
-            </div>
+    <div class="input-group">
+        <input #datepicker class="form-control" placeholder="YYYY-MM-DD" name="datepicker"
+        [(ngModel)]="date" (ngModelChange)="dateChangeEmitter.emit($event)" [minDate]="datePickerMinDate" [maxDate]="datePickerMaxDate" [readOnly]="readOnly" ngbDatepicker #d="ngbDatepicker">
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary calendar" (click)="d.toggle()" type="button">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+            </button>
         </div>
-    </form>
+    </div>
 </section>

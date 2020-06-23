@@ -31,9 +31,9 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.orderService.orders.subscribe((res) => {
-      this.orders = res;
-      this.totalPrice = this.calcTotal(this.orders);
+    this.orderService.orders.subscribe((orders: Order[]) => {
+      this.orderForm.orders = orders;
+      this.totalPrice = this.calcTotal(this.orderForm.orders);
     });
     // this.googleMapsService.getGeocode('13515 27th ave NE, Seattle, WA 98125');
     // this.googleMapsService.getDistance(47.456950, -122.289290);
@@ -47,7 +47,19 @@ export class OrderComponent implements OnInit {
     return total;
   }
 
-  isDisabled(): boolean {
+
+  isDateTimePickerDisabled(): boolean {
+    return !_.isObject(this.orderForm.date) || !_.isObject(this.orderForm.time);
+  }
+
+  validateDateTimePicker(): void {
+    if (this.isDateTimePickerDisabled()) {
+      return;
+    }
+    console.log(this.orderForm.date, this.orderForm.time);
+  }
+
+  isOrderFormDisabled(): boolean {
     // Validate if name is unset
     if (_.isEmpty(_.get(this.orderForm, 'name'))) {
       return true;
@@ -89,7 +101,7 @@ export class OrderComponent implements OnInit {
 
   submit(): void {
     // Extra check to prevent submitting when form validations are invalid
-    if (this.isDisabled()) {
+    if (this.isOrderFormDisabled()) {
       return;
     }
 
