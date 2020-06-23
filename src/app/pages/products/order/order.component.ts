@@ -55,11 +55,6 @@ export class OrderComponent implements OnInit {
     return total;
   }
 
-  getMomentDate() {
-    const date = this.orderForm.date;
-    return moment(`${date.year}-${date.month}-${date.day}`);
-  }
-
   isClosedDays() {
     if (!this.orderForm.date) {
       return false;
@@ -69,16 +64,31 @@ export class OrderComponent implements OnInit {
     return isClosedDays;
   }
 
+  getMomentDate() {
+    if (_.isNil(this.orderForm.date)) {
+      return null;
+    }
+    const date = this.orderForm.date;
+    return moment(`${date.year}-${date.month}-${date.day}`);
+  }
+
+  getMomentDateTime() {
+    if (_.isNil(this.orderForm.date) || _.isNil(this.orderForm.time)) {
+      return null;
+    }
+    const date = this.orderForm.date;
+    const time = this.orderForm.time;
+    return moment(`${date.year}-${date.month}-${date.day} ${time.hour}:${time.minute}:${time.second}`);
+  }
+
   getDateTimeText() {
     if (_.isNil(this.orderForm.time) || _.isNil(this.orderForm.time)) {
       return 'Date & Time';
     }
-    const date = this.orderForm.date;
-    const time = this.orderForm.time;
-    return moment(`${date.year}-${date.month}-${date.day} ${time.hour}:${time.minute}:${time.second}`).format('LLL');
+    return this.getMomentDate().format('LLL');
   }
 
-  isDateTimePickerInValid() {
+  isDateTimePickerInValid(): boolean {
     const date = this.orderForm.date;
     const time = this.orderForm.time;
     this.dateTimePickerFormControl = {};
@@ -102,15 +112,9 @@ export class OrderComponent implements OnInit {
       this.dateTimePickerFormControl.tooLate = true;
       return true;
     }
+    this.dateTimePickerFormControl.isValid = true;
 
     return false;
-  }
-
-  validateDateTimePicker(): void {
-    if (this.isDateTimePickerInValid()) {
-      return;
-    }
-    console.log(this.orderForm.date, this.orderForm.time);
   }
 
   isOrderFormDisabled(): boolean {
@@ -144,6 +148,11 @@ export class OrderComponent implements OnInit {
       return true;
     };
 
+    // Validate if there is at least one item in order
+    if (this.orderForm.orders.length < 1) {
+      return true;
+    }
+
     // All form validations passed. The Order Form is validated
     return false;
   };
@@ -153,9 +162,17 @@ export class OrderComponent implements OnInit {
     if (this.isOrderFormDisabled()) {
       return;
     }
-
-    // removes undefined or null values
-    const finalForm = _.omitBy(this.orderForm, _.isNil);
-    console.log(finalForm);
+    // TODO: Perform final call check to Google Calendar API to validate if the date & time selected does not conflict
+    const finalDateTime = this.getMomentDateTime();
+    console.log('finalDateTime', finalDateTime);
+    const isDateTimeValid = true;
+    if (isDateTimeValid) {
+      // removes undefined or null values
+      const finalForm = _.omitBy(this.orderForm, _.isNil);
+      console.log('finalDateTime is valid', finalDateTime);
+      console.log('finalForm', finalForm);
+    } else {
+      console.log('finalDateTime is not valid', finalDateTime);
+    }
   };
 }
