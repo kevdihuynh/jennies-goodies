@@ -1,12 +1,12 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-6 col-xl-8">
             <ul class="list-group" *ngIf="products.length">
                 <app-product *ngFor="let product of products" [options]="product.options"></app-product>
             </ul>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6 col-xl-4">
             <div class="sticky-top">
                 <app-order></app-order>
             </div>

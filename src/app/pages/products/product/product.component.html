@@ -1,19 +1,20 @@
 <li class="list-group-item">
     <div class="row">
-        <div class="col-xs-12 col-lg-2">
+        <div class="col-xs-12 col-xl-2">
             <img [src]="selectedOption.imageUrl" class="img-fluid rounded w-100"/>
         </div>
-        <div class="col-xs-12 col-lg-10 my-3">
-            <h2>{{selectedOption.name}}</h2>
-            <p>{{selectedOption.desc}}</p>
-            <div class="btn-group">
+        <div class="col-xs-12 col-xl-10">
+            <div class="d-flex flex-wrap align-items-center mb-2">
+                <h2 class="mb-0">{{selectedOption.name}}</h2>
+                <h2 class="mb-0 ml-auto">{{selectedOption.price | currency}}</h2>
+            </div>
+            <p class="mb-2">{{selectedOption.desc}}</p>
+            <div class="btn-group d-block mb-2">
                 <button *ngFor="let option of options; let i = index" (click)="updateSelectedOption(i)" class="btn btn-outline-primary btn-sm" [ngClass]="{'active': i === selectedOptionIndex }">
                     {{option.qty}} pcs
                 </button>
             </div>
-            <h3>{{selectedOption.price | currency}}</h3>
-            <br/>
-            <button (click)="addToOrders(selectedOption)" type="button" class="btn btn-outline-primary">
+            <button (click)="addToOrders(selectedOption)" type="button" class="btn btn-sm-block btn-outline-primary">
                 Add to cart
                 <span>
                     <i class="fas fa-cart-plus"></i>
