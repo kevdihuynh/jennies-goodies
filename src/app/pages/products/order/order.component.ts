@@ -33,7 +33,7 @@ export class OrderComponent implements OnInit {
     this.orderService = orderService;
     this.googleMapsService = googleMapsService;
     // If weekend, set default start time to 9am
-    if (this.isWeekend()) {
+    if (this.isClosedDays()) {
       this.orderForm.time = { hour: 9, minute: 0, second: 0 };
     }
   }
@@ -60,13 +60,13 @@ export class OrderComponent implements OnInit {
     return moment(`${date.year}-${date.month}-${date.day}`);
   }
 
-  isWeekend() {
+  isClosedDays() {
     if (!this.orderForm.date) {
       return false;
     }
     const dateTime = this.getMomentDate();
-    const isWeekend = _.includes(['Saturday', 'Sunday'], dateTime.format('dddd'));
-    return isWeekend;
+    const isClosedDays = _.includes(['Friday', 'Saturday', 'Sunday'], dateTime.format('dddd'));
+    return isClosedDays;
   }
 
   getDateTimeText() {
@@ -89,7 +89,7 @@ export class OrderComponent implements OnInit {
     let minTime: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
     let maxTime: NgbTimeStruct = { hour: 21, minute: 0, second: 0 };
 
-    if (!this.isWeekend()) {
+    if (!this.isClosedDays()) {
       minTime = { hour: 17, minute: 0, second: 0 };
     }
 
