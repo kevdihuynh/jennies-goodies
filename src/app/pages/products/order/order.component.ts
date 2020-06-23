@@ -21,7 +21,6 @@ export class OrderComponent implements OnInit {
     time: { hour: 9, minute: 0, second: 0 },
     orders: []
   };
-  orders: Order[] = [];
   orderService: OrderService;
   totalPrice: number;
 
@@ -30,9 +29,9 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.orderService.orders.subscribe((res) => {
-      this.orders = res;
-      this.totalPrice = this.calcTotal(this.orders);
+    this.orderService.orders.subscribe((orders: Order[]) => {
+      this.orderForm.orders = orders;
+      this.totalPrice = this.calcTotal(this.orderForm.orders);
     });
   }
 
