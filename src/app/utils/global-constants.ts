@@ -1,7 +1,12 @@
 export class GlobalConstants {
     public static apiURL: string = "https://wwww.itsolutionstuff.com/";
-    public static companyName: string = "Jennie's Goodies";
-    public static companyLogo: string = '../assets/images/jennies_goodies_logo.jpg';
+    public static company = {
+        name: "Jennie's Goodies",
+        email: 'jenniesgoodies@yahoo.com',
+        logo: '../assets/images/jennies_goodies_logo.jpg',
+        facebook: 'https://www.facebook.com/Jennies-Goodies-112088677209362/?ref=page_internal',
+        instagram: 'https://www.instagram.com/jenniesgoodies/`',
+    };
     public static errors = {
         deliveryErrors: {
             errorTitle: 'Delivery Error',

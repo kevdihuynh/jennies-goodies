@@ -1,13 +1,13 @@
 <nav class="p-3 px-md-4 border-bottom border-dark box-shadow bg-custom-purple sticky-top">
     <div class="d-flex flex-wrap align-items-center">
-        <a [routerLink]="['']" [title]="globalConstants.companyName" class="text-decoration-none font-weight-bold text-dark">
+        <a [routerLink]="['']" [title]="globalConstants.company.name" class="text-decoration-none font-weight-bold text-dark">
             <img
                 class="mr-2"
                 width="40"
-                alt="{{globalConstants.companyName + ' Logo'}}"
-                [src]="globalConstants.companyLogo"
+                alt="{{globalConstants.company.name + ' Logo'}}"
+                [src]="globalConstants.company.logo"
             />
-            <span>{{globalConstants.companyName}}</span>
+            <span>{{globalConstants.company.name}}</span>
         </a>
         <div class="ml-auto">
             <app-cart-button></app-cart-button>
