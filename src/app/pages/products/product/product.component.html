@@ -24,10 +24,10 @@
                 </div>
                 <div class="mb-2">
                     <div class="d-flex flex-wrap align-items-center btn-group">
-                        <div class="mr-2">
+                        <div class="pick mr-2">
                             Pick {{getRemainingFlavorsCount()}}
                         </div>
-                        <button *ngFor="let flavor of product.flavors; let i = index" (click)="toggleFlavor(flavor)" class="btn btn-outline-custom-purple btn-sm" [ngClass]="{'active': isActiveFlavor(flavor) }" [disabled]="isDisabledFlavor(flavor)">
+                        <button *ngFor="let flavor of product.flavors; let i = index" (click)="toggleFlavor(flavor)" class="btn btn-outline-custom-purple btn-sm" [ngClass]="{'active': isActiveFlavor(flavor) }">
                             {{flavor}}
                         </button>
                     </div>

@@ -41,14 +41,12 @@ export class ProductComponent implements OnInit {
     return _.includes(this.selectedFlavors, flavor);
   }
 
-  isDisabledFlavor(flavor: string): boolean {
-    return !this.isActiveFlavor(flavor) && _.isEqual(this.getRemainingFlavorsCount(), 0);
-  }
-
   toggleFlavor(flavor: string): void {
     if (this.isActiveFlavor(flavor)) {
-      _.remove(this.selectedFlavors, (currentFlavor: string) => _.isEqual(flavor, currentFlavor));
       return;
+    }
+    if (this.getRemainingFlavorsCount() === 0) {
+      this.selectedFlavors.shift();
     }
     this.selectedFlavors.push(flavor);
   }
