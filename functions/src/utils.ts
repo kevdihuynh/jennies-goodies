@@ -16,7 +16,7 @@ export function placeHolderReplace(text: string, variables: { [key: string]: str
 }
 
 export const cors = function(request: any, response: any): void {
-    const allowedOrigins: Array<String> = ['http://localhost:4200', 'https://www.ventrips.com', 'http://localhost:5001', 'https://jennies-goodies.web.app/'];
+    const allowedOrigins: Array<String> = ['http://localhost:4200', 'https://www.ventrips.com', 'http://localhost:5001', 'https://jennies-goodies.web.app'];
     const origin: any = request.headers.origin;
     if (_.indexOf(allowedOrigins, origin) > -1) {
         response.setHeader('Access-Control-Allow-Origin', origin);
