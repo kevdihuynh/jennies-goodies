@@ -9,7 +9,7 @@
     <ng-container *ngIf="orderForm.orders.length">
         <section class="orderForm.orders.length">
             <h5>Items</h5>
-            <div class="d-flex flex-wrap align-items-center my-4" *ngFor="let order of orderForm.orders; let index = index;">
+            <div class="d-flex flex-wrap align-items-center my-4 pb-3 border-bottom" *ngFor="let order of orderForm.orders; let index = index;">
                 <div class="order-quantity mr-4">
                     <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" onkeydown="return false" min="1" oninput="validity.valid || (value = 1)" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity">
                 </div>
