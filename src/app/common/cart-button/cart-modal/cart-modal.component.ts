@@ -8,6 +8,8 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
+import { GlobalConstants } from '../../../utils/global-constants';
+import { FormControl } from 'src/app/interfaces/formControl';
 
 @Component({
   selector: 'app-cart-modal',
@@ -17,7 +19,10 @@ import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 export class CartModalComponent implements OnInit {
   _ = _;
   DEFAULT_PICKUP_ADDRESS: string = '1234 Main St Seattle, WA 98125';
-  dateTimePickerFormControl: any = {};
+  formControls: FormControl = {
+    dateTimePicker: {},
+    deliveryForm: {}
+  };
   orderForm: OrderForm = {
     name: 'John Doe',
     email: 'johndoe@example.com',
@@ -27,7 +32,8 @@ export class CartModalComponent implements OnInit {
     notes: 'I might be late 15 minutes...',
     date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
     time: { hour: 17, minute: 0, second: 0 },
-    orders: []
+    orders: [],
+    transporationFee: undefined,
   };
   orders: Order[] = [];
   totalPrice: number;
@@ -49,8 +55,6 @@ export class CartModalComponent implements OnInit {
       this.orderForm.orders = orders;
       this.totalPrice = this.getTotalPrice(this.orderForm.orders);
     });
-    this.googleMapsService.getGeocode('13515 27th ave NE, Seattle, WA 98125');
-    this.googleMapsService.getDistance(47.456950, -122.289290);
   }
 
   closeCartModal(reason?: any): void {
@@ -114,7 +118,7 @@ export class CartModalComponent implements OnInit {
   isDateTimePickerInValid(): boolean {
     const date = this.orderForm.date;
     const time = this.orderForm.time;
-    this.dateTimePickerFormControl = {};
+    this.formControls.dateTimePicker = {};
     if (!_.isObject(date) || !_.isObject(time)) {
       return true;
     };
@@ -127,15 +131,36 @@ export class CartModalComponent implements OnInit {
     }
 
     if (this.orderForm.time.hour < minTime.hour) {
-      this.dateTimePickerFormControl.tooEarly = true;
+      this.formControls.dateTimePicker.tooEarly = true;
       return true;
     }
 
     if ((time.hour > maxTime.hour) || (_.isEqual(time.hour, maxTime.hour) && (time.minute > maxTime.minute))) {
-      this.dateTimePickerFormControl.tooLate = true;
+      this.formControls.dateTimePicker.tooLate = true;
       return true;
     }
-    this.dateTimePickerFormControl.isValid = true;
+
+    return false;
+  }
+
+  isDeliveryFormInvalid(): boolean {
+    return (
+      this.formControls.deliveryForm.addressError ||
+      this.formControls.deliveryForm.calcDistanceError ||
+      this.formControls.deliveryForm.tooFarError
+    );
+  }
+
+  isDeliveryAndDateInvalid(): boolean {
+    // Validate if date and time are invalid
+    if (this.isDateTimePickerInValid()) {
+      return true;
+    }
+
+    // Validate if delivery is valid
+    if (this.isDeliveryFormInvalid()) {
+      return true;
+    }
 
     return false;
   }
@@ -166,11 +191,6 @@ export class CartModalComponent implements OnInit {
       return true;
     };
 
-    // Validate if date and time are invalid
-    if (this.isDateTimePickerInValid()) {
-      return true;
-    };
-
     // Validate if there is at least one item in order
     if (this.orderForm.orders.length < 1) {
       return true;
@@ -180,21 +200,104 @@ export class CartModalComponent implements OnInit {
     return false;
   };
 
-  submit(): void {
+  async calculateTransportationFee(): Promise<number> | undefined {
+    let transportationFee;
+    this.formControls.deliveryForm = {};
+    if (this.orderForm.address) {
+      // confirm user address is valid and retrieve lat and lon coordinates
+      const latLon = await this.googleMapsService.getGeocode(this.orderForm.address);
+      if (latLon[0] !== undefined && latLon[1] !== undefined) {
+        // calculate the distance
+        const milesToDestination = await this.googleMapsService.getDistance(latLon[0], latLon[1]);
+        console.log('miles to destination: ', milesToDestination);
+        if (milesToDestination !== undefined) {
+          if (milesToDestination <= 10) {
+            transportationFee = 0;
+          } else if (milesToDestination > 10 && milesToDestination <= 15) {
+            transportationFee = 5;
+          } else {
+            this.formControls.deliveryForm.tooFarError = true;
+            this.toastr.error(GlobalConstants.errors.deliveryErrors.tooFarError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
+              positionClass: 'toast-bottom-left',
+              progressBar: true,
+              disableTimeOut: false
+            });
+          }
+        } else {
+          this.formControls.deliveryForm.calcDistanceError = true;
+          this.toastr.error(GlobalConstants.errors.deliveryErrors.calcDistanceError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
+            positionClass: 'toast-bottom-left',
+            progressBar: true,
+            disableTimeOut: false
+          });
+        }
+      } else {
+        this.formControls.deliveryForm.addressError = true;
+        this.toastr.error(GlobalConstants.errors.deliveryErrors.addressError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
+          positionClass: 'toast-bottom-left',
+          progressBar: true,
+          disableTimeOut: false
+        });
+      }
+    }
+    return transportationFee;
+  }
+
+  showDateTimePickerErrorOnSubmit(finalDateTime, errorMsg, errorTitle) {
+    console.log('finalDateTime is not valid', finalDateTime);
+    this.toastr.error(errorMsg, errorTitle,  {
+      positionClass: 'toast-bottom-left',
+      progressBar: true,
+      disableTimeOut: false
+    });
+    this.spinner.hide();
+  }
+
+  async submit(): Promise<void> {
     // Extra check to prevent submitting when form validations are invalid
     if (this.isOrderFormDisabled()) {
       return;
     }
-    // TODO: Perform final call check to Google Calendar API to validate if the date & time selected does not conflict
-    this.spinner.show();
+
+    const isDateTimeInvalid = this.isDateTimePickerInValid();
     const finalDateTime = this.getMomentDateTime();
     console.log('finalDateTime', finalDateTime);
-    const isDateTimeValid = true;
-    if (isDateTimeValid) {
+
+    if (isDateTimeInvalid) {
+      this.showDateTimePickerErrorOnSubmit(finalDateTime, GlobalConstants.errors.dateTimeErrors.incorrectDateTimeError, GlobalConstants.errors.dateTimeErrors.incorrectDateTimeTitle);
+      return;
+    }
+
+    // TODO: Perform final call check to Google Calendar API to validate if the date & time selected does not conflict
+    this.spinner.show();
+
+    const transportationFee = await this.calculateTransportationFee();
+    const isDeliveryInvalid = this.isDeliveryFormInvalid();
+
+    // maybe add this if we want to show another final message (but dont need to as we already output toaster on calculate transport function)
+    // if (isDeliveryInvalid) {
+    //   this.toastr.error(GlobalConstants.errors.deliveryErrors.submitError, `Delivery Error`,  {
+    //     positionClass: 'toast-bottom-left',
+    //     progressBar: true,
+    //     disableTimeOut: false
+    //   });
+    //   this.spinner.hide();
+    //   return;
+    // }
+
+    const isDateTimeConflicting = false; // TODO: make api call
+    if (isDateTimeConflicting) {
+      this.showDateTimePickerErrorOnSubmit(finalDateTime, GlobalConstants.errors.dateTimeErrors.conflictError, GlobalConstants.errors.dateTimeErrors.conflictTitle);
+      return;
+    }
+
+    const isDateTimeValid = !isDateTimeInvalid && !isDateTimeConflicting;
+
+    if (isDateTimeValid && !isDeliveryInvalid) {
       // removes undefined or null values
-      const finalForm = _.omitBy(this.orderForm, _.isNil);
+      this.orderForm.transporationFee = transportationFee;
       console.log('finalDateTime is valid', finalDateTime);
-      console.log('finalForm', finalForm);
+      console.log('finalForm', this.orderForm);
       this.closeCartModal('payment-success');
       this.toastr.success(`We have received your order. You will receive an email confirmation soon. Thank you!`, `Order Success!`,  {
         positionClass: 'toast-bottom-left',
@@ -202,16 +305,8 @@ export class CartModalComponent implements OnInit {
         disableTimeOut: true
       });
       this.cartService.clearCart();
-      this.spinner.hide();
-    } else {
-      console.log('finalDateTime is not valid', finalDateTime);
-      this.toastr.error(`Sorry! It looks like somebody has filled this timeslot. Please choose another available time`, `Schedule Conflict!`,  {
-        positionClass: 'toast-bottom-left',
-        progressBar: true,
-        disableTimeOut: false
-      });
-      this.spinner.hide();
     }
-  };
+    this.spinner.hide();
+  }
 
 }
