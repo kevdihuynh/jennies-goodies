@@ -43,7 +43,21 @@ export class CartService {
   constructor() {}
 
   addToCart(order: Order): void {
-    this.ordersSubject.next([...this.ordersSubject.getValue(), order]);
+    const currentOrders = _.cloneDeep(this.ordersSubject.getValue());
+    // Logic to group all the similar orders into one if there is any
+    const exactOrdersExcludingQuantity = _.filter(_.cloneDeep(currentOrders), (currentOrder: Order) => {
+      const omitFields = ['quantity'];
+      return _.isEqual(_.omit(currentOrder, ['quantity']), _.omit(order, ['quantity']));
+    });
+    const totalExactOrderQuantity: number = _.reduce(exactOrdersExcludingQuantity, (sum: number, order: Order): number => {
+      return sum + order.quantity;
+    }, order.quantity);
+    const newOrder = _.assign(_.cloneDeep(order), { quantity: totalExactOrderQuantity });
+    const nonExactOrdersExcludingQuantity = _.filter(_.cloneDeep(currentOrders), (currentOrder: Order) => {
+      const omitFields = ['quantity'];
+      return !_.isEqual(_.omit(currentOrder, ['quantity']), _.omit(order, ['quantity']));
+    });
+    this.ordersSubject.next([...nonExactOrdersExcludingQuantity, newOrder]);
   }
 
   removeFromCart(index: number): void {

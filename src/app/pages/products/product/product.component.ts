@@ -70,7 +70,7 @@ export class ProductComponent implements OnInit {
   addToCart(product: Product): void {
     // Prevents updating all references
     const copySelectedOptions = _.cloneDeep(this.selectedOption);
-    const copySelectedFlavors = _.cloneDeep(this.selectedFlavors);
+    const copySelectedFlavors = _.cloneDeep(_.sortBy(this.selectedFlavors));
 
     const order: Order = {
       imageUrls: product.imageUrls,
