@@ -1,11 +1,14 @@
-<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 bg-white border-bottom box-shadow bg-custom-primary sticky-top">
-    <a [routerLink]="['']" [title]="globalConstants.companyName" class="my-0 mr-md-auto font-weight-bold text-dark">
+<div class="d-flex flex-wrap align-items-center p-3 px-md-4 bg-white border-bottom box-shadow bg-custom-primary sticky-top">
+    <a [routerLink]="['']" [title]="globalConstants.companyName" class="text-decoration-none font-weight-bold text-dark">
         <img
+            class="mr-2"
             width="40"
             alt="{{globalConstants.companyName + ' Logo'}}"
             [src]="globalConstants.companyLogo"
         />
-        {{globalConstants.companyName}}
+        <span>{{globalConstants.companyName}}</span>
     </a>
-    <app-cart-button></app-cart-button>
+    <div class="ml-auto">
+        <app-cart-button></app-cart-button>
+    </div>
 </div>
