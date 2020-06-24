@@ -3,7 +3,7 @@ import { Option, Product } from 'src/app/interfaces/products';
 import { Order } from 'src/app/interfaces/cart';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { ToastrService } from 'ngx-toastr';
-import { timeout } from 'q';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-product',
@@ -12,8 +12,10 @@ import { timeout } from 'q';
 })
 export class ProductComponent implements OnInit {
   @Input() product: Product;
+  _ = _;
   selectedOptionIndex = 0;
-  selectedOption: any;
+  selectedOption: Option;
+  selectedFlavors: Array<string> = [];
 
   constructor(
     public cartService: CartService,
@@ -26,8 +28,29 @@ export class ProductComponent implements OnInit {
   }
 
   updateSelectedOption(index: number): void {
+    this.selectedFlavors = [];
     this.selectedOptionIndex = index;
     this.selectedOption = this.product.variations[this.selectedOptionIndex];
+  }
+
+  getRemainingFlavorsCount(): number {
+    return this.selectedOption.maxFlavors - this.selectedFlavors.length;
+  }
+
+  isActiveFlavor(flavor: string): boolean {
+    return _.includes(this.selectedFlavors, flavor);
+  }
+
+  isDisabledFlavor(flavor: string): boolean {
+    return !this.isActiveFlavor(flavor) && _.isEqual(this.getRemainingFlavorsCount(), 0);
+  }
+
+  toggleFlavor(flavor: string): void {
+    if (this.isActiveFlavor(flavor)) {
+      _.remove(this.selectedFlavors, (currentFlavor: string) => _.isEqual(flavor, currentFlavor));
+      return;
+    }
+    this.selectedFlavors.push(flavor);
   }
 
   addToCart(product: Product) {
@@ -35,14 +58,13 @@ export class ProductComponent implements OnInit {
       imageUrls: product.imageUrls,
       description: product.description,
       batchSize: this.selectedOption.batchSize,
-      flavors: product.flavors,
-      maxFlavors: this.selectedOption.maxFlavors,
+      selectedFlavors: this.selectedFlavors,
       price: this.selectedOption.price,
       name: product.name,
       quantity: 1
     };
     this.cartService.addToCart(order);
-    this.toastr.info('', `${order.batchSize} pieces of ${order.name} added`, {
+    this.toastr.info('', `${order.batchSize} pieces of ${order.name} (${_.toString(this.selectedFlavors)}) added`, {
       positionClass: 'toast-bottom-left',
       progressBar: true,
       disableTimeOut: false

@@ -16,9 +16,8 @@ export interface Order {
     imageUrls: string[];
     description: string;
     batchSize: number;
-    flavors: string[];
+    selectedFlavors: string[];
     price: number;
     name: string;
-    maxFlavors: number;
     quantity: number;
 }
