@@ -45,7 +45,9 @@ export class CartModalComponent implements OnInit {
       this.orderForm = orderForm;
       this.cartService.orders.subscribe((orders: Order[]) => {
         this.orderForm.orders = orders;
-        this.totalPrice = this.getTotalPrice(this.orderForm.orders);
+        this.totalPrice = _.reduce(orders, (sum: number, order: Order): number => {
+          return sum + (order.quantity * order.price);
+        }, 0);
       });
     });
   }
@@ -70,14 +72,6 @@ export class CartModalComponent implements OnInit {
       timeOut: 2000
     });
     this.cartService.removeFromCart(index);
-  }
-
-  getTotalPrice(orders: Order[]): number {
-    let total = 0;
-    orders.map((order: Order) => {
-      total += order.price * order.quantity;
-    });
-    return total;
   }
 
   isClosedDays() {

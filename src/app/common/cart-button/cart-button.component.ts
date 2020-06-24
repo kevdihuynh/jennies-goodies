@@ -29,7 +29,9 @@ export class CartButtonComponent implements OnInit {
 
   ngOnInit(): void {
     this.cartService.orders.subscribe((orders: Order[]) => {
-      this.numCartItems = orders.length;
+      this.numCartItems = _.reduce(orders, (sum: number, order: Order): number => {
+        return sum + order.quantity;
+      }, 0);
     });
   }
 
