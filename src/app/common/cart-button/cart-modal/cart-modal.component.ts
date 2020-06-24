@@ -269,43 +269,51 @@ export class CartModalComponent implements OnInit {
 
     // TODO: Perform final call check to Google Calendar API to validate if the date & time selected does not conflict
     this.spinner.show();
+    try {
+      const transportationFee = await this.calculateTransportationFee();
+      const isDeliveryInvalid = this.isDeliveryFormInvalid();
 
-    const transportationFee = await this.calculateTransportationFee();
-    const isDeliveryInvalid = this.isDeliveryFormInvalid();
+      // maybe add this if we want to show another final message (but dont need to as we already output toaster on calculate transport function)
+      // if (isDeliveryInvalid) {
+      //   this.toastr.error(GlobalConstants.errors.deliveryErrors.submitError, `Delivery Error`,  {
+      //     positionClass: 'toast-bottom-left',
+      //     progressBar: true,
+      //     disableTimeOut: false
+      //   });
+      //   this.spinner.hide();
+      //   return;
+      // }
 
-    // maybe add this if we want to show another final message (but dont need to as we already output toaster on calculate transport function)
-    // if (isDeliveryInvalid) {
-    //   this.toastr.error(GlobalConstants.errors.deliveryErrors.submitError, `Delivery Error`,  {
-    //     positionClass: 'toast-bottom-left',
-    //     progressBar: true,
-    //     disableTimeOut: false
-    //   });
-    //   this.spinner.hide();
-    //   return;
-    // }
+      const isDateTimeConflicting = false; // TODO: make api call
+      if (isDateTimeConflicting) {
+        this.showDateTimePickerErrorOnSubmit(finalDateTime, GlobalConstants.errors.dateTimeErrors.conflictError, GlobalConstants.errors.dateTimeErrors.conflictTitle);
+        return;
+      }
 
-    const isDateTimeConflicting = false; // TODO: make api call
-    if (isDateTimeConflicting) {
-      this.showDateTimePickerErrorOnSubmit(finalDateTime, GlobalConstants.errors.dateTimeErrors.conflictError, GlobalConstants.errors.dateTimeErrors.conflictTitle);
-      return;
-    }
+      const isDateTimeValid = !isDateTimeInvalid && !isDateTimeConflicting;
 
-    const isDateTimeValid = !isDateTimeInvalid && !isDateTimeConflicting;
-
-    if (isDateTimeValid && !isDeliveryInvalid) {
-      // removes undefined or null values
-      this.orderForm.transporationFee = transportationFee;
-      console.log('finalDateTime is valid', finalDateTime);
-      console.log('finalForm', this.orderForm);
-      this.closeCartModal('payment-success');
-      this.toastr.success(`We have received your order. You will receive an email confirmation soon. Thank you!`, `Order Success!`,  {
+      if (isDateTimeValid && !isDeliveryInvalid) {
+        // removes undefined or null values
+        this.orderForm.transporationFee = transportationFee;
+        console.log('finalDateTime is valid', finalDateTime);
+        console.log('finalForm', this.orderForm);
+        this.closeCartModal('payment-success');
+        this.toastr.success(`We have received your order. You will receive an email confirmation soon. Thank you!`, `Order Success!`,  {
+          positionClass: 'toast-bottom-left',
+          progressBar: true,
+          disableTimeOut: true
+        });
+        this.cartService.clearCart();
+      }
+      this.spinner.hide();
+    } catch {
+      this.toastr.error('', GlobalConstants.errors.commonErrors.unknownError, {
         positionClass: 'toast-bottom-left',
         progressBar: true,
-        disableTimeOut: true
+        disableTimeOut: false
       });
-      this.cartService.clearCart();
+      this.spinner.hide();
     }
-    this.spinner.hide();
   }
 
 }
