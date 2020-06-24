@@ -1,14 +1,16 @@
-<div class="d-flex flex-wrap align-items-center p-3 px-md-4 border-bottom border-dark box-shadow bg-custom-purple sticky-top">
-    <a [routerLink]="['']" [title]="globalConstants.companyName" class="text-decoration-none font-weight-bold text-dark">
-        <img
-            class="mr-2"
-            width="40"
-            alt="{{globalConstants.companyName + ' Logo'}}"
-            [src]="globalConstants.companyLogo"
-        />
-        <span>{{globalConstants.companyName}}</span>
-    </a>
-    <div class="ml-auto">
-        <app-cart-button></app-cart-button>
+<nav class="p-3 px-md-4 border-bottom border-dark box-shadow bg-custom-purple sticky-top">
+    <div class="d-flex flex-wrap align-items-center">
+        <a [routerLink]="['']" [title]="globalConstants.companyName" class="text-decoration-none font-weight-bold text-dark">
+            <img
+                class="mr-2"
+                width="40"
+                alt="{{globalConstants.companyName + ' Logo'}}"
+                [src]="globalConstants.companyLogo"
+            />
+            <span>{{globalConstants.companyName}}</span>
+        </a>
+        <div class="ml-auto">
+            <app-cart-button></app-cart-button>
+        </div>
     </div>
-</div>
+</nav>
