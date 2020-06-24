@@ -16,7 +16,6 @@
                 </div>
                 <p>{{product.description}}</p>
             </div>
-            <pre>{{product.variations | json}}</pre>
             <div class="mt-auto d-flex flex-wrap align-items-center">
                 <div class="btn-group">
                     <button *ngFor="let variation of product.variations; let i = index" (click)="updateSelectedOption(i)" class="btn btn-outline-info btn-sm" [ngClass]="{'active': i === selectedOptionIndex }">
