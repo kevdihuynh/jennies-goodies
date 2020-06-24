@@ -62,7 +62,7 @@ export class CartModalComponent implements OnInit {
   }
 
   removeFromCart(order: Order, index: number): void {
-    this.toastr.error('', `${order.qty} pieces of ${order.name} removed`, {
+    this.toastr.error('', `${order.batchSize} pieces of ${order.name} removed`, {
       positionClass: 'toast-bottom-left',
       progressBar: true,
       disableTimeOut: false

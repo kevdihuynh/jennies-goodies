@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Option } from 'src/app/interfaces/products';
+import { Option, Product } from 'src/app/interfaces/products';
 import { Order } from 'src/app/interfaces/cart';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { ToastrService } from 'ngx-toastr';
@@ -11,7 +11,7 @@ import { timeout } from 'q';
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent implements OnInit {
-  @Input() options: Option[];
+  @Input() product: Product;
   selectedOptionIndex = 0;
   selectedOption: any;
 
@@ -21,29 +21,28 @@ export class ProductComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.options);
-    this.selectedOption = this.options[this.selectedOptionIndex];
+    console.log(this.product);
+    this.selectedOption = this.product.variations[this.selectedOptionIndex];
   }
 
   updateSelectedOption(index: number): void {
     this.selectedOptionIndex = index;
-    this.selectedOption = this.options[this.selectedOptionIndex];
+    this.selectedOption = this.product.variations[this.selectedOptionIndex];
   }
 
-  addToCart(option: Option) {
+  addToCart(product: Product) {
     const order: Order = {
-      imageUrl: option.imageUrl,
-      desc: option.desc,
-      qty: option.qty,
-      flavors: option.flavors,
-      maxFlavors: option.maxFlavors,
-      price: option.price,
-      name: option.name,
-      number: 1
+      imageUrls: product.imageUrls,
+      description: product.description,
+      batchSize: this.selectedOption.batchSize,
+      flavors: product.flavors,
+      maxFlavors: this.selectedOption.maxFlavors,
+      price: this.selectedOption.price,
+      name: product.name,
+      quantity: 1
     };
-
     this.cartService.addToCart(order);
-    this.toastr.info('', `${order.qty} pieces of ${order.name} added`, {
+    this.toastr.info('', `${order.batchSize} pieces of ${order.name} added`, {
       positionClass: 'toast-bottom-left',
       progressBar: true,
       disableTimeOut: false

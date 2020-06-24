@@ -13,12 +13,12 @@ export interface OrderForm {
 }
 
 export interface Order {
-    imageUrl: string;
-    desc: string;
-    qty: number;
+    imageUrls: string[];
+    description: string;
+    batchSize: number;
     flavors: string[];
     price: number;
     name: string;
     maxFlavors: number;
-    number: number;
+    quantity: number;
 }

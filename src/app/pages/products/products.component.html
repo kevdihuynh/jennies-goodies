@@ -1,5 +1,5 @@
 <main class="row no-gutters m-0 m-md-3" *ngIf="products.length">
     <div class="col-xs-12 col-xl-6" *ngFor="let product of products">
-        <app-product [options]="product.options"></app-product>
+        <app-product [product]="product"></app-product>
     </div>
 </main>
