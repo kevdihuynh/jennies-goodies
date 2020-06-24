@@ -65,11 +65,16 @@ export class CartModalComponent implements OnInit {
     this.activeModal.dismiss(reason);
   }
 
+  getOrderText(order: Order): string {
+    return `${order.batchSize} for $${order.price} - ${order.name} (${_.toString(order.selectedFlavors)})`;
+  }
+
   removeFromCart(order: Order, index: number): void {
-    this.toastr.error('', `${order.batchSize} pieces of ${order.name} (${_.toString(order.selectedFlavors)}) removed`, {
+    this.toastr.info(`${this.getOrderText(order)}`, 'Removed from Cart', {
       positionClass: 'toast-bottom-left',
       progressBar: true,
-      disableTimeOut: false
+      disableTimeOut: false,
+      timeOut: 2000
     });
     this.cartService.removeFromCart(index);
   }

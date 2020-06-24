@@ -51,7 +51,7 @@ export class ProductComponent implements OnInit {
     this.selectedFlavors.push(flavor);
   }
 
-  addToCart(product: Product) {
+  addToCart(product: Product): void {
     // Prevents updating all references
     const copySelectedOptions = _.cloneDeep(this.selectedOption);
     const copySelectedFlavors = _.cloneDeep(this.selectedFlavors);
@@ -66,10 +66,11 @@ export class ProductComponent implements OnInit {
       quantity: 1
     };
     this.cartService.addToCart(order);
-    this.toastr.info('', `${order.batchSize} pieces of ${order.name} (${_.toString(order.selectedFlavors)}) added`, {
+    this.toastr.info(`${order.batchSize} for $${order.price} - ${order.name} (${_.toString(order.selectedFlavors)})`, 'Added to Cart', {
       positionClass: 'toast-bottom-left',
       progressBar: true,
-      disableTimeOut: false
+      disableTimeOut: false,
+      timeOut: 2000
     });
   }
 }
