@@ -18,6 +18,20 @@
       {
         "source": "**",
         "destination": "/index.html"
+      },
+      {
+        "source": ""
+      }
+    ],
+    "headers": [
+      {
+          "source": "**",
+          "headers": [
+              {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+              }
+          ]
       }
     ]
   }
