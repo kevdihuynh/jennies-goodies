@@ -7,23 +7,22 @@ import * as _ from 'lodash';
   providedIn: 'root'
 })
 export class CartService {
-  public orders = new BehaviorSubject<Order[]>([]);
+  private ordersSubject = new BehaviorSubject<Order[]>([]);
+  public orders: Observable<Array<Order>>  = this.ordersSubject.asObservable();
 
   constructor() { }
 
   addToCart(order: Order): void {
-    console.log(this.orders.getValue());
-    console.log(order);
-    this.orders.next([...this.orders.getValue(), order]);
+    this.ordersSubject.next([...this.ordersSubject.getValue(), order]);
   }
 
   removeFromCart(index: number): void {
-    const updatedOrders: Order[] = this.orders.getValue();
-    updatedOrders.splice(index, 1);
-    this.orders.next([...updatedOrders]);
+    const currentOrders = this.ordersSubject.getValue();
+    currentOrders.splice(index, 1);
+    this.ordersSubject.next(currentOrders);
   }
 
   clearCart(): void {
-    this.orders.next([]);
+    this.ordersSubject.next([]);
   }
 }

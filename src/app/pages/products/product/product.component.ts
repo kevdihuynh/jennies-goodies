@@ -52,17 +52,21 @@ export class ProductComponent implements OnInit {
   }
 
   addToCart(product: Product) {
+    // Prevents updating all references
+    const copySelectedOptions = _.cloneDeep(this.selectedOption);
+    const copySelectedFlavors = _.cloneDeep(this.selectedFlavors);
+
     const order: Order = {
       imageUrls: product.imageUrls,
       description: product.description,
-      batchSize: this.selectedOption.batchSize,
-      selectedFlavors: this.selectedFlavors,
-      price: this.selectedOption.price,
+      batchSize: copySelectedOptions.batchSize,
+      selectedFlavors: copySelectedFlavors,
+      price: copySelectedOptions.price,
       name: product.name,
       quantity: 1
     };
     this.cartService.addToCart(order);
-    this.toastr.info('', `${order.batchSize} pieces of ${order.name} (${_.toString(this.selectedFlavors)}) added`, {
+    this.toastr.info('', `${order.batchSize} pieces of ${order.name} (${_.toString(order.selectedFlavors)}) added`, {
       positionClass: 'toast-bottom-left',
       progressBar: true,
       disableTimeOut: false
