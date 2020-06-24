@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { Products } from 'src/app/interfaces/products';
+import { Product } from 'src/app/interfaces/products';
 import { getResponse } from 'src/app/utils/utility-functions';
 import productsJson from './../../db_mock/products.json';
 
@@ -11,7 +11,7 @@ import productsJson from './../../db_mock/products.json';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  products: Products[] = [];
+  products: Product[] = [];
 
   items: any[] = [
     {
@@ -56,7 +56,7 @@ export class ProductsComponent implements OnInit {
     const callback = () => firestore.collection('products').valueChanges();
 
     getResponse(callback, productsJson).subscribe((res) => {
-      const products: Products[] = res as Products[];
+      const products: Product[] = res as Product[];
       this.products = products;
     });
   }

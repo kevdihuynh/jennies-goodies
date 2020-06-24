@@ -1,13 +1,13 @@
 export interface Option {
-    flavors: string[];
     maxFlavors: number;
-    qty: number;
-    desc: string;
-    imageUrl: string;
-    name: string;
+    batchSize: number;
     price: number;
 }
 
-export interface Products {
-    options?: Option[];
+export interface Product {
+    variations?: Option[];
+    flavors: string[];
+    imageUrls: string[];
+    name: string;
+    description: string;
 }

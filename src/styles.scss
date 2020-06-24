@@ -9,6 +9,10 @@
     background: #A497E4 !important;
 }
 
+.border-custom-primary {
+    border: 1px solid #A497E4 !important;
+}
+
 .min-height-100vh {
     min-height: 100vh;
 }
@@ -19,6 +23,10 @@
 
 .text-underline {
     text-decoration: underline;
+}
+
+.text-decoration-none {
+    text-decoration: none;
 }
 
 // Large devices (desktops, less than 1200px)
