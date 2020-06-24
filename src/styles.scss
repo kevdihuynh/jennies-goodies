@@ -1,17 +1,11 @@
+@import '~bootstrap/scss/functions';
+@import "~bootstrap/scss/variables";
+$theme-colors: (
+    'custom-purple': #A497E4
+);
+
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
-
-.text-custom-primary {
-    color: #A497E4 !important;
-}
-
-.bg-custom-primary {
-    background: #A497E4 !important;
-}
-
-.border-custom-primary {
-    border: 1px solid #A497E4 !important;
-}
 
 .min-height-100vh {
     min-height: 100vh;

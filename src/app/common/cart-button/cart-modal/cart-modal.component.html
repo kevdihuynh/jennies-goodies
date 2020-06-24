@@ -1,11 +1,11 @@
 <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Order Form</h4>
     <button type="button" class="close" aria-label="Close" (click)="dismissCartModal('Cross click')">
-        <i class="fa fa-times-circle text-custom-primary cursor-pointer" aria-hidden="true"></i>
+        <i class="fa fa-times-circle text-custom-purple cursor-pointer" aria-hidden="true"></i>
     </button>
 </div>
 <div class="modal-body">
-    <p *ngIf="!orderForm.orders.length" class="text-center font-weight-bold my-5">You have not selected any items. <span class="text-custom-primary cursor-pointer" (click)="dismissCartModal()">Go back to menu</span></p>
+    <p *ngIf="!orderForm.orders.length" class="text-center font-weight-bold my-5">You have not selected any items. <span class="text-custom-purple cursor-pointer" (click)="dismissCartModal()">Go back to menu</span></p>
     <ng-container *ngIf="orderForm.orders.length">
         <section class="orderForm.orders.length">
             <h5>Items</h5>

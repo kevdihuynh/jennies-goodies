@@ -7,7 +7,7 @@
             <div class="product-content-container">
                 <div class="d-flex flex-wrap align-items-center mb-2">
                     <h5 class="mb-0">{{product.name}}</h5>
-                    <button (click)="addToCart(product)" type="button" class="btn btn-outline-info btn-sm ml-auto" [disabled]="!_.isEqual(this.getRemainingFlavorsCount(), 0)">
+                    <button (click)="addToCart(product)" type="button" class="btn btn-outline-custom-purple btn-sm ml-auto" [disabled]="!_.isEqual(this.getRemainingFlavorsCount(), 0)">
                         <span class="mr-2">Add To Cart</span>
                         <span>
                             <i class="fas fa-cart-plus"></i>
@@ -18,7 +18,7 @@
             </div>
             <div class="mt-auto">
                 <div class="d-flex flex-wrap align-items-center btn-group mb-2">
-                    <button *ngFor="let variation of product.variations; let i = index" (click)="updateSelectedOption(i)" class="btn btn-outline-info btn-sm" [ngClass]="{'active': i === selectedOptionIndex }">
+                    <button *ngFor="let variation of product.variations; let i = index" (click)="updateSelectedOption(i)" class="btn btn-outline-custom-purple btn-sm" [ngClass]="{'active': i === selectedOptionIndex }">
                         {{variation.batchSize}} for {{variation.price |  currency:'USD':'symbol':'1.0'}}
                     </button>
                 </div>
@@ -27,7 +27,7 @@
                         <div class="mr-2">
                             Pick {{getRemainingFlavorsCount()}}
                         </div>
-                        <button *ngFor="let flavor of product.flavors; let i = index" (click)="toggleFlavor(flavor)" class="btn btn-outline-info btn-sm" [ngClass]="{'active': isActiveFlavor(flavor) }" [disabled]="isDisabledFlavor(flavor)">
+                        <button *ngFor="let flavor of product.flavors; let i = index" (click)="toggleFlavor(flavor)" class="btn btn-outline-custom-purple btn-sm" [ngClass]="{'active': isActiveFlavor(flavor) }" [disabled]="isDisabledFlavor(flavor)">
                             {{flavor}}
                         </button>
                     </div>
