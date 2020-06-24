@@ -14,6 +14,9 @@ export const environment = {
     messagingSenderId: '949455722879',
     appId: '1:949455722879:web:ae430c0efb8eca3421624a',
     measurementId: 'G-DPTVR63GCE'
+  },
+  paypal: {
+    clientId: 'AQdvMeYPhKyWkWWLA7OvVVQFyTlYIIR6izy3VkrtzvDNoE_oEHva-Qrm0sxB9Ty6SeL-tkCNegcMqEf7'
   }
 };
 

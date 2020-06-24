@@ -89,6 +89,9 @@
     </ng-container>
 </div>
 <div class="modal-footer" *ngIf="orderForm.orders.length">
+    <div class="w-100" *ngIf="!isOrderFormDisabled()">
+        <app-paypal [orderForm]="orderForm"></app-paypal>
+    </div>
     <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-custom-purple': !isOrderFormDisabled(), 'btn-dark': isOrderFormDisabled()}"
         [disabled]="isOrderFormDisabled()" (click)="submit()">
         Place Order

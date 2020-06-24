@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgxPayPalModule } from 'ngx-paypal';
 
 import { environment } from '../environments/environment';
 
@@ -23,6 +24,7 @@ import { CartButtonComponent } from './common/cart-button/cart-button.component'
 import { CartModalComponent } from './common/cart-button/cart-modal/cart-modal.component';
 import { TimePickerComponent } from './common/cart-button/cart-modal/time-picker/time-picker.component';
 import { DatePickerComponent } from './common/cart-button/cart-modal/date-picker/date-picker.component';
+import { PaypalComponent } from './common/cart-button/cart-modal/paypal/paypal.component';
 import { AngularFireFunctionsModule, ORIGIN } from '@angular/fire/functions';
 import { HttpClientModule } from '@angular/common/http';
 @NgModule({
@@ -36,7 +38,8 @@ import { HttpClientModule } from '@angular/common/http';
     CartButtonComponent,
     CartModalComponent,
     TimePickerComponent,
-    DatePickerComponent
+    DatePickerComponent,
+    PaypalComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,8 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     BrowserAnimationsModule, // required animations module for ngx-toastr
     ToastrModule.forRoot(),
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NgxPayPalModule
   ],
   entryComponents: [],
   schemas: [
