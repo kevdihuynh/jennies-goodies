@@ -7,7 +7,7 @@
             <div class="product-content-container">
                 <div class="d-flex flex-wrap align-items-center">
                     <h5 class="mb-0">{{product.name}}</h5>
-                    <button (click)="addToCart(product)" type="button" class="btn btn-outline-info btn-sm ml-auto">
+                    <button (click)="addToCart(product)" type="button" class="btn btn-outline-info btn-sm ml-auto" [disabled]="!_.isEqual(this.getRemainingFlavorsCount(), 0)">
                         <span class="mr-2">Add To Cart</span>
                         <span>
                             <i class="fas fa-cart-plus"></i>
