@@ -82,7 +82,7 @@ export class ProductComponent implements OnInit {
       quantity: product.quantity
     };
     this.cartService.addToCart(order);
-    this.toastr.info(`${order.quantity} ${order.name} (${_.toString(order.selectedFlavors)})`, 'Added to Cart', {
+    this.toastr.info(`${order.quantity} ${order.name} (${_.toString(order.selectedFlavors)}) - ${order.batchSize} for $${order.price}`, 'Added to Cart', {
       positionClass: 'toast-bottom-left',
       progressBar: true,
       disableTimeOut: false,
