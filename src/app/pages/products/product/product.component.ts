@@ -52,6 +52,10 @@ export class ProductComponent implements OnInit {
     return this.selectedFlavors.length > 0;
   }
 
+  isCartValid(): boolean {
+    return (this.isZeroRemainingFlavorsCount() || this.isSelectedFlavorsValid()) && (this.product.quantity > 0);
+  }
+
   toggleFlavor(flavor: string): void {
     if (this.isActiveFlavor(flavor)) {
       _.remove(this.selectedFlavors, (currentFlavor: string) => _.isEqual(currentFlavor, flavor));

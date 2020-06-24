@@ -17,7 +17,7 @@
                     {{order.name}} ({{_.toString(order.selectedFlavors)}})
                 </div>
                 <div class="ml-auto">
-                    <i class="fa fa-times-circle text-danger cursor-pointer" aria-hidden="true" (click)="removeFromCart(order, index)"></i>
+                    <i class="fa fa-times-circle text-custom-purple cursor-pointer" aria-hidden="true" (click)="removeFromCart(order, index)"></i>
                 </div>
             </div>
             <div class="mb-1" *ngIf="totalPrice > 0">
@@ -42,10 +42,10 @@
                 <div class="form-group col-md-6">
                     <label for="inputIsDelivery">Service Type</label>
                     <div class="btn-group btn-block btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="orderForm.isDelivery">
-                        <label ngbButtonLabel class="btn-outline-primary">
+                        <label ngbButtonLabel class="btn-outline-custom-purple">
                             <input ngbButton type="radio" [value]="true" (click)="orderForm.address = undefined"> Delivery
                         </label>
-                        <label ngbButtonLabel class="btn-outline-primary">
+                        <label ngbButtonLabel class="btn-outline-custom-purple">
                             <input ngbButton type="radio" [value]="false" (click)="orderForm.address = _.cloneDeep(DEFAULT_PICKUP_ADDRESS)"> Pick Up
                         </label>
                     </div>
@@ -89,7 +89,7 @@
     </ng-container>
 </div>
 <div class="modal-footer" *ngIf="orderForm.orders.length">
-    <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-primary': !isOrderFormDisabled(), 'btn-dark': isOrderFormDisabled()}"
+    <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-custom-purple': !isOrderFormDisabled(), 'btn-dark': isOrderFormDisabled()}"
         [disabled]="isOrderFormDisabled()" (click)="submit()">
         Place Order
         <span *ngIf="orderForm.orders.length">

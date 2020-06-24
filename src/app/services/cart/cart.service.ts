@@ -1,16 +1,43 @@
 import { Injectable } from '@angular/core';
-import { Order } from 'src/app/interfaces/cart';
+import { Order, OrderForm } from 'src/app/interfaces/cart';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
+  // name: undefined,
+  // email: undefined,
+  // phoneNumber: undefined,
+  // isDelivery: true,
+  // address: undefined,
+  // notes: undefined,
+  // date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
+  // time: { hour: 17, minute: 0, second: 0 },
+  // orders: [],
+  // transporationFee: undefined,
+  private orderFormSubject = new BehaviorSubject<OrderForm>(
+    {
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      phoneNumber: '206-123-4567',
+      isDelivery: true,
+      address: '13515 27th ave NE, Seattle, WA 98125',
+      notes: 'I might be late 15 minutes...',
+      date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
+      time: { hour: 17, minute: 0, second: 0 },
+      orders: [],
+      transporationFee: undefined,
+    }
+  );
+  public orderForm: Observable<OrderForm>  = this.orderFormSubject.asObservable();
+
   private ordersSubject = new BehaviorSubject<Order[]>([]);
   public orders: Observable<Array<Order>>  = this.ordersSubject.asObservable();
 
-  constructor() { }
+  constructor() {}
 
   addToCart(order: Order): void {
     this.ordersSubject.next([...this.ordersSubject.getValue(), order]);

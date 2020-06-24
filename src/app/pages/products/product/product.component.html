@@ -8,10 +8,10 @@
                 <div class="d-flex flex-wrap align-items-center mb-2">
                     <h5 class="mb-0">{{product.name}}</h5>
                     <div class="ml-auto">
-                        <ng-container *ngIf="isZeroRemainingFlavorsCount() || isSelectedFlavorsValid()">
+                        <ng-container *ngIf="isCartValid()">
                             <i class="fas fa-check text-custom-purple mr-3"></i>
                         </ng-container>
-                        <button (click)="addToCart(product)" type="button" class="btn btn-sm" [ngClass]="{'btn-custom-purple': isZeroRemainingFlavorsCount(), 'btn-dark': !isZeroRemainingFlavorsCount() }" [disabled]="!isZeroRemainingFlavorsCount()">
+                        <button (click)="addToCart(product)" type="button" class="btn btn-sm" [ngClass]="{'btn-custom-purple': isCartValid(), 'btn-dark': !isCartValid() }" [disabled]="!isCartValid()">
                             <span class="mr-2">Add To Cart</span>
                             <span>
                                 <i class="fas fa-cart-plus"></i>

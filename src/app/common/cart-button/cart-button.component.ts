@@ -15,7 +15,7 @@ import * as _ from 'lodash';
 })
 export class CartButtonComponent implements OnInit {
   _ = _;
-  numCartItems: number;
+  numCartItems: number = 0;
 
   constructor(
     private config: NgbModalConfig,

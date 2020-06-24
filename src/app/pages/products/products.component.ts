@@ -13,45 +13,6 @@ import productsJson from './../../db_mock/products.json';
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
 
-  items: any[] = [
-    {
-      id: 1,
-      name: 'Ube Cookies',
-      desc: 'vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum',
-      price: 10,
-      qty: 10,
-      priceText: 'for 10',
-      url: '../../assets/images/ube_cookies.jpg',
-    },
-    {
-      id: 2,
-      name: 'Ube Cupcakes',
-      desc: 'vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum',
-      price: 10,
-      qty: 10,
-      priceText: 'for 10',
-      url: '../../assets/images/cupcakes_ube.jpg',
-    },
-    {
-      id: 3,
-      name: 'Pandesal (Pandan)',
-      desc: 'vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum',
-      price: 10,
-      qty: 10,
-      priceText: 'for 10',
-      url: '../../assets/images/pandesal_pandan.jpg',
-    },
-    {
-      id: 4,
-      name: 'Pandesal (Ube)',
-      desc: 'vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum',
-      price: 10,
-      qty: 10,
-      priceText: 'for 10',
-      url: '../../assets/images/pandesal_ube.jpg',
-    }
-  ];
-
   constructor(firestore: AngularFirestore) {
     const callback = () => firestore.collection('products').valueChanges();
 

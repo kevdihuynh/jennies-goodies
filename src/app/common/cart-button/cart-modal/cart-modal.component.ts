@@ -24,18 +24,7 @@ export class CartModalComponent implements OnInit {
     dateTimePicker: {},
     deliveryForm: {}
   };
-  orderForm: OrderForm = {
-    name: 'John Doe',
-    email: 'johndoe@example.com',
-    phoneNumber: '206-123-4567',
-    isDelivery: true,
-    address: '13515 27th ave NE, Seattle, WA 98125',
-    notes: 'I might be late 15 minutes...',
-    date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
-    time: { hour: 17, minute: 0, second: 0 },
-    orders: [],
-    transporationFee: undefined,
-  };
+  orderForm: OrderForm;
   orders: Order[] = [];
   totalPrice: number;
 
@@ -52,9 +41,12 @@ export class CartModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cartService.orders.subscribe((orders: Order[]) => {
-      this.orderForm.orders = orders;
-      this.totalPrice = this.getTotalPrice(this.orderForm.orders);
+    this.cartService.orderForm.subscribe((orderForm: OrderForm) => {
+      this.orderForm = orderForm;
+      this.cartService.orders.subscribe((orders: Order[]) => {
+        this.orderForm.orders = orders;
+        this.totalPrice = this.getTotalPrice(this.orderForm.orders);
+      });
     });
   }
 
@@ -89,7 +81,7 @@ export class CartModalComponent implements OnInit {
   }
 
   isClosedDays() {
-    if (!this.orderForm.date) {
+    if (!_.get(this.orderForm, 'date')) {
       return false;
     }
     const dateTime = this.getMomentDate();
@@ -98,7 +90,7 @@ export class CartModalComponent implements OnInit {
   }
 
   getMomentDate() {
-    if (_.isNil(this.orderForm.date)) {
+    if (_.isNil(_.get(this.orderForm, 'date'))) {
       return null;
     }
     const date = this.orderForm.date;
@@ -106,7 +98,7 @@ export class CartModalComponent implements OnInit {
   }
 
   getMomentDateTime() {
-    if (_.isNil(this.orderForm.date) || _.isNil(this.orderForm.time)) {
+    if (_.isNil(_.get(this.orderForm, 'date')) || _.isNil(_.get(this.orderForm, 'time'))) {
       return null;
     }
     const date = this.orderForm.date;
@@ -115,15 +107,15 @@ export class CartModalComponent implements OnInit {
   }
 
   getDateTimeText() {
-    if (_.isNil(this.orderForm.time) || _.isNil(this.orderForm.time)) {
+    if (_.isNil(_.get(this.orderForm, 'date')) || _.isNil(_.get(this.orderForm, 'time'))) {
       return 'Date & Time';
     }
     return this.getMomentDate().format('LLL');
   }
 
   isDateTimePickerInValid(): boolean {
-    const date = this.orderForm.date;
-    const time = this.orderForm.time;
+    const date = _.get(this.orderForm, 'date');
+    const time = _.get(this.orderForm, 'time');
     this.formControls.dateTimePicker = {};
     if (!_.isObject(date) || !_.isObject(time)) {
       return true;
@@ -136,7 +128,7 @@ export class CartModalComponent implements OnInit {
       minTime = { hour: 17, minute: 0, second: 0 };
     }
 
-    if (this.orderForm.time.hour < minTime.hour) {
+    if (time.hour < minTime.hour) {
       this.formControls.dateTimePicker.tooEarly = true;
       return true;
     }
@@ -264,6 +256,7 @@ export class CartModalComponent implements OnInit {
     if (this.isOrderFormDisabled()) {
       return;
     }
+    console.log('finalForm', this.orderForm);
 
     const isDateTimeInvalid = this.isDateTimePickerInValid();
     const finalDateTime = this.getMomentDateTime();

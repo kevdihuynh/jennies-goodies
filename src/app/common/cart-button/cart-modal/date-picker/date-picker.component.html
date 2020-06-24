@@ -3,7 +3,7 @@
         <input #datepicker class="form-control" placeholder="YYYY-MM-DD" name="datepicker"
         [(ngModel)]="date" (ngModelChange)="dateChangeEmitter.emit($event)" [minDate]="datePickerMinDate" [maxDate]="datePickerMaxDate" [readOnly]="readOnly" ngbDatepicker #d="ngbDatepicker">
         <div class="input-group-append">
-            <button class="btn btn-outline-primary calendar" (click)="d.toggle()" type="button">
+            <button class="btn btn-outline-custom-purple calendar" (click)="d.toggle()" type="button">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
             </button>
         </div>
