@@ -2,6 +2,7 @@ export interface Option {
     maxFlavors: number;
     batchSize: number;
     price: number;
+    quantity?: number;
 }
 
 export interface Product {
@@ -10,4 +11,5 @@ export interface Product {
     imageUrls: string[];
     name: string;
     description: string;
+    quantity: number;
 }

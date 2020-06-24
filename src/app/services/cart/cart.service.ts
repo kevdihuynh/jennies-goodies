@@ -22,6 +22,12 @@ export class CartService {
     this.ordersSubject.next(currentOrders);
   }
 
+  updateFromCart(order: Order, index: number): void {
+    const currentOrders = this.ordersSubject.getValue();
+    currentOrders.splice(index, 1, order);
+    this.ordersSubject.next(currentOrders);
+  }
+
   clearCart(): void {
     this.ordersSubject.next([]);
   }

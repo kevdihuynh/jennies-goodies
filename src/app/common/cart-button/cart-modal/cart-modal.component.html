@@ -9,11 +9,14 @@
     <ng-container *ngIf="orderForm.orders.length">
         <section class="orderForm.orders.length">
             <h5>Items</h5>
-            <div class="row no-gutters my-4" *ngFor="let order of orderForm.orders; let index = index;">
-                <div class="col-10">
-                    {{getOrderText(order)}}
+            <div class="d-flex flex-wrap align-items-center my-4" *ngFor="let order of orderForm.orders; let index = index;">
+                <div class="order-quantity mr-4">
+                    <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" onkeydown="return false" min="1" oninput="validity.valid || (value = 1)" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity">
                 </div>
-                <div class="col-2 text-right">
+                <div>
+                    {{order.name}} ({{_.toString(order.selectedFlavors)}})
+                </div>
+                <div class="ml-auto">
                     <i class="fa fa-times-circle text-danger cursor-pointer" aria-hidden="true" (click)="removeFromCart(order, index)"></i>
                 </div>
             </div>

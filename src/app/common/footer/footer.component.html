@@ -3,6 +3,10 @@
         <a class="mx-3 my-4 text-dark" [title]="item.title" [href]="item.url" target="__blank" rel="noopener noreferrer" *ngFor="let item of socialMedia">
             <i [class]="item.iconClass" aria-hidden="true" [title]="item.title"></i>
         </a>
+        <span class="mx-3 my-4 text-dark d-flex flex-wrap align-items-center">
+            <i class="fas fa-phone fa-2x text-dark mr-2"></i>
+            {{this.globalConstants.company.phoneNumber}}
+        </span>
     </section>
     <hr class="border-secondary my-0"/>
     <section class="container border-muted d-flex flex-wrap justify-content-center align-items-center p-4">

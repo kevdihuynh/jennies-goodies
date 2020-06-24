@@ -18,7 +18,8 @@ import { FormControl } from 'src/app/interfaces/formControl';
 })
 export class CartModalComponent implements OnInit {
   _ = _;
-  DEFAULT_PICKUP_ADDRESS: string = '1234 Main St Seattle, WA 98125';
+  globalConstants = GlobalConstants;
+  DEFAULT_PICKUP_ADDRESS: string = this.globalConstants.company.address;
   formControls: FormControl = {
     dateTimePicker: {},
     deliveryForm: {}
@@ -65,12 +66,12 @@ export class CartModalComponent implements OnInit {
     this.activeModal.dismiss(reason);
   }
 
-  getOrderText(order: Order): string {
-    return `${order.batchSize} for $${order.price} - ${order.name} (${_.toString(order.selectedFlavors)})`;
+  updateFromCart(order: Order, index: number): void {
+    this.cartService.updateFromCart(order, index);
   }
 
   removeFromCart(order: Order, index: number): void {
-    this.toastr.info(`${this.getOrderText(order)}`, 'Removed from Cart', {
+    this.toastr.info(`${order.quantity} ${order.name} (${_.toString(order.selectedFlavors)})`, 'Removed from Cart', {
       positionClass: 'toast-bottom-left',
       progressBar: true,
       disableTimeOut: false,
@@ -82,7 +83,7 @@ export class CartModalComponent implements OnInit {
   getTotalPrice(orders: Order[]): number {
     let total = 0;
     orders.map((order: Order) => {
-      total += order.price;
+      total += order.price * order.quantity;
     });
     return total;
   }

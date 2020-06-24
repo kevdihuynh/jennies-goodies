@@ -23,11 +23,14 @@ export class ProductComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.product);
+    // custom adding quantity
+    this.product.quantity = 1;
+
     this.selectedOption = this.product.variations[this.selectedOptionIndex];
   }
 
   updateSelectedOption(index: number): void {
+    this.product.quantity = 1;
     this.selectedFlavors = [];
     this.selectedOptionIndex = index;
     this.selectedOption = this.product.variations[this.selectedOptionIndex];
@@ -41,11 +44,20 @@ export class ProductComponent implements OnInit {
     return _.includes(this.selectedFlavors, flavor);
   }
 
+  isZeroRemainingFlavorsCount(): boolean {
+    return _.isEqual(this.getRemainingFlavorsCount(), 0);
+  }
+
+  isSelectedFlavorsValid(): boolean {
+    return this.selectedFlavors.length > 0;
+  }
+
   toggleFlavor(flavor: string): void {
     if (this.isActiveFlavor(flavor)) {
+      _.remove(this.selectedFlavors, (currentFlavor: string) => _.isEqual(currentFlavor, flavor));
       return;
     }
-    if (this.getRemainingFlavorsCount() === 0) {
+    if (this.isZeroRemainingFlavorsCount()) {
       this.selectedFlavors.shift();
     }
     this.selectedFlavors.push(flavor);
@@ -63,10 +75,10 @@ export class ProductComponent implements OnInit {
       selectedFlavors: copySelectedFlavors,
       price: copySelectedOptions.price,
       name: product.name,
-      quantity: 1
+      quantity: product.quantity
     };
     this.cartService.addToCart(order);
-    this.toastr.info(`${order.batchSize} for $${order.price} - ${order.name} (${_.toString(order.selectedFlavors)})`, 'Added to Cart', {
+    this.toastr.info(`${order.quantity} ${order.name} (${_.toString(order.selectedFlavors)})`, 'Added to Cart', {
       positionClass: 'toast-bottom-left',
       progressBar: true,
       disableTimeOut: false,
