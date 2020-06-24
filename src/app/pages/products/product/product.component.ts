@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Option } from 'src/app/interfaces/products';
 import { Order } from 'src/app/interfaces/cart';
 import { CartService } from 'src/app/services/cart/cart.service';
+import { ToastrService } from 'ngx-toastr';
+import { timeout } from 'q';
 
 @Component({
   selector: 'app-product',
@@ -13,7 +15,10 @@ export class ProductComponent implements OnInit {
   selectedOptionIndex = 0;
   selectedOption: any;
 
-  constructor(public cartService: CartService) {}
+  constructor(
+    public cartService: CartService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     console.log(this.options);
@@ -38,5 +43,10 @@ export class ProductComponent implements OnInit {
     };
 
     this.cartService.addToCart(order);
+    this.toastr.info('', `${order.qty} pieces of ${order.name} added`, {
+      positionClass: 'toast-bottom-left',
+      progressBar: true,
+      disableTimeOut: false
+    });
   }
 }

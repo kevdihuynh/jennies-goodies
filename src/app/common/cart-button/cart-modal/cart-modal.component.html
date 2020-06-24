@@ -14,7 +14,7 @@
                     {{order.qty}} {{order.name}} - {{order.price | currency}}
                 </div>
                 <div class="col-2 text-right">
-                    <i class="fa fa-times-circle text-danger cursor-pointer" aria-hidden="true" (click)="cartService.removeFromCart(index)"></i>
+                    <i class="fa fa-times-circle text-danger cursor-pointer" aria-hidden="true" (click)="removeFromCart(order, index)"></i>
                 </div>
             </div>
             <div class="mb-1" *ngIf="totalPrice > 0">

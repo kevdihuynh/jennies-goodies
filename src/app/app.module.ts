@@ -48,12 +48,7 @@ import { HttpClientModule } from '@angular/common/http';
     AngularFireFunctionsModule,
     HttpClientModule,
     BrowserAnimationsModule, // required animations module for ngx-toastr
-    ToastrModule.forRoot({
-      positionClass: 'toast-bottom-left',
-      preventDuplicates: true,
-      progressBar: true,
-      disableTimeOut: true
-    }),
+    ToastrModule.forRoot(),
     NgxSpinnerModule
   ],
   entryComponents: [],

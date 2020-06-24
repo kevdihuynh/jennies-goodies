@@ -61,6 +61,15 @@ export class CartModalComponent implements OnInit {
     this.activeModal.dismiss(reason);
   }
 
+  removeFromCart(order: Order, index: number): void {
+    this.toastr.error('', `${order.qty} pieces of ${order.name} removed`, {
+      positionClass: 'toast-bottom-left',
+      progressBar: true,
+      disableTimeOut: false
+    });
+    this.cartService.removeFromCart(index);
+  }
+
   getTotalPrice(orders: Order[]): number {
     let total = 0;
     orders.map((order: Order) => {
@@ -187,12 +196,20 @@ export class CartModalComponent implements OnInit {
       console.log('finalDateTime is valid', finalDateTime);
       console.log('finalForm', finalForm);
       this.closeCartModal('payment-success');
-      this.toastr.success(`We have received your order. You will receive an email confirmation soon. Thank you!`, `Order Success!`);
+      this.toastr.success(`We have received your order. You will receive an email confirmation soon. Thank you!`, `Order Success!`,  {
+        positionClass: 'toast-bottom-left',
+        progressBar: true,
+        disableTimeOut: true
+      });
       this.cartService.clearCart();
       this.spinner.hide();
     } else {
       console.log('finalDateTime is not valid', finalDateTime);
-      this.toastr.error(`Sorry! It looks like somebody has filled this timeslot. Please choose another available time`, `Schedule Conflict!`);
+      this.toastr.error(`Sorry! It looks like somebody has filled this timeslot. Please choose another available time`, `Schedule Conflict!`,  {
+        positionClass: 'toast-bottom-left',
+        progressBar: true,
+        disableTimeOut: false
+      });
       this.spinner.hide();
     }
   };
