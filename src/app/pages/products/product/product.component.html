@@ -7,24 +7,13 @@
             <div class="product-content-container">
                 <div class="d-flex flex-wrap align-items-center mb-2">
                     <h5 class="mb-0">{{product.name}}</h5>
-                    <div class="ml-auto">
-                        <ng-container *ngIf="isCartValid()">
-                            <i class="fas fa-check text-custom-purple mr-3"></i>
-                        </ng-container>
-                        <button (click)="addToCart(product)" type="button" class="btn btn-sm" [ngClass]="{'btn-custom-purple': isCartValid(), 'btn-dark': !isCartValid() }" [disabled]="!isCartValid()">
-                            <span class="mr-2">Add To Cart</span>
-                            <span>
-                                <i class="fas fa-cart-plus"></i>
-                            </span>
-                        </button>
-                    </div>
                 </div>
                 <p>{{product.description}}</p>
             </div>
             <div class="mt-auto">
                 <div class="d-flex flex-wrap align-items-center btn-group mb-2">
                     <div class="side-info text-center mr-2">
-                        <input [(ngModel)]="product.quantity" min="1" oninput="validity.valid || (value = 1)" onkeydown="return false" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity">
+                        <input [(ngModel)]="product.quantity" min="1" oninput="validity.valid || (value = 1)" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity">
                     </div>
                     <button *ngFor="let variation of product.variations; let i = index" (click)="updateSelectedOption(i)" class="btn btn-outline-custom-purple btn-sm" [ngClass]="{ 'active': _.isEqual(i, selectedOptionIndex) }">
                         {{variation.batchSize}} for {{variation.price |  currency:'USD':'symbol':'1.0'}}
@@ -39,6 +28,14 @@
                             {{flavor}}
                         </button>
                     </div>
+                </div>
+                <div class="mb-2">
+                    <button (click)="addToCart(product)" type="button" class="btn btn-sm btn-block" [ngClass]="{'btn-custom-purple': isCartValid(), 'btn-dark': !isCartValid() }" [disabled]="!isCartValid()">
+                        <span class="mr-2">Add To Cart</span>
+                        <span>
+                            <i class="fas fa-cart-plus"></i>
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>

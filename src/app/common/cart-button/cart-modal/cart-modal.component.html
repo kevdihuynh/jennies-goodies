@@ -37,7 +37,7 @@
                 <label for="inputAddress">{{orderForm.isDelivery ? 'Delivery' : 'Pick Up'}} Address</label>
                 <!-- <input [ngClass]="{'border border-danger': formControls.deliveryForm['addressError'] || formControls.deliveryForm['tooFarError'] || formControls.deliveryForm['calcDistanceError']}" [(ngModel)]="orderForm.address" type="text" class="form-control" id="inputAddress" placeholder="Enter your address (i.e. 1234 Main St Seattle, WA 98125)" [disabled]="!orderForm.isDelivery"> -->
                 <div  [ngClass]="{'border border-danger': formControls.deliveryForm['addressError'] || formControls.deliveryForm['tooFarError'] || formControls.deliveryForm['calcDistanceError']}" class="ng-autocomplete">
-                    <ng-autocomplete 
+                    <ng-autocomplete
                       placeHolder="Enter your address (i.e. 1234 Main St Seattle, WA 98125)"
                       [data]="predictedAddresses"
                       [searchKeyword]="keyword"
@@ -47,13 +47,13 @@
                       [itemTemplate]="itemTemplate"
                       [notFoundTemplate]="notFoundTemplate"
                       [disabled]="!orderForm.isDelivery"
-                      >                                 
+                      >
                     </ng-autocomplete>
-                     
+
                     <ng-template #itemTemplate let-item>
                     <a [innerHTML]="item.name"></a>
                     </ng-template>
-                     
+
                     <ng-template #notFoundTemplate let-notFound>
                     <div [innerHTML]="notFound"></div>
                     </ng-template>
@@ -96,14 +96,14 @@
             <h5>Items</h5>
             <div class="d-flex flex-wrap align-items-center my-4 pb-3 border-bottom" *ngFor="let order of orderForm.orders; let index = index;">
                 <div class="order-quantity mr-4">
-                    <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" onkeydown="return false" min="1" oninput="validity.valid || (value = 1)" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity">
+                    <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" min="1" oninput="validity.valid || (value = 1)" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity">
                 </div>
                 <div>
                     <span class="mr-3">{{order.name}} ({{_.join(order.selectedFlavors, ', ')}}) - {{order.batchSize}} for {{order.price | currency:'USD':'symbol':'1.0'}}</span>
                     <i class="fa fa-times-circle text-custom-purple cursor-pointer" aria-hidden="true" (click)="removeFromCart(order, index)"></i>
                 </div>
                 <div class="ml-auto">
-                    <h5 class="d-inline-block font-weight-bold">Total: {{order.price * order.quantity | currency:'USD':'symbol':'1.0'}}</h5>
+                    <h5 class="d-inline-block font-weight-bold mb-0">{{order.price * order.quantity | currency:'USD':'symbol':'1.0'}}</h5>
                 </div>
             </div>
             <div class="mb-1 text-right">
