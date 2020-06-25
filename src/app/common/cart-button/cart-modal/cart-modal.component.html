@@ -19,7 +19,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="inputPhoneNumber">Phone Number</label>
-                    <input [(ngModel)]="orderForm.phoneNumber" type="text" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number (i.e. 12061234567)">
+                    <input [(ngModel)]="orderForm.phoneNumber" type="text" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number (i.e. (206) 123-4567)">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="inputIsDelivery">Service Type</label>
@@ -108,7 +108,7 @@
             </div>
             <div class="mb-1 text-right">
                 <h5 class="font-weight-bold">Total: {{orderForm.total | currency:'USD':'symbol':'1.0'}}</h5>
-                <h5 class="font-weight-bold" *ngIf="orderForm.deliveryFee">Delivery Fee: {{orderForm.deliveryFee | currency:'USD':'symbol':'1.0'}}</h5>
+                <h5 class="font-weight-bold" *ngIf="orderForm.deliveryFee > 0">Delivery Fee: {{orderForm.deliveryFee | currency:'USD':'symbol':'1.0'}}</h5>
                 <h4 class="font-weight-bold">Grand Total: {{orderForm.grandTotal | currency:'USD':'symbol':'1.0'}}</h4>
             </div>
         </section>

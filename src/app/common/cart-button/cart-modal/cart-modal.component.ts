@@ -271,8 +271,8 @@ export class CartModalComponent implements OnInit {
     return false;
   };
 
-  async calculateDeliveryFee(): Promise<number> | undefined {
-    let deliveryFee;
+  async calculateDeliveryFee(): Promise<number>  {
+    let deliveryFee = 0;
     this.formControls.deliveryForm = {};
     if (this.orderForm.address) {
       // confirm user address is valid and retrieve lat and lon coordinates
@@ -282,9 +282,7 @@ export class CartModalComponent implements OnInit {
         const milesToDestination = await this.googleMapsService.getDistance(latLon[0], latLon[1]);
         console.log('miles to destination: ', milesToDestination);
         if (milesToDestination !== undefined) {
-          if (milesToDestination <= 10) {
-            deliveryFee = 0;
-          } else if (milesToDestination > 10 && milesToDestination <= 15) {
+          if (milesToDestination > 10 && milesToDestination <= 15) {
             deliveryFee = 5;
           } else {
             this.formControls.deliveryForm.tooFarError = true;

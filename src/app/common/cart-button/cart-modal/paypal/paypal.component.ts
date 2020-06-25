@@ -29,12 +29,7 @@ export class PaypalComponent implements OnInit {
 
     private initConfig(): void {
         const currency = 'USD';
-        let item_total = _.reduce(this.orderForm.orders, (sum: number, order: Order): number => {
-            return sum + (order.quantity * order.price);
-        }, 0);
-        // Add delivery fee to item_total
-        item_total += (this.orderForm.deliveryFee || 0);
-
+        let item_total = this.orderForm.grandTotal;
 
         const getAmount = (): IUnitAmount => {
             const amountObj: IUnitAmount = {
@@ -63,7 +58,7 @@ export class PaypalComponent implements OnInit {
                 };
             });
             // Add delivery fee to breakdown
-            if (this.orderForm.deliveryFee) {
+            if (this.orderForm.deliveryFee > 0) {
                 items.push({
                     name: `Delivery Fee`,
                     quantity: 1,

@@ -10,31 +10,19 @@ import * as moment from 'moment';
 export class CartService {
   private orderFormSubject = new BehaviorSubject<OrderForm>(
     {
-      name: undefined,
-      email: undefined,
-      phoneNumber: undefined,
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      phoneNumber: '2067650458',
       isDelivery: true,
-      address: undefined,
-      notes: undefined,
+      address: '13515 27th ave NE, Seattle, WA 98125',
+      notes: 'John Doe will pick it up for me',
       date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
       time: { hour: 17, minute: 0, second: 0 },
       orders: [],
       totalOrdersQuantity: 0,
-      deliveryFee: undefined,
+      deliveryFee: 0,
       total: 0,
       grandTotal: 0
-      /* Switch between empty or mock data */
-
-      // name: 'John Doe',
-      // email: 'johndoe@example.com',
-      // phoneNumber: '206-123-4567',
-      // isDelivery: true,
-      // address: '13515 27th ave NE, Seattle, WA 98125',
-      // notes: 'I might be late 15 minutes...',
-      // date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
-      // time: { hour: 17, minute: 0, second: 0 },
-      // orders: [],
-      // deliveryFee: undefined,
     }
   );
   public orderForm: Observable<OrderForm>  = this.orderFormSubject.asObservable();
@@ -53,8 +41,8 @@ export class CartService {
     }, 0);
   };
 
-  getGrandTotal(orders: Order[], deliveryFee?: number | undefined): number {
-    return this.getTotal(orders) + (deliveryFee || 0);
+  getGrandTotal(orders: Order[], deliveryFee: number): number {
+    return this.getTotal(orders) + deliveryFee;
   }
 
   updateOrderFormByFields(updatedFields: object): void {
