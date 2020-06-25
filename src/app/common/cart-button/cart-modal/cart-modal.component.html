@@ -107,8 +107,9 @@
                 </div>
             </div>
             <div class="mb-1 text-right">
+                <h5 class="font-weight-bold">Total: {{orderForm.total | currency:'USD':'symbol':'1.0'}}</h5>
                 <h5 class="font-weight-bold" *ngIf="orderForm.deliveryFee">Delivery Fee: {{orderForm.deliveryFee | currency:'USD':'symbol':'1.0'}}</h5>
-                <h4 class="font-weight-bold">Grand Total: {{grandTotal | currency:'USD':'symbol':'1.0'}}</h4>
+                <h4 class="font-weight-bold">Grand Total: {{orderForm.grandTotal | currency:'USD':'symbol':'1.0'}}</h4>
             </div>
         </section>
         <!-- <hr/>
@@ -122,8 +123,8 @@
     <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-custom-purple': !isOrderFormDisabled(), 'btn-dark': isOrderFormDisabled()}"
         [disabled]="isOrderFormDisabled()" (click)="submit()">
         Place Order
-        <span *ngIf="orderForm.orders.length">
-            ({{orderForm.orders.length}} Item<span *ngIf="orderForm.orders.length > 1">s</span>)
+        <span *ngIf="orderForm.totalOrdersQuantity">
+            ({{orderForm.totalOrdersQuantity}} Item<span *ngIf="orderForm.totalOrdersQuantity > 1">s</span>)
         </span>
     </button>
 </div>

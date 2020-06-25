@@ -15,7 +15,7 @@ import * as _ from 'lodash';
 })
 export class CartButtonComponent implements OnInit {
   _ = _;
-  numCartItems: number = 0;
+  orderForm: OrderForm;
 
   constructor(
     private config: NgbModalConfig,
@@ -29,9 +29,8 @@ export class CartButtonComponent implements OnInit {
 
   ngOnInit(): void {
     this.cartService.orderForm.subscribe((orderForm: OrderForm) => {
-      this.numCartItems = _.reduce(orderForm.orders, (sum: number, order: Order): number => {
-        return sum + order.quantity;
-      }, 0);
+      this.orderForm = orderForm;
+      console.log(this.orderForm);
     });
   }
 

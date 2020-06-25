@@ -23,7 +23,7 @@ export class PaypalComponent implements OnInit {
     ngOnInit(): void {
         this.cartService.orderForm.subscribe((orderForm: OrderForm) => {
             this.orderForm = orderForm;
-            console.log(this.orderForm);
+            this.initConfig();
         });
     }
 

@@ -10,7 +10,10 @@ export interface OrderForm {
     date: NgbDateStruct;
     time: NgbTimeStruct;
     deliveryFee: number | undefined;
+    total: number;
+    grandTotal: number;
     orders: Order[];
+    totalOrdersQuantity: number;
 }
 
 export interface Order {

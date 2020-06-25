@@ -19,8 +19,10 @@ export class CartService {
       date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
       time: { hour: 17, minute: 0, second: 0 },
       orders: [],
-      deliveryFee: undefined
-
+      totalOrdersQuantity: 0,
+      deliveryFee: undefined,
+      total: 0,
+      grandTotal: 0
       /* Switch between empty or mock data */
 
       // name: 'John Doe',
@@ -39,10 +41,27 @@ export class CartService {
 
   constructor() {}
 
-  updateOrderFormByField(key: string, value: any): void {
+  getOrdersQuantity(orders: Order[]): number {
+    return _.reduce(orders, (sum: number, order: Order): number => {
+      return sum + order.quantity
+    }, 0);
+  }
+
+  getTotal(orders: Order[]): number {
+    return _.reduce(orders, (sum: number, order: Order): number => {
+      return sum + (order.quantity * order.price);
+    }, 0);
+  };
+
+  getGrandTotal(orders: Order[], deliveryFee?: number | undefined): number {
+    return this.getTotal(orders) + (deliveryFee || 0);
+  }
+
+  updateOrderFormByFields(updatedFields: object): void {
     const currentOrderForm = _.cloneDeep(this.orderFormSubject.getValue());
-    _.set(currentOrderForm, key, value);
-    this.orderFormSubject.next(currentOrderForm);
+    const updatedOrderForm = _.assign(currentOrderForm, updatedFields);
+    console.log(updatedOrderForm);
+    this.orderFormSubject.next(updatedOrderForm);
   }
 
   addToCart(order: Order): void {
@@ -62,25 +81,44 @@ export class CartService {
       return !_.isEqual(_.omit(currentOrder, ['quantity']), _.omit(order, ['quantity']));
     });
     const updatedOrders = [...nonExactOrdersExcludingQuantity, newOrder];
-    this.updateOrderFormByField('orders', updatedOrders);
+    this.updateOrderFormByFields({
+      orders: updatedOrders,
+      totalOrdersQuantity: this.getOrdersQuantity(updatedOrders),
+      total: this.getTotal(updatedOrders),
+      grandTotal: this.getGrandTotal(updatedOrders, currentOrderForm.deliveryFee)
+    });
   }
 
   removeFromCart(index: number): void {
     const currentOrderForm = _.cloneDeep(this.orderFormSubject.getValue());
     const updatedOrders = _.cloneDeep(currentOrderForm.orders);
     updatedOrders.splice(index, 1);
-    this.updateOrderFormByField('orders', updatedOrders);
+    this.updateOrderFormByFields({
+      orders: updatedOrders,
+      totalOrdersQuantity: this.getOrdersQuantity(updatedOrders),
+      total: this.getTotal(updatedOrders),
+      grandTotal: this.getGrandTotal(updatedOrders, currentOrderForm.deliveryFee)
+    });
   }
 
   updateFromCart(order: Order, index: number): void {
     const currentOrderForm = _.cloneDeep(this.orderFormSubject.getValue());
     const updatedOrders = _.cloneDeep(currentOrderForm.orders);
     updatedOrders.splice(index, 1, order);
-    this.updateOrderFormByField('orders', updatedOrders);
+    this.updateOrderFormByFields({
+      orders: updatedOrders,
+      totalOrdersQuantity: this.getOrdersQuantity(updatedOrders),
+      total: this.getTotal(updatedOrders),
+      grandTotal: this.getGrandTotal(updatedOrders, currentOrderForm.deliveryFee)
+    });
   }
 
   clearCart(): void {
-    const updatedOrders = [];
-    this.updateOrderFormByField('orders', updatedOrders);
+    this.updateOrderFormByFields({
+      orders: [],
+      totalOrdersQuantity: 0,
+      total: 0,
+      grandTotal: 0
+    });
   }
 }
