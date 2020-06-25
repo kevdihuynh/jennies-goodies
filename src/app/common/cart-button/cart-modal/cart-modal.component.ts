@@ -26,7 +26,7 @@ export class CartModalComponent implements OnInit {
   };
   orderForm: OrderForm;
   orders: Order[] = [];
-  totalPrice: number;
+  grandTotal: number;
 
   constructor(
     private toastr: ToastrService,
@@ -45,9 +45,11 @@ export class CartModalComponent implements OnInit {
       this.orderForm = orderForm;
       this.cartService.orders.subscribe((orders: Order[]) => {
         this.orderForm.orders = orders;
-        this.totalPrice = _.reduce(orders, (sum: number, order: Order): number => {
+        this.grandTotal = _.reduce(orders, (sum: number, order: Order): number => {
           return sum + (order.quantity * order.price);
         }, 0);
+        // Add delivery fee to item_total
+        this.grandTotal += (this.orderForm.deliveryFee || 0);
       });
     });
   }
@@ -192,8 +194,8 @@ export class CartModalComponent implements OnInit {
     return false;
   };
 
-  async calculateTransportationFee(): Promise<number> | undefined {
-    let transportationFee;
+  async calculateDeliveryFee(): Promise<number> | undefined {
+    let deliveryFee;
     this.formControls.deliveryForm = {};
     if (this.orderForm.address) {
       // confirm user address is valid and retrieve lat and lon coordinates
@@ -204,9 +206,9 @@ export class CartModalComponent implements OnInit {
         console.log('miles to destination: ', milesToDestination);
         if (milesToDestination !== undefined) {
           if (milesToDestination <= 10) {
-            transportationFee = 0;
+            deliveryFee = 0;
           } else if (milesToDestination > 10 && milesToDestination <= 15) {
-            transportationFee = 5;
+            deliveryFee = 5;
           } else {
             this.formControls.deliveryForm.tooFarError = true;
             this.toastr.error(GlobalConstants.errors.deliveryErrors.tooFarError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
@@ -232,7 +234,7 @@ export class CartModalComponent implements OnInit {
         });
       }
     }
-    return transportationFee;
+    return deliveryFee;
   }
 
   showDateTimePickerErrorOnSubmit(finalDateTime, errorMsg, errorTitle) {
@@ -264,7 +266,7 @@ export class CartModalComponent implements OnInit {
     // TODO: Perform final call check to Google Calendar API to validate if the date & time selected does not conflict
     this.spinner.show();
     try {
-      const transportationFee = await this.calculateTransportationFee();
+      const deliveryFee = await this.calculateDeliveryFee();
       const isDeliveryInvalid = this.isDeliveryFormInvalid();
 
       // maybe add this if we want to show another final message (but dont need to as we already output toaster on calculate transport function)
@@ -288,7 +290,7 @@ export class CartModalComponent implements OnInit {
 
       if (isDateTimeValid && !isDeliveryInvalid) {
         // removes undefined or null values
-        this.orderForm.transporationFee = transportationFee;
+        this.orderForm.deliveryFee = deliveryFee;
         console.log('finalDateTime is valid', finalDateTime);
         console.log('finalForm', this.orderForm);
         this.closeCartModal('payment-success');

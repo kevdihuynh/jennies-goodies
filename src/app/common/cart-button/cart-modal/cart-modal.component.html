@@ -7,24 +7,6 @@
 <div class="modal-body">
     <p *ngIf="!orderForm.orders.length" class="text-center font-weight-bold my-5">You have not selected any items. <span class="text-custom-purple cursor-pointer" (click)="dismissCartModal()">Go back to menu</span></p>
     <ng-container *ngIf="orderForm.orders.length">
-        <section class="orderForm.orders.length">
-            <h5>Items</h5>
-            <div class="d-flex flex-wrap align-items-center my-4 pb-3 border-bottom" *ngFor="let order of orderForm.orders; let index = index;">
-                <div class="order-quantity mr-4">
-                    <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" onkeydown="return false" min="1" oninput="validity.valid || (value = 1)" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity">
-                </div>
-                <div>
-                    {{order.name}} ({{_.join(order.selectedFlavors, ', ')}}) - {{order.batchSize}} for {{order.price | currency:'USD':'symbol':'1.0'}}
-                </div>
-                <div class="ml-auto">
-                    <i class="fa fa-times-circle text-custom-purple cursor-pointer" aria-hidden="true" (click)="removeFromCart(order, index)"></i>
-                </div>
-            </div>
-            <div class="mb-1" *ngIf="totalPrice > 0">
-                <span class="font-weight-bold">Total: {{totalPrice | currency:'USD':'symbol':'1.0'}}</span>
-            </div>
-        </section>
-        <hr/>
         <section class="order-form">
             <div class="form-row">
                 <div class="form-group col-md-6">
@@ -37,7 +19,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="inputPhoneNumber">Phone Number</label>
-                    <input [(ngModel)]="orderForm.phoneNumber" type="text" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number (i.e. 206-123-4567)">
+                    <input [(ngModel)]="orderForm.phoneNumber" type="text" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number (i.e. 12061234567)">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="inputIsDelivery">Service Type</label>
@@ -57,16 +39,12 @@
             </div>
             <div class="form-group">
                 <label for="inputNotes">Notes</label>
-                <textarea [(ngModel)]="orderForm.notes" class="form-control" id="inputNotes" rows="3"></textarea>
+                <textarea [(ngModel)]="orderForm.notes" class="form-control" id="inputNotes" rows="3" placeholder="Enter any specific requests (i.e. John Doe will picking it up for me)"></textarea>
             </div>
         </section>
         <hr/>
         <section class="date-time-picker">
-            <h5>Delivery / Pick Up Scheduler</h5>
-            <div class="responsive-google-calendar my-4">
-                <iframe src="https://calendar.google.com/calendar/b/2/embed?height=600&amp;wkst=2&amp;bgcolor=%23ffffff&amp;ctz=America%2FLos_Angeles&amp;src=amVubmllc2dvb2RpZXMxOTk0QGdtYWlsLmNvbQ&amp;color=%23039BE5&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=1&amp;mode=WEEK&amp;showTitle=0&amp;title=Jennie&#39;s%20Goodies" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
-            </div>
-            <p class="small font-weight-bold">
+            <p class="small font-weight-bold text-center">
                 We currently deliver anytime on Friday-Sunday and after 5pm Monday-Thursday.
             </p>
             <div class="form-row mb-4" [ngClass]="{'border border-danger': formControls.dateTimePicker['tooLate'] || formControls.dateTimePicker['tooEarly']}">
@@ -83,13 +61,41 @@
                     </div>
                 </div>
             </div>
+            <!-- Google Calendar Widget -->
+            <!-- <ng-container>
+                <h5>See Jennie's Calendar</h5>
+                <div class="responsive-google-calendar my-4">
+                    <iframe src="https://calendar.google.com/calendar/b/2/embed?height=600&amp;wkst=2&amp;bgcolor=%23ffffff&amp;ctz=America%2FLos_Angeles&amp;src=amVubmllc2dvb2RpZXMxOTk0QGdtYWlsLmNvbQ&amp;color=%23039BE5&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=1&amp;mode=WEEK&amp;showTitle=0&amp;title=Jennie&#39;s%20Goodies" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </ng-container> -->
+        </section>
+        <hr/>
+        <section class="orderForm.orders.length">
+            <h5>Items</h5>
+            <div class="d-flex flex-wrap align-items-center my-4 pb-3 border-bottom" *ngFor="let order of orderForm.orders; let index = index;">
+                <div class="order-quantity mr-4">
+                    <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" onkeydown="return false" min="1" oninput="validity.valid || (value = 1)" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity">
+                </div>
+                <div>
+                    <span class="mr-3">{{order.name}} ({{_.join(order.selectedFlavors, ', ')}}) - {{order.batchSize}} for {{order.price | currency:'USD':'symbol':'1.0'}}</span>
+                    <i class="fa fa-times-circle text-custom-purple cursor-pointer" aria-hidden="true" (click)="removeFromCart(order, index)"></i>
+                </div>
+                <div class="ml-auto">
+                    <h5 class="d-inline-block font-weight-bold">Total: {{order.price * order.quantity | currency:'USD':'symbol':'1.0'}}</h5>
+                </div>
+            </div>
+            <div class="mb-1 text-right">
+                <h5 class="font-weight-bold" *ngIf="orderForm.deliveryFee">Delivery Fee: {{orderForm.deliveryFee | currency:'USD':'symbol':'1.0'}}</h5>
+                <h4 class="font-weight-bold">Grand Total: {{grandTotal | currency:'USD':'symbol':'1.0'}}</h4>
+            </div>
         </section>
         <!-- <hr/>
         <pre class="mt-2">{{orderForm | json}}</pre> -->
     </ng-container>
 </div>
 <div class="modal-footer" *ngIf="orderForm.orders.length">
-    <div class="w-100" *ngIf="!isOrderFormDisabled()">
+    <div class="w-100 text-center" *ngIf="!isOrderFormDisabled()">
+        <p class="small text-danger">app-paypal.ts currently has a bug where it doesnt get reinitialized after we change the quantity from above in modal</p>
         <app-paypal [orderForm]="orderForm"></app-paypal>
     </div>
     <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-custom-purple': !isOrderFormDisabled(), 'btn-dark': isOrderFormDisabled()}"

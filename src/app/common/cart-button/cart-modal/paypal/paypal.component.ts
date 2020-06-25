@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
+import { IPayPalConfig, ICreateOrderRequest, ITransactionItem, IUnitAmount } from 'ngx-paypal';
 import { environment } from '../../../../../environments/environment';
-import { OrderForm } from '../../../../interfaces/cart';
+import { OrderForm, Order } from '../../../../interfaces/cart';
 import * as _ from 'lodash';
 
 @Component({
@@ -10,7 +10,7 @@ import * as _ from 'lodash';
     styleUrls: ['./paypal.component.scss']
 })
 export class PaypalComponent implements OnInit {
-    @Input() OrderForm: OrderForm;
+    @Input() orderForm: OrderForm;
     public _ = _;
     public payPalConfig?: IPayPalConfig;
     public environment = environment;
@@ -23,8 +23,54 @@ export class PaypalComponent implements OnInit {
 
     private initConfig(): void {
         const currency = 'USD';
-        const amount = 15;
-        const category = 'donation';
+        let item_total = _.reduce(this.orderForm.orders, (sum: number, order: Order): number => {
+            return sum + (order.quantity * order.price);
+        }, 0);
+        // Add delivery fee to item_total
+        item_total += (this.orderForm.deliveryFee || 0);
+
+
+        const getAmount = (): IUnitAmount => {
+            const amountObj: IUnitAmount = {
+                currency_code: _.toUpper(currency),
+                value: _.toString(item_total),
+                breakdown: {
+                    item_total: {
+                        currency_code: _.toUpper(currency),
+                        value: _.toString(item_total)
+                    }
+                }
+            }
+            return amountObj;
+        }
+
+        const getItems = (): ITransactionItem[] => {
+            const items = _.map(this.orderForm.orders, (order: Order): any => {
+                return {
+                    name: `${order.quantity} x ${order.name}  (${_.join(order.selectedFlavors, ', ')})`,
+                    quantity: order.quantity,
+                    category: 'PHYSICAL_GOODS',
+                    unit_amount: {
+                        currency_code: _.toUpper(currency),
+                        value: _.toString(order.price),
+                    }
+                };
+            });
+            // Add delivery fee to breakdown
+            if (this.orderForm.deliveryFee) {
+                items.push({
+                    name: `Delivery Fee`,
+                    quantity: 1,
+                    category: 'PHYSICAL_GOODS',
+                    unit_amount: {
+                        currency_code: _.toUpper(currency),
+                        value: _.toString(this.orderForm.deliveryFee),
+                    }
+                });
+            }
+
+            return items;
+        }
 
         this.payPalConfig = {
             currency: _.toUpper(currency),
@@ -32,44 +78,27 @@ export class PaypalComponent implements OnInit {
             createOrderOnClient: (data) => <ICreateOrderRequest>{
                 intent: 'CAPTURE',
                 purchase_units: [{
-                    amount: {
-                        currency_code: _.toUpper(currency),
-                        value: _.toString(amount),
-                        breakdown: {
-                            item_total: {
-                                currency_code: _.toUpper(currency),
-                                value: _.toString(amount)
-                            }
-                        }
-                    },
-                    items: [{
-                        name: `${_.capitalize(category)}`,
-                        quantity: '1',
-                        category: 'DIGITAL_GOODS',
-                        unit_amount: {
-                            currency_code: _.toUpper(currency),
-                            value: _.toString(amount),
-                        },
-                    }]
+                    amount: getAmount(),
+                    items: getItems()
                 }],
                 payer: {
                     name: {
-                        given_name: "PayPal",
+                        given_name: this.orderForm.name,
                         surname: "Customer"
                       },
                       address: {
-                        address_line_1: '123 ABC Street',
+                        address_line_1: this.orderForm.address,
                         address_line_2: 'Apt 2',
                         admin_area_2: 'San Jose',
                         admin_area_1: 'CA',
                         postal_code: '95121',
                         country_code: 'US'
                       },
-                      email_address: "customer@domain.com",
+                      email_address: this.orderForm.email,
                       phone: {
                         phone_type: "MOBILE",
                         phone_number: {
-                          national_number: "14082508100"
+                          national_number: this.orderForm.phoneNumber
                         }
                       }
                 }
