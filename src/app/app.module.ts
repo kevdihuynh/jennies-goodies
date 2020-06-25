@@ -27,6 +27,8 @@ import { DatePickerComponent } from './common/cart-button/cart-modal/date-picker
 import { PaypalComponent } from './common/cart-button/cart-modal/paypal/paypal.component';
 import { AngularFireFunctionsModule, ORIGIN } from '@angular/fire/functions';
 import { HttpClientModule } from '@angular/common/http';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,7 +55,8 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule, // required animations module for ngx-toastr
     ToastrModule.forRoot(),
     NgxSpinnerModule,
-    NgxPayPalModule
+    NgxPayPalModule,
+    AutocompleteLibModule
   ],
   entryComponents: [],
   schemas: [

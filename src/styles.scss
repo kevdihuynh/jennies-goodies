@@ -37,3 +37,14 @@ $theme-colors: (
         }
     }
 }
+
+.autocomplete-container {
+    border: 1px solid #ced4da;
+    box-shadow: none !important;
+    border-radius: 5px;
+    height: 100% !important;
+}
+
+.ng-autocomplete {
+    width: 100% !important;
+}

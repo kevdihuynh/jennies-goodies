@@ -11,7 +11,8 @@ export const ORIGIN_LON = -122.299520;
 
 export const urls = {
     matrixDistanceUrl: `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&key=${GOOGLE_API_KEY}&origins=[[origins]]&destinations=[[destinations]]`,
-    geocodeUrl: `https://maps.googleapis.com/maps/api/geocode/json?address=[[customerAddress]]&key=${GOOGLE_API_KEY}`
+    geocodeUrl: `https://maps.googleapis.com/maps/api/geocode/json?address=[[customerAddress]]&key=${GOOGLE_API_KEY}`,
+    placesUrl: `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=[[address]]&key=${GOOGLE_API_KEY}&sessiontoken=[[sessiontoken]]`
 }
 
 export const apiConfig = {

@@ -10,6 +10,8 @@ import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.serv
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import { GlobalConstants } from '../../../utils/global-constants';
 import { FormControl } from 'src/app/interfaces/formControl';
+import { GooglePlacesService } from 'src/app/services/google-places/google-places.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-cart-modal',
@@ -24,16 +26,31 @@ export class CartModalComponent implements OnInit {
     dateTimePicker: {},
     deliveryForm: {}
   };
+  isDeliveryInvalid = true;
   orderForm: OrderForm;
   orders: Order[] = [];
   grandTotal: number;
+  currentSessionToken: string | undefined = undefined;
+  timeStart: number | undefined = undefined;
+  keyword = 'name';
+  predictedAddresses = [
+    //  {
+    //    id: 1,
+    //    name: 'Usa'
+    //  },
+    //  {
+    //    id: 2,
+    //    name: 'England'
+    //  }
+  ];
 
   constructor(
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     public activeModal: NgbActiveModal,
     public cartService: CartService,
-    public googleMapsService: GoogleMapsService) {
+    public googleMapsService: GoogleMapsService,
+    public googlePlacesService: GooglePlacesService) {
     // If weekend, set default start time to 9am
     if (this.isClosedDays()) {
       this.orderForm.time = { hour: 9, minute: 0, second: 0 };
@@ -41,6 +58,7 @@ export class CartModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isDeliveryInvalid = true;
     this.cartService.orderForm.subscribe((orderForm: OrderForm) => {
       this.orderForm = orderForm;
       this.cartService.orders.subscribe((orders: Order[]) => {
@@ -52,6 +70,68 @@ export class CartModalComponent implements OnInit {
         this.grandTotal += (this.orderForm.deliveryFee || 0);
       });
     });
+  }
+
+  async selectEvent(item) {
+    // do something with selected item
+    this.generateNewSessionToken();
+    // reset when place is selected
+    this.currentSessionToken = undefined;
+    this.timeStart = undefined;
+    console.log('selectEvent: ', item.name);
+    this.orderForm.address = item.name;
+    const deliveryFee = await this.calculateDeliveryFee();
+    this.isDeliveryInvalid = this.isDeliveryFormInvalid();
+    this.orderForm.deliveryFee = deliveryFee;
+  }
+
+  async onChangeSearch(val: string) {
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
+    console.log('onChangeSearch: ', val);
+    // generate the session token to allow for proper billing
+    this.orderForm.address = val;
+    this.generateNewSessionToken();
+    const predictedAddresses = await this.googlePlacesService.predictAddresses(val, this.currentSessionToken);
+    this.predictedAddresses = [];
+    if (predictedAddresses) {
+      predictedAddresses.map((address, index) => {
+        this.predictedAddresses.push({
+          id: index,
+          name: address.description
+        });
+      });
+    }
+  }
+
+  onFocused(e){
+    // do something when input is focused
+    console.log('onFocused: ', e);
+  }
+
+  generateNewSessionToken() {
+    if (this.timeStart === undefined) {
+      this.timeStart = performance.now();
+    }
+    const timeElapsed = this.timeElapsed();
+    if ((timeElapsed >= 5 && this.currentSessionToken) || this.currentSessionToken === undefined) {
+      // generate new session token if more than 5 seconds elapsed
+      // or session token not set yet
+      this.currentSessionToken = uuidv4();
+    }
+    this.timeStart = performance.now();
+  }
+
+  timeElapsed() {
+    const endTime = performance.now();
+    let  timeDiff = endTime - this.timeStart; //in ms
+    // strip the ms
+    timeDiff /= 1000;
+
+    // get seconds
+    const seconds = Math.round(timeDiff);
+    console.log(seconds + " seconds");
+    return seconds;
   }
 
   closeCartModal(reason?: any): void {
@@ -266,9 +346,6 @@ export class CartModalComponent implements OnInit {
     // TODO: Perform final call check to Google Calendar API to validate if the date & time selected does not conflict
     this.spinner.show();
     try {
-      const deliveryFee = await this.calculateDeliveryFee();
-      const isDeliveryInvalid = this.isDeliveryFormInvalid();
-
       // maybe add this if we want to show another final message (but dont need to as we already output toaster on calculate transport function)
       // if (isDeliveryInvalid) {
       //   this.toastr.error(GlobalConstants.errors.deliveryErrors.submitError, `Delivery Error`,  {
@@ -288,9 +365,8 @@ export class CartModalComponent implements OnInit {
 
       const isDateTimeValid = !isDateTimeInvalid && !isDateTimeConflicting;
 
-      if (isDateTimeValid && !isDeliveryInvalid) {
+      if (isDateTimeValid && !this.isDeliveryInvalid) {
         // removes undefined or null values
-        this.orderForm.deliveryFee = deliveryFee;
         console.log('finalDateTime is valid', finalDateTime);
         console.log('finalForm', this.orderForm);
         this.closeCartModal('payment-success');
@@ -300,6 +376,12 @@ export class CartModalComponent implements OnInit {
           disableTimeOut: true
         });
         this.cartService.clearCart();
+      } else if (this.isDeliveryInvalid) {
+        this.toastr.error('', GlobalConstants.errors.deliveryErrors.submitError, {
+          positionClass: 'toast-bottom-left',
+          progressBar: true,
+          disableTimeOut: false
+        });
       }
       this.spinner.hide();
     } catch {
