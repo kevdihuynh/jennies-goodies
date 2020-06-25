@@ -20,7 +20,7 @@ export class CartService {
       time: { hour: 17, minute: 0, second: 0 },
       orders: [],
       totalOrdersQuantity: 0,
-      deliveryFee: 12,
+      deliveryFee: 0,
       total: 0,
       grandTotal: 0
     }
