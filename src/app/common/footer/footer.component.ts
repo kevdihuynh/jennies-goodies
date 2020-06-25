@@ -12,17 +12,30 @@ export class FooterComponent implements OnInit {
     {
       title: 'Facebook',
       iconClass: 'fab fa-facebook fa-2x text-dark',
-      url: `${this.globalConstants.company.facebook}`
+      url: `${this.globalConstants.company.facebook}`,
+      displayTitle: false,
+      openTab: true
     },
     {
       title: 'Instagram',
       iconClass: 'fab fa-instagram fa-2x text-dark',
-      url: `${this.globalConstants.company.instagram}`
+      url: `${this.globalConstants.company.instagram}`,
+      displayTitle: false,
+      openTab: true
     },
     {
       title: 'Email',
       iconClass: 'fas fa-envelope fa-2x text-dark',
-      url: `mailto:${this.globalConstants.company.email}?Subject=Hey Jennie`
+      url: `mailto:${this.globalConstants.company.email}?Subject=Hey Jennie`,
+      displayTitle: false,
+      openTab: true
+    },
+    {
+      title: this.globalConstants.company.phoneNumber,
+      iconClass: 'fas fa-phone fa-2x text-dark',
+      url: `tel:${this.globalConstants.company.phoneNumber}`,
+      displayTitle: true,
+      openTab: false
     }
   ];
 
