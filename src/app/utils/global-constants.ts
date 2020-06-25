@@ -8,7 +8,7 @@ export class GlobalConstants {
         facebook: 'https://www.facebook.com/Jennies-Goodies-112088677209362/?ref=page_internal',
         instagram: 'https://www.instagram.com/jenniesgoodies',
         phoneNumber: '(206) 765-0458',
-        address: '12844 SE 175th Ct, Renton, WA 98058'
+        address: '12844 SE 175th Ct, Renton, WA 98058, USA'
     };
     public static errors = {
         deliveryErrors: {
