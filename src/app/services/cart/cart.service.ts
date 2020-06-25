@@ -48,7 +48,6 @@ export class CartService {
   updateOrderFormByFields(updatedFields: object): void {
     const currentOrderForm = _.cloneDeep(this.orderFormSubject.getValue());
     const updatedOrderForm = _.assign(currentOrderForm, updatedFields);
-    console.log(updatedOrderForm);
     this.orderFormSubject.next(updatedOrderForm);
   }
 
