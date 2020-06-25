@@ -2,7 +2,7 @@
     <div class="col-xs-12 col-sm-6 col-md-4 my-auto">
         <img [src]="product.imageUrls[0]" class="img-fluid w-100"/>
     </div>
-    <div class="col-xs-12 col-sm-6 col-md-8 my-3">
+    <div class="col-xs-12 col-sm-6 col-md-8 my-2">
         <div class="d-flex flex-column h-100 container-fluid">
             <div class="product-content-container">
                 <div class="d-flex flex-wrap align-items-center mb-2">
@@ -29,14 +29,12 @@
                         </button>
                     </div>
                 </div>
-                <div class="mb-2">
-                    <button (click)="addToCart(product)" type="button" class="btn btn-sm btn-block" [ngClass]="{'btn-custom-purple': isCartValid(), 'btn-dark': !isCartValid() }" [disabled]="!isCartValid()">
-                        <span class="mr-2">Add To Cart</span>
-                        <span>
-                            <i class="fas fa-cart-plus"></i>
-                        </span>
-                    </button>
-                </div>
+                <button (click)="addToCart(product)" type="button" class="btn btn-sm btn-block" [ngClass]="{'btn-custom-purple': isCartValid(), 'btn-dark': !isCartValid() }" [disabled]="!isCartValid()">
+                    <span class="mr-2">Add To Cart</span>
+                    <span>
+                        <i class="fas fa-cart-plus"></i>
+                    </span>
+                </button>
             </div>
         </div>
     </div>
