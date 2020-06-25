@@ -37,13 +37,17 @@ export class CartService {
   );
   public orderForm: Observable<OrderForm>  = this.orderFormSubject.asObservable();
 
-  private ordersSubject = new BehaviorSubject<Order[]>([]);
-  public orders: Observable<Array<Order>>  = this.ordersSubject.asObservable();
-
   constructor() {}
 
+  updateOrderFormByField(key: string, value: any): void {
+    const currentOrderForm = _.cloneDeep(this.orderFormSubject.getValue());
+    _.set(currentOrderForm, key, value);
+    this.orderFormSubject.next(currentOrderForm);
+  }
+
   addToCart(order: Order): void {
-    const currentOrders = _.cloneDeep(this.ordersSubject.getValue());
+    const currentOrderForm = _.cloneDeep(this.orderFormSubject.getValue());
+    const currentOrders = _.cloneDeep(currentOrderForm.orders);
     // Logic to group all the similar orders into one if there is any
     const exactOrdersExcludingQuantity = _.filter(_.cloneDeep(currentOrders), (currentOrder: Order) => {
       const omitFields = ['quantity'];
@@ -57,22 +61,26 @@ export class CartService {
       const omitFields = ['quantity'];
       return !_.isEqual(_.omit(currentOrder, ['quantity']), _.omit(order, ['quantity']));
     });
-    this.ordersSubject.next([...nonExactOrdersExcludingQuantity, newOrder]);
+    const updatedOrders = [...nonExactOrdersExcludingQuantity, newOrder];
+    this.updateOrderFormByField('orders', updatedOrders);
   }
 
   removeFromCart(index: number): void {
-    const currentOrders = this.ordersSubject.getValue();
-    currentOrders.splice(index, 1);
-    this.ordersSubject.next(currentOrders);
+    const currentOrderForm = _.cloneDeep(this.orderFormSubject.getValue());
+    const updatedOrders = _.cloneDeep(currentOrderForm.orders);
+    updatedOrders.splice(index, 1);
+    this.updateOrderFormByField('orders', updatedOrders);
   }
 
   updateFromCart(order: Order, index: number): void {
-    const currentOrders = this.ordersSubject.getValue();
-    currentOrders.splice(index, 1, order);
-    this.ordersSubject.next(currentOrders);
+    const currentOrderForm = _.cloneDeep(this.orderFormSubject.getValue());
+    const updatedOrders = _.cloneDeep(currentOrderForm.orders);
+    updatedOrders.splice(index, 1, order);
+    this.updateOrderFormByField('orders', updatedOrders);
   }
 
   clearCart(): void {
-    this.ordersSubject.next([]);
+    const updatedOrders = [];
+    this.updateOrderFormByField('orders', updatedOrders);
   }
 }

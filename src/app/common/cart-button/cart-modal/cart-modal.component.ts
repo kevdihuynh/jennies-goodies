@@ -61,14 +61,11 @@ export class CartModalComponent implements OnInit {
     this.isDeliveryInvalid = true;
     this.cartService.orderForm.subscribe((orderForm: OrderForm) => {
       this.orderForm = orderForm;
-      this.cartService.orders.subscribe((orders: Order[]) => {
-        this.orderForm.orders = orders;
-        this.grandTotal = _.reduce(orders, (sum: number, order: Order): number => {
-          return sum + (order.quantity * order.price);
-        }, 0);
-        // Add delivery fee to item_total
-        this.grandTotal += (this.orderForm.deliveryFee || 0);
-      });
+      this.grandTotal = _.reduce(this.orderForm.orders, (sum: number, order: Order): number => {
+        return sum + (order.quantity * order.price);
+      }, 0);
+      // Add delivery fee to item_total
+      this.grandTotal += (this.orderForm.deliveryFee || 0);
     });
   }
 

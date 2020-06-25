@@ -96,7 +96,7 @@
             <h5>Items</h5>
             <div class="d-flex flex-wrap align-items-center my-4 pb-3 border-bottom" *ngFor="let order of orderForm.orders; let index = index;">
                 <div class="order-quantity mr-4">
-                    <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" min="1" oninput="validity.valid || (value = 1)" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity">
+                    <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" min="1" (keyup)="order.quantity = order.quantity || order.quantity = 1" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity">
                 </div>
                 <div>
                     <span class="mr-3">{{order.name}} ({{_.join(order.selectedFlavors, ', ')}}) - {{order.batchSize}} for {{order.price | currency:'USD':'symbol':'1.0'}}</span>
@@ -117,8 +117,7 @@
 </div>
 <div class="modal-footer" *ngIf="orderForm.orders.length">
     <div class="w-100 text-center" *ngIf="!isOrderFormDisabled()">
-        <p class="small text-danger">app-paypal.ts currently has a bug where it doesnt get reinitialized after we change the quantity from above in modal</p>
-        <app-paypal [orderForm]="orderForm"></app-paypal>
+        <app-paypal></app-paypal>
     </div>
     <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-custom-purple': !isOrderFormDisabled(), 'btn-dark': isOrderFormDisabled()}"
         [disabled]="isOrderFormDisabled()" (click)="submit()">

@@ -28,8 +28,8 @@ export class CartButtonComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cartService.orders.subscribe((orders: Order[]) => {
-      this.numCartItems = _.reduce(orders, (sum: number, order: Order): number => {
+    this.cartService.orderForm.subscribe((orderForm: OrderForm) => {
+      this.numCartItems = _.reduce(orderForm.orders, (sum: number, order: Order): number => {
         return sum + order.quantity;
       }, 0);
     });

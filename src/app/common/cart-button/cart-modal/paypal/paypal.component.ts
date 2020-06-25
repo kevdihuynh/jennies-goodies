@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { IPayPalConfig, ICreateOrderRequest, ITransactionItem, IUnitAmount } from 'ngx-paypal';
 import { environment } from '../../../../../environments/environment';
 import { OrderForm, Order } from '../../../../interfaces/cart';
+import { CartService } from 'src/app/services/cart/cart.service';
 import * as _ from 'lodash';
 
 @Component({
@@ -10,15 +11,20 @@ import * as _ from 'lodash';
     styleUrls: ['./paypal.component.scss']
 })
 export class PaypalComponent implements OnInit {
-    @Input() orderForm: OrderForm;
     public _ = _;
     public payPalConfig?: IPayPalConfig;
     public environment = environment;
+    public orderForm: OrderForm;
 
-    constructor() { }
+    constructor(
+        public cartService: CartService
+    ) { }
 
     ngOnInit(): void {
-        this.initConfig();
+        this.cartService.orderForm.subscribe((orderForm: OrderForm) => {
+            this.orderForm = orderForm;
+            console.log(this.orderForm);
+        });
     }
 
     private initConfig(): void {
