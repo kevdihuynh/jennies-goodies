@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IPayPalConfig, ICreateOrderRequest, ITransactionItem, IUnitAmount } from 'ngx-paypal';
+import { IPayPalConfig, ICreateOrderRequest, ITransactionItem, IUnitAmount, IPayer } from 'ngx-paypal';
 import { environment } from '../../../../../environments/environment';
 import { OrderForm, Order } from '../../../../interfaces/cart';
 import { CartService } from 'src/app/services/cart/cart.service';
@@ -73,6 +73,34 @@ export class PaypalComponent implements OnInit {
             return items;
         }
 
+        // added any since ngx-paypal doesnt have 'phone' interface
+        const getPayer = (): IPayer | any => {
+            const orderFormName = _.split(this.orderForm.name, ' ');
+            const orderFormAddress = _.split(this.orderForm.address, ',');
+
+            return {
+                name: {
+                    given_name: _.get(orderFormName, [0], this.orderForm.name),
+                    surname: _.get(orderFormName, [1], undefined)
+                },
+                address: {
+                    address_line_1: _.get(orderFormAddress, [0], undefined),
+                    address_line_2: _.get(orderFormAddress, [1], undefined),
+                    admin_area_2: _.get(orderFormAddress, [2], undefined),
+                    admin_area_1: _.get(orderFormAddress, [3], undefined),
+                    postal_code: _.get(orderFormAddress, [4], undefined),
+                    country_code: 'US'
+                },
+                email_address: this.orderForm.email,
+                phone: {
+                    phone_type: "MOBILE",
+                    phone_number: {
+                        national_number: this.orderForm.phoneNumber
+                    }
+                }
+            }
+        }
+
         this.payPalConfig = {
             currency: _.toUpper(currency),
             clientId: this.environment.paypal.clientId,
@@ -82,27 +110,7 @@ export class PaypalComponent implements OnInit {
                     amount: getAmount(),
                     items: getItems()
                 }],
-                payer: {
-                    name: {
-                        given_name: this.orderForm.name,
-                        surname: "Customer"
-                      },
-                      address: {
-                        address_line_1: this.orderForm.address,
-                        address_line_2: 'Apt 2',
-                        admin_area_2: 'San Jose',
-                        admin_area_1: 'CA',
-                        postal_code: '95121',
-                        country_code: 'US'
-                      },
-                      email_address: this.orderForm.email,
-                      phone: {
-                        phone_type: "MOBILE",
-                        phone_number: {
-                          national_number: this.orderForm.phoneNumber
-                        }
-                      }
-                }
+                payer: getPayer()
             },
             advanced: {
                 commit: 'true'
