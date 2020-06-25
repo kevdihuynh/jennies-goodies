@@ -19,7 +19,7 @@ export class CartService {
       date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
       time: { hour: 17, minute: 0, second: 0 },
       orders: [],
-      transporationFee: undefined,
+      deliveryFee: undefined
 
       /* Switch between empty or mock data */
 
@@ -32,7 +32,7 @@ export class CartService {
       // date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
       // time: { hour: 17, minute: 0, second: 0 },
       // orders: [],
-      // transporationFee: undefined,
+      // deliveryFee: undefined,
     }
   );
   public orderForm: Observable<OrderForm>  = this.orderFormSubject.asObservable();

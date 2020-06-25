@@ -9,7 +9,7 @@ export interface OrderForm {
     notes?: string;
     date: NgbDateStruct;
     time: NgbTimeStruct;
-    transporationFee: number | undefined;
+    deliveryFee: number | undefined;
     orders: Order[];
 }
 
