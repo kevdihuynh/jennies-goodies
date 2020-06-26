@@ -76,9 +76,9 @@ export class PaypalComponent implements OnInit {
         // added any since ngx-paypal doesnt have 'phone' interface
         const getPayer = (): IPayer | any => {
             // {street_number: "13515", route: "27th Avenue Northeast", neighborhood: "Olympic Hills", political: "United States", locality: "Seattle", …}
-            // administrative_area_level_1: "Washington"
+            // administrative_area_level_1: "WA"
             // administrative_area_level_2: "King County"
-            // country: "United States"
+            // country: "US"
             // locality: "Seattle"
             // neighborhood: "Olympic Hills"
             // political: "United States"

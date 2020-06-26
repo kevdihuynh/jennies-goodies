@@ -28,11 +28,11 @@ export class GoogleMapsService {
     const reqBody = { customerAddress, };
     const callback = () => this.http.post<any>(`${getBaseUrl()}/getGeoCoordinates`, reqBody);
     const geocodeResponse: any = await getResponse(callback, geocodeResponseJson).toPromise();
-    return _.get(geocodeResponse, 'data.results[0]');
+    return _.get(geocodeResponse, 'data.results[0]', {});
   }
 
-  async getDistance(customerLat: number, customerLon: number): Promise<number> {
-    let miles;
+  async getDeliveryDistance(customerLat: number, customerLon: number): Promise<number> {
+    let miles = 0;
     const meterToMileFormula = (0.000621371 / 1);
     const reqBody = {
       customerLat,

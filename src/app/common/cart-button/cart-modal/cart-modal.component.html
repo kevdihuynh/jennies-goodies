@@ -25,19 +25,21 @@
                     <label for="inputIsDelivery">Service Type</label>
                     <div class="btn-group btn-block btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="orderForm.isDelivery">
                         <label ngbButtonLabel class="btn-outline-custom-purple">
-                            <input ngbButton type="radio" [value]="true" (click)="orderForm.address = undefined"> Delivery
+                            <input ngbButton type="radio" [value]="true" (click)="orderForm.address = undefined; formControls.deliveryForm = undefined"> Delivery
                         </label>
                         <label ngbButtonLabel class="btn-outline-custom-purple">
-                            <input ngbButton type="radio" [value]="false" (click)="orderForm.address = _.cloneDeep(globalConstants.company.address)"> Pick Up
+                            <input ngbButton type="radio" [value]="false" (click)="orderForm.address = _.cloneDeep(globalConstants.company.address); formControls.deliveryForm = undefined"> Pick Up
                         </label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputAddress">{{orderForm.isDelivery ? 'Delivery' : 'Pick Up'}} Address</label>
+                <label for="inputAddress">
+                    {{orderForm.isDelivery ? 'Delivery' : 'Pick Up'}} Address
+                </label>
                 <!-- <input [ngClass]="{'border border-danger': formControls.deliveryForm['addressError'] || formControls.deliveryForm['tooFarError'] || formControls.deliveryForm['calcDistanceError']}" [(ngModel)]="orderForm.address" type="text" class="form-control" id="inputAddress" placeholder="Enter your address (i.e. 1234 Main St Seattle, WA 98125)" [disabled]="!orderForm.isDelivery"> -->
                 <p *ngIf="!orderForm.isDelivery" class="my-2">{{orderForm.address}}</p>
-                <div *ngIf="orderForm.isDelivery" [ngClass]="{'border border-danger': formControls.deliveryForm['addressError'] || formControls.deliveryForm['tooFarError'] || formControls.deliveryForm['calcDistanceError']}" class="ng-autocomplete">
+                <div *ngIf="orderForm.isDelivery" [ngClass]="{'border border-danger': _.get(formControls, 'deliveryForm.addressError', false) || _.get(formControls, 'deliveryForm.tooFarError', false) || _.get(formControls, 'deliveryForm.calcDistanceError', false)}" class="ng-autocomplete">
                     <ng-autocomplete
                       placeHolder="Enter your address (i.e. {{globalConstants.company.address}})"
                       [data]="predictedAddresses"
@@ -59,7 +61,13 @@
                     <ng-template #notFoundTemplate let-notFound>
                     <div [innerHTML]="notFound"></div>
                     </ng-template>
-                    </div>
+                </div>
+                <p *ngIf="formControls?.deliveryForm?.feeWarning" class="text-custom-purple mt-2 font-weight-bold small">
+                    The address is {{orderForm.deliveryDistance | number}} miles away from our location. There will be a {{delivery.fee | currency:'USD':'symbol':'1.0'}} delivery fee over {{delivery.minDistance}} miles
+                </p>
+                <p *ngIf="formControls?.deliveryForm?.tooFarError" class="text-danger mt-2 font-weight-bold small">
+                    Sorry! We can only deliver up to {{delivery.minDistance}} miles from our location
+                </p>
             </div>
             <div class="form-group">
                 <label for="inputNotes">Notes</label>

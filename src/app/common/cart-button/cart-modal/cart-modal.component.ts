@@ -23,7 +23,11 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 export class CartModalComponent implements OnInit {
   _ = _;
   globalConstants = GlobalConstants;
-  DEFAULT_PICKUP_ADDRESS: string = this.globalConstants.company.address;
+  delivery = {
+    minDistance: 10,
+    maxDistance: 15,
+    fee: 5
+  }
   formControls: FormControl = {
     dateTimePicker: {},
     deliveryForm: {}
@@ -73,19 +77,71 @@ export class CartModalComponent implements OnInit {
   }
 
   async selectEvent(item) {
-    // do something with selected item
-    this.generateNewSessionToken();
-    // reset when place is selected
-    this.currentSessionToken = undefined;
-    this.timeStart = undefined;
-    console.log('selectEvent: ', item.name);
-    this.orderForm.address = item.name;
-    const deliveryFee = await this.calculateDeliveryFee();
-    this.isDeliveryInvalid = this.isDeliveryFormInvalid();
-    this.orderForm.deliveryFee = deliveryFee;
+    try {
+      // do something with selected item
+      this.generateNewSessionToken();
+      // reset when place is selected
+      this.currentSessionToken = undefined;
+      this.timeStart = undefined;
+      console.log('selectEvent: ', item.name);
+      this.orderForm.address = item.name;
+      if (_.isEmpty(this.orderForm.address)) {
+        return;
+      }
+
+      // get GeoCode for lat & lon
+      const geoCode = await this.googleMapsService.getGeoCode(this.orderForm.address);
+      this.orderForm.addressComponent = this.googleMapsService.getFormattedAddressComponent(_.get(geoCode, ['address_components'], []));
+      const lat = _.get(geoCode, 'geometry.location.lat', null);
+      const lon = _.get(geoCode, 'geometry.location.lng', null);
+      if (_.isNil(lat) || _.isNil(lon)) {
+        this.formControls.deliveryForm.addressError = true;
+        this.toastr.error(GlobalConstants.errors.deliveryErrors.addressError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
+          positionClass: 'toast-bottom-left',
+          progressBar: true,
+          disableTimeOut: false
+        });
+        this.isDeliveryFormInvalid();
+        return;
+      }
+
+      // get deliveryDistance in miles
+      this.orderForm.deliveryDistance = await this.googleMapsService.getDeliveryDistance(lat, lon);
+      console.log('miles to destination: ', this.orderForm.deliveryDistance);
+
+      // show error if delivery distance is over 15 miles
+      if (this.orderForm.deliveryDistance > this.delivery.maxDistance) {
+        this.formControls.deliveryForm.tooFarError = true;
+        this.toastr.error(GlobalConstants.errors.deliveryErrors.tooFarError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
+          positionClass: 'toast-bottom-left',
+          progressBar: true,
+          disableTimeOut: false
+        });
+        this.isDeliveryFormInvalid();
+        return;
+      }
+
+      // charge $5 delivery fee if delivery distance is between 10 to 15 miles
+      if (this.orderForm.deliveryDistance > this.delivery.minDistance && this.orderForm.deliveryDistance <= this.delivery.maxDistance) {
+        this.formControls.deliveryForm.feeWarning = true;
+        this.orderForm.deliveryFee = this.delivery.fee
+      }
+      this.isDeliveryInvalid = this.isDeliveryFormInvalid();
+    } catch (error) {
+
+      // show error if anything wrong happens with APIs or bad data
+      this.formControls.deliveryForm.calcDistanceError = true;
+      this.toastr.error(GlobalConstants.errors.deliveryErrors.calcDistanceError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
+        positionClass: 'toast-bottom-left',
+        progressBar: true,
+        disableTimeOut: false
+      });
+      this.isDeliveryFormInvalid();
+    }
   }
 
   async onChangeSearch(val: string) {
+    this.formControls.deliveryForm = {};
     // fetch remote data from here
     // And reassign the 'data' which is binded to 'data' property.
     console.log('onChangeSearch: ', val);
@@ -278,50 +334,6 @@ export class CartModalComponent implements OnInit {
     // All form validations passed. The Order Form is validated
     return false;
   };
-
-  async calculateDeliveryFee(): Promise<number>  {
-    let deliveryFee = 0;
-    this.formControls.deliveryForm = {};
-    if (this.orderForm.address) {
-      // confirm user address is valid and retrieve lat and lon coordinates
-      const geoCode = await this.googleMapsService.getGeoCode(this.orderForm.address);
-      this.orderForm.addressComponent = this.googleMapsService.getFormattedAddressComponent(_.get(geoCode, ['address_components'], []));
-      const lat = _.get(geoCode, 'geometry.location.lat');
-      const lon = _.get(geoCode, 'geometry.location.lng');
-      if (lat !== undefined && lon !== undefined) {
-        // calculate the distance
-        const milesToDestination = await this.googleMapsService.getDistance(lat, lon);
-        console.log('miles to destination: ', milesToDestination);
-        if (milesToDestination !== undefined) {
-          if (milesToDestination > 10 && milesToDestination <= 15) {
-            deliveryFee = 5;
-          } else {
-            this.formControls.deliveryForm.tooFarError = true;
-            this.toastr.error(GlobalConstants.errors.deliveryErrors.tooFarError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
-              positionClass: 'toast-bottom-left',
-              progressBar: true,
-              disableTimeOut: false
-            });
-          }
-        } else {
-          this.formControls.deliveryForm.calcDistanceError = true;
-          this.toastr.error(GlobalConstants.errors.deliveryErrors.calcDistanceError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
-            positionClass: 'toast-bottom-left',
-            progressBar: true,
-            disableTimeOut: false
-          });
-        }
-      } else {
-        this.formControls.deliveryForm.addressError = true;
-        this.toastr.error(GlobalConstants.errors.deliveryErrors.addressError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
-          positionClass: 'toast-bottom-left',
-          progressBar: true,
-          disableTimeOut: false
-        });
-      }
-    }
-    return deliveryFee;
-  }
 
   showDateTimePickerErrorOnSubmit(finalDateTime, errorMsg, errorTitle) {
     console.log('finalDateTime is not valid', finalDateTime);

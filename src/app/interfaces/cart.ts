@@ -11,6 +11,7 @@ export interface OrderForm {
     notes?: string;
     date: NgbDateStruct;
     time: NgbTimeStruct;
+    deliveryDistance: number;
     deliveryFee: number;
     total: number;
     grandTotal: number;
@@ -18,7 +19,6 @@ export interface OrderForm {
     totalOrdersQuantity: number;
     selectedDateTime: object;
 }
-
 export interface Order {
     imageUrls: string[];
     description: string;
