@@ -38,9 +38,10 @@
                 <!-- <input [ngClass]="{'border border-danger': formControls.deliveryForm['addressError'] || formControls.deliveryForm['tooFarError'] || formControls.deliveryForm['calcDistanceError']}" [(ngModel)]="orderForm.address" type="text" class="form-control" id="inputAddress" placeholder="Enter your address (i.e. 1234 Main St Seattle, WA 98125)" [disabled]="!orderForm.isDelivery"> -->
                 <div  [ngClass]="{'border border-danger': formControls.deliveryForm['addressError'] || formControls.deliveryForm['tooFarError'] || formControls.deliveryForm['calcDistanceError']}" class="ng-autocomplete">
                     <ng-autocomplete
-                      placeHolder="Enter your address (i.e. 1234 Main St Seattle, WA 98125)"
+                      placeHolder="Enter your address (i.e. {{globalConstants.company.address}})"
                       [data]="predictedAddresses"
                       [searchKeyword]="keyword"
+                      [initialValue]="orderForm.address"
                       (selected)='selectEvent($event)'
                       (inputChanged)='onChangeSearch($event)'
                       (inputFocused)='onFocused($event)'
@@ -66,7 +67,7 @@
         </section>
         <hr/>
         <section class="date-time-picker">
-            <h5>Schedule {{orderForm.isDelivery ? 'Delivery' : 'Pick Up'}} Date &amp; Time</h5>
+            <h5 class="mb-4">Schedule {{orderForm.isDelivery ? 'Delivery' : 'Pick Up'}} Date &amp; Time</h5>
             <div class="form-row mb-4" [ngClass]="{'border border-danger': formControls.dateTimePicker['tooLate'] || formControls.dateTimePicker['tooEarly']}">
                 <div class="form-group col-md-12">
                     <app-date-picker [date]="orderForm.date" (dateChangeEmitter)="orderForm.date = $event; orderForm.selectedDateTime = undefined"></app-date-picker>

@@ -1,11 +1,14 @@
 <section>
-    <div class="input-group">
-        <input #datepicker class="form-control" placeholder="YYYY-MM-DD" name="datepicker"
-        [(ngModel)]="date" (ngModelChange)="dateChangeEmitter.emit($event)" [minDate]="datePickerMinDate" [maxDate]="datePickerMaxDate" [readOnly]="readOnly" ngbDatepicker #d="ngbDatepicker">
-        <div class="input-group-append">
+    <!-- <div class="input-group"> -->
+        <input #datepicker class="form-control d-none" placeholder="YYYY-MM-DD" name="datepicker" (click)="d.toggle()"
+        [(ngModel)]="date" (ngModelChange)="dateChangeEmitter.emit($event)" [minDate]="datePickerMinDate" [maxDate]="datePickerMaxDate" ngbDatepicker #d="ngbDatepicker">
+        <!-- <div class="input-group-append"> -->
             <button class="btn btn-outline-custom-purple calendar" (click)="d.toggle()" type="button">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
             </button>
-        </div>
-    </div>
+            <span class="ml-2">
+                {{ date | ngbToDate}}
+            </span>
+        <!-- </div> -->
+    <!-- </div> -->
 </section>

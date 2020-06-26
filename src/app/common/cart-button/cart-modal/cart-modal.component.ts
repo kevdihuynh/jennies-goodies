@@ -13,6 +13,7 @@ import { FormControl } from 'src/app/interfaces/formControl';
 import { GooglePlacesService } from 'src/app/services/google-places/google-places.service';
 import { v4 as uuidv4 } from 'uuid';
 import calendarResponse from './../../../db_mock/calendar_response.json';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-cart-modal',
@@ -258,6 +259,11 @@ export class CartModalComponent implements OnInit {
     if (_.isNil(_.get(this.orderForm, 'isDelivery'))) {
       return true;
     };
+
+    // Validate if date is non-object
+    if (!_.isObject(_.get(this.orderForm, 'date'))) {
+      return true;
+    }
 
     // Validate if Address is unset only if isDelivery is set
     if (_.isEmpty(_.get(this.orderForm, 'address')) && !_.isNil(_.get(this.orderForm, 'isDelivery')) && _.get(this.orderForm, 'isDelivery')) {
