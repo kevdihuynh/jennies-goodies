@@ -1,4 +1,5 @@
 import { NgbDateStruct, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
+import { FormattedAddressComponent } from './google';
 
 export interface OrderForm {
     name: string;
@@ -6,6 +7,7 @@ export interface OrderForm {
     phoneNumber: string;
     isDelivery: boolean;
     address: string;
+    addressComponent: FormattedAddressComponent;
     notes?: string;
     date: NgbDateStruct;
     time: NgbTimeStruct;
@@ -14,6 +16,7 @@ export interface OrderForm {
     grandTotal: number;
     orders: Order[];
     totalOrdersQuantity: number;
+    selectedDateTime: object;
 }
 
 export interface Order {

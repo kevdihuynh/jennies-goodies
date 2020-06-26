@@ -12,6 +12,7 @@ import { GlobalConstants } from '../../../utils/global-constants';
 import { FormControl } from 'src/app/interfaces/formControl';
 import { GooglePlacesService } from 'src/app/services/google-places/google-places.service';
 import { v4 as uuidv4 } from 'uuid';
+import calendarResponse from './../../../db_mock/calendar_response.json';
 
 @Component({
   selector: 'app-cart-modal',
@@ -43,6 +44,7 @@ export class CartModalComponent implements OnInit {
     //    name: 'England'
     //  }
   ];
+  dateTimeOptions: any = calendarResponse;
 
   constructor(
     private toastr: ToastrService,
@@ -276,10 +278,13 @@ export class CartModalComponent implements OnInit {
     this.formControls.deliveryForm = {};
     if (this.orderForm.address) {
       // confirm user address is valid and retrieve lat and lon coordinates
-      const latLon = await this.googleMapsService.getGeocode(this.orderForm.address);
-      if (latLon[0] !== undefined && latLon[1] !== undefined) {
+      const geoCode = await this.googleMapsService.getGeoCode(this.orderForm.address);
+      this.orderForm.addressComponent = this.googleMapsService.getFormattedAddressComponent(_.get(geoCode, ['address_components'], []));
+      const lat = _.get(geoCode, 'geometry.location.lat');
+      const lon = _.get(geoCode, 'geometry.location.lng');
+      if (lat !== undefined && lon !== undefined) {
         // calculate the distance
-        const milesToDestination = await this.googleMapsService.getDistance(latLon[0], latLon[1]);
+        const milesToDestination = await this.googleMapsService.getDistance(lat, lon);
         console.log('miles to destination: ', milesToDestination);
         if (milesToDestination !== undefined) {
           if (milesToDestination > 10 && milesToDestination <= 15) {

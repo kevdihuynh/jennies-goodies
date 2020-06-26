@@ -30,7 +30,6 @@ export class CartButtonComponent implements OnInit {
   ngOnInit(): void {
     this.cartService.orderForm.subscribe((orderForm: OrderForm) => {
       this.orderForm = orderForm;
-      console.log(this.orderForm);
     });
   }
 
