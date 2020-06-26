@@ -28,7 +28,7 @@
                             <input ngbButton type="radio" [value]="true" (click)="orderForm.address = undefined"> Delivery
                         </label>
                         <label ngbButtonLabel class="btn-outline-custom-purple">
-                            <input ngbButton type="radio" [value]="false" (click)="orderForm.address = _.cloneDeep(DEFAULT_PICKUP_ADDRESS)"> Pick Up
+                            <input ngbButton type="radio" [value]="false" (click)="orderForm.address = _.cloneDeep(globalConstants.company.address)"> Pick Up
                         </label>
                     </div>
                 </div>
@@ -36,7 +36,8 @@
             <div class="form-group">
                 <label for="inputAddress">{{orderForm.isDelivery ? 'Delivery' : 'Pick Up'}} Address</label>
                 <!-- <input [ngClass]="{'border border-danger': formControls.deliveryForm['addressError'] || formControls.deliveryForm['tooFarError'] || formControls.deliveryForm['calcDistanceError']}" [(ngModel)]="orderForm.address" type="text" class="form-control" id="inputAddress" placeholder="Enter your address (i.e. 1234 Main St Seattle, WA 98125)" [disabled]="!orderForm.isDelivery"> -->
-                <div  [ngClass]="{'border border-danger': formControls.deliveryForm['addressError'] || formControls.deliveryForm['tooFarError'] || formControls.deliveryForm['calcDistanceError']}" class="ng-autocomplete">
+                <p *ngIf="!orderForm.isDelivery" class="my-2">{{orderForm.address}}</p>
+                <div *ngIf="orderForm.isDelivery" [ngClass]="{'border border-danger': formControls.deliveryForm['addressError'] || formControls.deliveryForm['tooFarError'] || formControls.deliveryForm['calcDistanceError']}" class="ng-autocomplete">
                     <ng-autocomplete
                       placeHolder="Enter your address (i.e. {{globalConstants.company.address}})"
                       [data]="predictedAddresses"
