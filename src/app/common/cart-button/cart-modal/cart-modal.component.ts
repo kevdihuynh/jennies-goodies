@@ -179,10 +179,16 @@ export class CartModalComponent implements OnInit {
     }
   }
 
-  onFocused(e){
+  onFocused(e) {
     // do something when input is focused
     console.log('onFocused: ', e);
   }
+
+  resetAddress(e?: any) {
+    this.orderForm.address = undefined;
+    this.resetDeliveryFee();
+  }
+
 
   generateNewSessionToken() {
     if (this.timeStart === undefined) {
