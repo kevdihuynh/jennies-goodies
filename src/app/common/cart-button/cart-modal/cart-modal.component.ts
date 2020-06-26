@@ -130,6 +130,11 @@ export class CartModalComponent implements OnInit {
   validateDeliveryFee(): void {
     this.resetDeliveryFee();
 
+    // Ignore all if pick up
+    if (!this.orderForm.isDelivery) {
+      return;
+    }
+
     console.log('miles to destination: ', this.orderForm.deliveryDistance);
     // show error if delivery distance is over 15 miles
     if (this.orderForm.deliveryDistance > this.delivery.maxDistance) {
