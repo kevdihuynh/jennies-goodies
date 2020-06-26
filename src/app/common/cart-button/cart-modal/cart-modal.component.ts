@@ -122,9 +122,13 @@ export class CartModalComponent implements OnInit {
     }
   }
 
-  validateDeliveryFee(): void {
+  resetDeliveryFee(): void {
     this.formControls.deliveryForm = {};
     this.orderForm.deliveryFee = 0;
+  }
+
+  validateDeliveryFee(): void {
+    this.resetDeliveryFee();
 
     console.log('miles to destination: ', this.orderForm.deliveryDistance);
     // show error if delivery distance is over 15 miles
@@ -139,7 +143,7 @@ export class CartModalComponent implements OnInit {
       return;
     }
 
-    // charge $5 delivery fee if delivery distance is between 10 to 15 miles AND under 20
+    // charge $5 delivery fee if delivery distance is between 10 to 12 miles AND under 20
     if (this.orderForm.deliveryDistance > this.delivery.minDistance && this.orderForm.deliveryDistance <= this.delivery.maxDistance
       && this.orderForm.total < this.delivery.voidMaxTotal) {
       this.formControls.deliveryForm.feeWarning = true;

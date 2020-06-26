@@ -25,10 +25,10 @@
                     <label for="inputIsDelivery">Service Type</label>
                     <div class="btn-group btn-block btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="orderForm.isDelivery">
                         <label ngbButtonLabel class="btn-outline-custom-purple">
-                            <input ngbButton type="radio" [value]="true" (click)="formControls.deliveryForm = undefined; orderForm.address = undefined;"> Delivery
+                            <input ngbButton type="radio" [value]="true" (click)="orderForm.address = undefined; resetDeliveryFee()"> Delivery
                         </label>
                         <label ngbButtonLabel class="btn-outline-custom-purple">
-                            <input ngbButton type="radio" [value]="false" (click)=" formControls.deliveryForm = undefined; orderForm.address = _.cloneDeep(globalConstants.company.address)"> Pick Up
+                            <input ngbButton type="radio" [value]="false" (click)="orderForm.address = _.cloneDeep(globalConstants.company.address); resetDeliveryFee()"> Pick Up
                         </label>
                     </div>
                 </div>
