@@ -25,7 +25,7 @@ export class CartModalComponent implements OnInit {
   globalConstants = GlobalConstants;
   delivery = {
     minDistance: 10,
-    maxDistance: 15,
+    maxDistance: 12,
     fee: 5
   }
   formControls: FormControl = {
