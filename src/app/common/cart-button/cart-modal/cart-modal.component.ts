@@ -24,6 +24,7 @@ export class CartModalComponent implements OnInit {
   _ = _;
   globalConstants = GlobalConstants;
   delivery = {
+    voidMaxTotal: 20,
     minDistance: 10,
     maxDistance: 12,
     fee: 5
@@ -107,26 +108,7 @@ export class CartModalComponent implements OnInit {
 
       // get deliveryDistance in miles
       this.orderForm.deliveryDistance = await this.googleMapsService.getDeliveryDistance(lat, lon);
-      console.log('miles to destination: ', this.orderForm.deliveryDistance);
-
-      // show error if delivery distance is over 15 miles
-      if (this.orderForm.deliveryDistance > this.delivery.maxDistance) {
-        this.formControls.deliveryForm.tooFarError = true;
-        this.toastr.error(GlobalConstants.errors.deliveryErrors.tooFarError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
-          positionClass: 'toast-bottom-left',
-          progressBar: true,
-          disableTimeOut: false
-        });
-        this.isDeliveryFormInvalid();
-        return;
-      }
-
-      // charge $5 delivery fee if delivery distance is between 10 to 15 miles
-      if (this.orderForm.deliveryDistance > this.delivery.minDistance && this.orderForm.deliveryDistance <= this.delivery.maxDistance) {
-        this.formControls.deliveryForm.feeWarning = true;
-        this.orderForm.deliveryFee = this.delivery.fee
-      }
-      this.isDeliveryInvalid = this.isDeliveryFormInvalid();
+      this.validateDeliveryFee();
     } catch (error) {
 
       // show error if anything wrong happens with APIs or bad data
@@ -140,8 +122,36 @@ export class CartModalComponent implements OnInit {
     }
   }
 
+  validateDeliveryFee(): void {
+    this.formControls.deliveryForm = {};
+    this.orderForm.deliveryFee = 0;
+
+    console.log('miles to destination: ', this.orderForm.deliveryDistance);
+    // show error if delivery distance is over 15 miles
+    if (this.orderForm.deliveryDistance > this.delivery.maxDistance) {
+      this.formControls.deliveryForm.tooFarError = true;
+      this.toastr.error(GlobalConstants.errors.deliveryErrors.tooFarError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
+        positionClass: 'toast-bottom-left',
+        progressBar: true,
+        disableTimeOut: false
+      });
+      this.isDeliveryFormInvalid();
+      return;
+    }
+
+    // charge $5 delivery fee if delivery distance is between 10 to 15 miles AND under 20
+    if (this.orderForm.deliveryDistance > this.delivery.minDistance && this.orderForm.deliveryDistance <= this.delivery.maxDistance
+      && this.orderForm.total < this.delivery.voidMaxTotal) {
+      this.formControls.deliveryForm.feeWarning = true;
+      this.orderForm.deliveryFee = this.delivery.fee
+    }
+    this.isDeliveryInvalid = this.isDeliveryFormInvalid();
+  }
+
   async onChangeSearch(val: string) {
     this.formControls.deliveryForm = {};
+    this.orderForm.deliveryFee = 0;
+    this.orderForm.deliveryDistance = 0;
     // fetch remote data from here
     // And reassign the 'data' which is binded to 'data' property.
     console.log('onChangeSearch: ', val);
@@ -200,6 +210,7 @@ export class CartModalComponent implements OnInit {
 
   updateFromCart(order: Order, index: number): void {
     this.cartService.updateFromCart(order, index);
+    this.validateDeliveryFee();
   }
 
   removeFromCart(order: Order, index: number): void {
