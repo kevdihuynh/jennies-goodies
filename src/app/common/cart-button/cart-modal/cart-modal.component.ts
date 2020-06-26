@@ -321,6 +321,11 @@ export class CartModalComponent implements OnInit {
       return true;
     }
 
+    // Validate if selectedDateTime is unset
+    if (_.isNil(_.get(this.orderForm, 'selectedDateTime'))) {
+      return true;
+    }
+
     // Validate if Address is unset only if isDelivery is set
     if (_.isEmpty(_.get(this.orderForm, 'address')) && !_.isNil(_.get(this.orderForm, 'isDelivery')) && _.get(this.orderForm, 'isDelivery')) {
       return true;
