@@ -116,6 +116,13 @@
         <pre class="mt-2">{{orderForm | json}}</pre> -->
     </ng-container>
 </div>
+<button (click)="getEvents()">Get events from google calendar</button>
+
+<div *ngFor="let slot of availableSlots">
+    <h6>{{slot.summary}}</h6>
+    <div>{{slot.start.dateTime}} to {{slot.end.dateTime}}</div>
+    <button (click)="updateEvent(slot)">Book this time</button>
+</div>
 <div class="modal-footer" *ngIf="orderForm.orders.length">
     <div class="w-100 text-center" *ngIf="!isOrderFormDisabled()">
         <app-paypal></app-paypal>

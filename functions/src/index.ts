@@ -4,6 +4,168 @@ import { distanceMatrixApi } from './apis/distanceMatrix/distanceMatrixApi';
 import _ = require('lodash');
 import { cors } from './utils';
 import { placesApi } from './apis/places/placesApi';
+import { calendarApi } from './apis/calendar/calendarApi';
+const googleCredentials = {
+    "web": {
+        "client_id": "949455722879-ed09ppr7jo3rd4pm7kc447etcde0pt7p.apps.googleusercontent.com",
+        "project_id": "jennies-goodies",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "ZjyXgw-6xMmoWmHou69bXiLz",
+        "redirect_uris": [
+            "https://jennies-goodies.firebaseapp.com/__/auth/handler"
+        ],
+        "javascript_origins": [
+            "http://localhost",
+            "http://localhost:5000",
+            "http://localhost:4200",
+            "http://localhost:5001",
+            "https://jennies-goodies.web.app"
+        ]
+    },
+    "refresh_token": "1//048WIgQ7KzDxBCgYIARAAGAQSNwF-L9IrvgDGCntH-2qWOcZJsm75pl0-coFi4t3l5ulmQnRGRhCf73Kiju0T9-oZ7gER31nFHbg"
+}
+
+const {google} = require('googleapis');
+const OAuth2 = google.auth.OAuth2; 
+const calendar = google.calendar('v3');
+
+const ERROR_RESPONSE = {
+    status: "500",
+    message: "There was an error adding an event to your Google calendar"
+};
+
+const ERROR_RESPONSE_2 = {
+    status: "500",
+    message: "Date and time are not valid",
+};
+
+const TIME_ZONE = 'EST';
+
+function addEvent(event:any, auth:any) {
+    return new Promise(function(resolve, reject) {
+        calendar.events.insert({
+            auth: auth,
+            calendarId: 'primary',
+            resource: {
+                'summary': event.eventName,
+                'description': event.description,
+                'start': {
+                    'dateTime': event.startTime,
+                    'timeZone': TIME_ZONE,
+                },
+                'end': {
+                    'dateTime': event.endTime,
+                    'timeZone': TIME_ZONE,
+                },
+            },
+        }, (err:any, res:any) => {
+            if (err) {
+                console.log('Rejecting because of error');
+                reject(err);
+            }
+            console.log('Request successful');
+            resolve(res.data);
+        });
+    });
+}
+
+export const addEventToCalendar = functions.https.onRequest((request, response) => {
+    const r = {
+        "eventName": "Firebase Event",
+        "description": "This is a sample description",
+        "startTime": "2020-06-25T10:00:00",
+        "endTime": "2020-06-25T13:00:00"
+    };
+    const eventData = {
+        eventName: r.eventName,
+        description: r.description,
+        startTime: r.startTime,
+        endTime: r.endTime
+    };
+    const oAuth2Client = new OAuth2(
+        googleCredentials.web.client_id,
+        googleCredentials.web.client_secret,
+        googleCredentials.web.redirect_uris[0]
+    );
+
+    oAuth2Client.setCredentials({
+        refresh_token: googleCredentials.refresh_token
+    });
+
+    addEvent(eventData, oAuth2Client).then(data => {
+        response.status(200).send(data);
+        return;
+    }).catch(err => {
+        console.error('Error adding event: ' + err.message); 
+        response.status(500).send(ERROR_RESPONSE); 
+        return;
+    });
+});
+
+export const getCalendarEvents = functions.https.onRequest(async (request, response) => {
+    cors(request, response);
+    console.log('entering::', request.body);
+    const timeMin = _.get(request, 'body.timeMin', undefined);
+    const timeMax = _.get(request, 'body.timeMax', undefined);
+    const eventData = {
+        timeMin,
+        timeMax,
+        calendarId: 'primary',
+        orderBy: 'startTime',
+    }
+    if (timeMax && timeMin) {
+        calendarApi.getCalendarEvents(eventData).then(data => {
+            console.log('data::', data);
+            const events = _.get(data, 'items', {});
+            response.status(200).send(events);
+            return;
+        }).catch(err => {
+            console.error('Error adding event: ' + err.message); 
+            response.status(500).send(ERROR_RESPONSE); 
+            return;
+        });
+    } else {
+        response.status(200).send(ERROR_RESPONSE_2);
+        return;
+    }
+});
+
+export const updateCalendarEvent = functions.https.onRequest(async (request, response) => {
+    cors(request, response);
+    console.log('entering::', request.body);
+    const eventId = _.get(request, 'body.eventId', undefined);
+    const name = _.get(request, 'body.name', undefined);
+    const email = _.get(request, 'body.email', '');
+    const start = _.get(request, 'body.start', '');
+    const end = _.get(request, 'body.start', '');
+    const ev = _.get(request, 'body.event', '');
+    const eventData = {
+        calendarId:'primary',
+        eventId,
+        summary: `BOOKED ${name} ${email ? `(${email})` : ''}`,
+        visibility: 'private',
+        start,
+        end,
+    };
+
+    if (eventId && name) {
+        calendarApi.updateCalendarEvent(eventData, ev).then(data => {
+            console.log('data::', data);
+            // const events = _.get(data, 'items', {});
+            response.status(200).send(data);
+            return;
+        }).catch(err => {
+            console.error('Error adding event: ' + err.message); 
+            response.status(500).send(ERROR_RESPONSE); 
+            return;
+        });
+    } else {
+        response.status(200).send(ERROR_RESPONSE_2);
+        return;
+    }
+});
 
 export const helloWorld = functions.https.onRequest((request, response) => {
  response.send("Hello from Firebase!");

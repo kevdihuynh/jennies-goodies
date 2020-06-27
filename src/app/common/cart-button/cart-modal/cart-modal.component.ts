@@ -12,6 +12,7 @@ import { GlobalConstants } from '../../../utils/global-constants';
 import { FormControl } from 'src/app/interfaces/formControl';
 import { GooglePlacesService } from 'src/app/services/google-places/google-places.service';
 import { v4 as uuidv4 } from 'uuid';
+import { GoogleCalendarService } from 'src/app/service/google-calendar/google-calendar.service';
 
 @Component({
   selector: 'app-cart-modal',
@@ -43,14 +44,15 @@ export class CartModalComponent implements OnInit {
     //    name: 'England'
     //  }
   ];
-
+  availableSlots: any[] = [];
   constructor(
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     public activeModal: NgbActiveModal,
     public cartService: CartService,
     public googleMapsService: GoogleMapsService,
-    public googlePlacesService: GooglePlacesService) {
+    public googlePlacesService: GooglePlacesService,
+    public googleCalendarService: GoogleCalendarService) {
     // If weekend, set default start time to 9am
     if (this.isClosedDays()) {
       this.orderForm.time = { hour: 9, minute: 0, second: 0 };
@@ -320,6 +322,27 @@ export class CartModalComponent implements OnInit {
       disableTimeOut: false
     });
     this.spinner.hide();
+  }
+
+  async getEvents() {
+    // time sent to google needs to be in RFC 3339
+    const dateTimeStart = moment(`${this.orderForm.date.year}-${this.orderForm.date.month}-${this.orderForm.date.day} 00:00:00`).format();
+    const dateTimeEnd = moment(`${this.orderForm.date.year}-${this.orderForm.date.month}-${this.orderForm.date.day} 24:00:00`).format();
+    const events = await this.googleCalendarService.getEvents(dateTimeStart, dateTimeEnd);
+    this.availableSlots = events;
+    console.log('google calendar getEvents response:: ', events);
+  }
+
+  async updateEvent(calendarEvent) {
+    // time sent to google needs to be in RFC 3339
+    const eventId = calendarEvent.htmlLink.split('=')[1];
+    const start = calendarEvent.start.dateTime;
+    const end = calendarEvent.end.dateTime;
+
+    const dateTimeStart = moment(`${this.orderForm.date.year}-${this.orderForm.date.month}-${this.orderForm.date.day} 00:00:00`).format();
+    const dateTimeEnd = moment(`${this.orderForm.date.year}-${this.orderForm.date.month}-${this.orderForm.date.day} 24:00:00`).format();
+    const events = await this.googleCalendarService.updateEvent(eventId, this.orderForm.name, this.orderForm.email, start, end, calendarEvent);
+    console.log('google calendar updateEvents response:: ', events);
   }
 
   async submit(): Promise<void> {
