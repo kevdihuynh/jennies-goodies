@@ -184,8 +184,8 @@ export class CartModalComponent implements OnInit {
     console.log('onFocused: ', e);
   }
 
-  resetAddress(e?: any) {
-    this.orderForm.address = undefined;
+  resetAddress(useDefaultAddress: boolean = false) {
+    this.orderForm.address = useDefaultAddress ? _.cloneDeep(this.globalConstants.company.address) : undefined;
     this.resetDeliveryFee();
   }
 
