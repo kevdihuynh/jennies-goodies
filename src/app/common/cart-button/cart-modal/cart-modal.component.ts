@@ -402,7 +402,34 @@ export class CartModalComponent implements OnInit {
 
   async updateEvent() {
     // time sent to google needs to be in RFC 3339
-    const events = await this.googleCalendarService.updateEvent(this.orderForm.selectedDateTime, this.orderForm.name, this.orderForm.email);
+    const getOrderItems = () => {
+      let itemList = '';
+      this.orderForm.orders.map((order) => {
+        itemList += `<li>${order.quantity} x ${order.name} (${_.join(order.selectedFlavors, ', ')}) - ${order.batchSize} for $${order.price}</li>`;
+      });
+      return itemList;
+    };
+
+    const descriptionHTML = `
+      <section>
+        <p>
+          phone: ${this.orderForm.phoneNumber}
+        </p>
+        <p>
+          ${this.orderForm.notes}
+        </p>
+        <p>
+          ${this.orderForm.isDelivery ? `${this.orderForm.address} (${this.orderForm.deliveryDistance})` : 'Pick Up'}
+        </p>
+        <p>
+          Total: $${this.orderForm.total} + $${this.orderForm.deliveryFee}
+        </p>
+        <ul>
+          ${getOrderItems()}
+        </ul>
+      </section>
+    `;
+    const events = await this.googleCalendarService.updateEvent(this.orderForm, descriptionHTML);
     console.log('google calendar updateEvents response:: ', events);
   }
 

@@ -134,21 +134,25 @@ export const getCalendarEvents = functions.https.onRequest(async (request, respo
 
 export const updateCalendarEvent = functions.https.onRequest(async (request, response) => {
     cors(request, response);
-    console.log('entering::', request.body);
-    const selectedDateTime = _.get(request, 'body.selectedDateTime', undefined);
-    const name = _.get(request, 'body.name', undefined);
-    const email = _.get(request, 'body.email', '');
+    console.log('request body', request.body);
+    const orderForm = _.get(request, 'body.orderForm', undefined);
+    const selectedDateTime = _.get(orderForm, 'selectedDateTime', undefined);
+    const description = _.get(request, 'body.description', undefined);
+    
+    const name = _.get(orderForm, 'name', undefined);
+    const email = _.get(orderForm, 'email', '');
 
     if (selectedDateTime && name) {
         selectedDateTime.summary = `BOOKED ${name} ${email ? `(${email})` : ''}`;
-        selectedDateTime.visibility = 'private';
+        selectedDateTime.description = description;
+        console.log('event::', selectedDateTime);
         const eventData = {
             calendarId:'primary',
             eventId: _.get(selectedDateTime, 'id', undefined),
             resource: selectedDateTime,
         };
         calendarApi.updateCalendarEvent(eventData).then(data => {
-            console.log('data::', data);
+            // console.log('data::', data);
             // const events = _.get(data, 'items', {});
             response.status(200).send(data);
             return;

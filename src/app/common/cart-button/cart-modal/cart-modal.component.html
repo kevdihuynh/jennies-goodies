@@ -102,9 +102,9 @@
                     </div>
                 </ng-container>
             </div>
-            <pre>
+            <!-- <pre>
                 {{orderForm.selectedDateTime | json}}
-            </pre>
+            </pre> -->
             <!-- Google Calendar Widget -->
             <!-- <ng-container>
                 <h5>See Jennie's Calendar</h5>
@@ -137,7 +137,7 @@
     </ng-container>
 </div>
 <div class="modal-footer p-0" *ngIf="!isOrderFormDisabled()">
-    <pre class="mt-2">{{orderForm | json}}</pre>
+    <!-- <pre class="mt-2">{{orderForm | json}}</pre> -->
     <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-custom-purple': !isOrderFormDisabled(), 'btn-dark': isOrderFormDisabled()}"
         [disabled]="isOrderFormDisabled()" (click)="submit()">
         Place Order

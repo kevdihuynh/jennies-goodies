@@ -6,8 +6,8 @@ export const GOOGLE_API_KEY = 'AIzaSyDmGIVY1COhYIaG8llvdXMTUlERkeaozig';
 export const API_BASE_URL = "https://jsonplaceholder.typicode.com/";
 
 // this will be set to Rob's house
-export const ORIGIN_LAT = 47.727030;
-export const ORIGIN_LON = -122.299520;
+export const ORIGIN_LAT = 47.4455137;
+export const ORIGIN_LON = -122.1683066;
 
 export const urls = {
     matrixDistanceUrl: `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&key=${GOOGLE_API_KEY}&origins=[[origins]]&destinations=[[destinations]]`,
