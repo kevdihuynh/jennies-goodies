@@ -12,6 +12,6 @@ export const environment = {
     measurementId: 'G-DPTVR63GCE'
   },
   paypal: {
-    clientId: 'Aa_2F2uz1VcrK9M1v6BFvz5_uxeBx04SLjC79h4XIyIdUqJc-C0kTjqrhtsHAPsghCFXvRkJDdkQfhTu'
+    clientId: 'AVnG46UUG1zViJU0RZINz5uJtJrSscuhNksuFYnKvoz-qvzZp9hTyLf00Q0GLRXF_ES0bk17XCNwHzeB'
   }
 };
