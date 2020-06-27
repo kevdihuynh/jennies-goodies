@@ -13,6 +13,9 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 
+
+import { NgbToDatePipe } from './pipes/ngb-to-date/ngb-to-date.pipe';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavComponent } from './common/nav/nav.component';
@@ -41,7 +44,8 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
     CartModalComponent,
     TimePickerComponent,
     DatePickerComponent,
-    PaypalComponent
+    PaypalComponent,
+    NgbToDatePipe
   ],
   imports: [
     BrowserModule,

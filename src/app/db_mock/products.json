@@ -1,79 +1,143 @@
 [
-    {
-        "options": [
-            {
-                "flavors": [
-                    "Oreo",
-                    "Lemon",
-                    "Ube"
-                ],
-                "qty": 6,
-                "maxFlavors": 1,
-                "imageUrl": "../../assets/images/cupcakes_ube.jpg",
-                "desc": "test",
-                "name": "Cupcakes",
-                "price": 10
-            },
-            {
-                "qty": 12,
-                "flavors": [
-                    "Oreo",
-                    "Lemon",
-                    "Ube"
-                ],
-                "price": 22,
-                "desc": "test",
-                "maxFlavors": 2,
-                "name": "Cupcakes",
-                "imageUrl": "../../assets/images/cupcakes_ube.jpg"
-            }
+  {
+    "description": "A cupcake is a small cake designed to serve one person, which may be baked in a small thin paper or aluminum cup. As with larger cakes, icing and other cake decorations such as fruit and candy may be applied.",
+    "name": "Cupcakes",
+    "options": [
+      {
+        "name": "Cupcakes",
+        "qty": 6,
+        "maxFlavors": 1,
+        "imageUrl": "../../assets/images/cupcakes_ube.jpg",
+        "desc": "test",
+        "price": 10,
+        "flavors": [
+          "Oreo",
+          "Lemon",
+          "Ube"
         ]
-    },
-    {
-        "options": [
-            {
-                "imageUrl": "../../assets/images/pandesal_pandan.jpg",
-                "flavors": [
-                    "Ube",
-                    "Pandan",
-                    "Original"
-                ],
-                "price": 8,
-                "qty": 6,
-                "desc": "test",
-                "maxFlavors": 1,
-                "name": "Pandesals"
-            },
-            {
-                "desc": "test",
-                "name": "Pandesals",
-                "maxFlavors": 2,
-                "flavors": [
-                    "Ube",
-                    "Pandan",
-                    "Original"
-                ],
-                "imageUrl": "../../assets/images/pandesal_pandan.jpg",
-                "qty": 12,
-                "price": 17
-            }
+      },
+      {
+        "price": 22,
+        "name": "Cupcakes",
+        "imageUrl": "../../assets/images/cupcakes_ube.jpg",
+        "desc": "test",
+        "maxFlavors": 2,
+        "qty": 12,
+        "flavors": [
+          "Oreo",
+          "Lemon",
+          "Ube"
         ]
-    },
-    {
-        "options": [
-            {
-                "name": "Silvanas",
-                "flavors": [
-                    "Original",
-                    "Oreo",
-                    "Ube"
-                ],
-                "price": 10,
-                "desc": "test",
-                "imageUrl": "../../assets/images/ube_cookies.jpg",
-                "qty": 4,
-                "maxFlavors": 1
-            }
-        ]
-    }
+      }
+    ],
+    "variations": [
+      {
+        "maxFlavors": 1,
+        "batchSize": 6,
+        "price": 10
+      },
+      {
+        "batchSize": 12,
+        "price": 22,
+        "maxFlavors": 2
+      }
+    ],
+    "imageUrls": [
+      "../../assets/images/cupcakes_ube.jpg"
+    ],
+    "flavors": [
+      "Oreo",
+      "Lemon",
+      "Ube"
+    ],
+    "quantity": 1
+  },
+  {
+    "imageUrls": [
+      "../../assets/images/pandesal_pandan.jpg"
+    ],
+    "flavors": [
+      "Ube",
+      "Pandan",
+      "Original"
+    ],
+    "description": "Pan de sal is a popular yeast-raised bread in the Philippines. Individual loaves are shaped by rolling the dough into long logs (bastón, Spanish for \"stick\") which are rolled in fine bread crumbs. These are then portioned, allowed to rise, and baked.",
+    "options": [
+      {
+        "maxFlavors": 1,
+        "price": 8,
+        "flavors": [
+          "Ube",
+          "Pandan",
+          "Original"
+        ],
+        "qty": 6,
+        "name": "Pandesals",
+        "imageUrl": "../../assets/images/pandesal_pandan.jpg",
+        "desc": "test"
+      },
+      {
+        "flavors": [
+          "Ube",
+          "Pandan",
+          "Original"
+        ],
+        "imageUrl": "../../assets/images/pandesal_pandan.jpg",
+        "qty": 12,
+        "name": "Pandesals",
+        "maxFlavors": 2,
+        "desc": "test",
+        "price": 17
+      }
+    ],
+    "name": "Pandelsals",
+    "variations": [
+      {
+        "price": 8,
+        "maxFlavors": 1,
+        "batchSize": 6
+      },
+      {
+        "maxFlavors": 2,
+        "price": 17,
+        "batchSize": 12
+      }
+    ],
+    "quantity": 1
+  },
+  {
+    "imageUrls": [
+      "../../assets/images/ube_cookies.jpg"
+    ],
+    "name": "Silvanas",
+    "variations": [
+      {
+        "maxFlavors": 1,
+        "price": 10,
+        "batchSize": 4
+      }
+    ],
+    "description": "Silvanas, alternatively spelled as sylvanas or sylvannas, is a Filipino frozen cookie consisting of a layer of buttercream sandwiched between two cashew-meringue wafers coated with cookie crumbs. Silvanas are the cookie versions of the Sans rival, a Filipino cake made from similar ingredients.",
+    "flavors": [
+      "Original",
+      "Oreo",
+      "Ube"
+    ],
+    "options": [
+      {
+        "price": 10,
+        "maxFlavors": 1,
+        "flavors": [
+          "Original",
+          "Oreo",
+          "Ube"
+        ],
+        "qty": 4,
+        "imageUrl": "../../assets/images/ube_cookies.jpg",
+        "name": "Silvanas",
+        "desc": "test"
+      }
+    ],
+    "quantity": 1
+  }
 ]

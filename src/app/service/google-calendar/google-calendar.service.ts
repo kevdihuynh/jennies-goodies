@@ -20,14 +20,11 @@ export class GoogleCalendarService {
     return calendarEventsResponse;
   }
 
-  async updateEvent(eventId: string, name: string, email: string, start: string, end: string, event: any): Promise<any[]> {
+  async updateEvent(selectedDateTime: object, name: string, email: string): Promise<any[]> {
     const reqBody = {
-      eventId,
+      selectedDateTime,
       name,
       email,
-      start,
-      end,
-      event,
     };
     const callback = () => this.http.post<any>(`${getBaseUrl()}/updateCalendarEvent`, reqBody);
     const updateCalendarEventResponse = await getResponse(callback, getEventsResponse).toPromise();

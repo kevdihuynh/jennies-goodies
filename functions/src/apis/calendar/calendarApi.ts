@@ -69,8 +69,7 @@ function getEvents(eventData: any, auth:any) {
             timeMin: eventData.timeMin,
             timeMax: eventData.timeMax,
             calendarId: eventData.calendarId,
-            // orderBy: eventData.orderBy,
-            // timeZone: TIME_ZONE,
+            singleEvents: true,
         }, (err:any, res:any) => {
             if (err) {
                 console.log('Rejecting because of error');
@@ -82,21 +81,12 @@ function getEvents(eventData: any, auth:any) {
     });
 }
 
-function updateEvent(eventData: any, auth:any,eventId: any) {
-
+const updateEvent = (eventData: any, auth:any) => {
     return new Promise(function(resolve, reject) {
-        let e = _.cloneDeep(eventData)
-        e.summary = 'this works!!';
-        const a = {
-            auth: auth,
-            "calendarId": "primary",
-            "eventId": e.id,
-            "resource": e,
-        }
-      
-        console.log('event data', a);
-    
-        calendar.events.patch(a, (err:any, res:any) => {
+        const oauth = {
+            auth,
+        };
+        calendar.events.patch(_.merge(oauth, eventData), (err:any, res:any) => {
             if (err) {
                 console.log('Rejecting because of error');
                 reject(err);
@@ -106,7 +96,6 @@ function updateEvent(eventData: any, auth:any,eventId: any) {
         });
     });
 }
-
 
 export class CalendarApi extends Api {
     public constructor (config?: AxiosRequestConfig) {
@@ -128,7 +117,7 @@ export class CalendarApi extends Api {
         return getEvents(eventData, oAuth2Client);
     }
 
-    public updateCalendarEvent(eventData: any, ev: any): Promise<any> {
+    public updateCalendarEvent(selectedDateTime: any): Promise<any> {
         const oAuth2Client = new OAuth2(
             googleCredentials.web.client_id,
             googleCredentials.web.client_secret,
@@ -138,7 +127,7 @@ export class CalendarApi extends Api {
         oAuth2Client.setCredentials({
             refresh_token: googleCredentials.refresh_token
         });
-        return updateEvent(ev, oAuth2Client, eventData.eventId);
+        return updateEvent(selectedDateTime, oAuth2Client);
     }
 }
 

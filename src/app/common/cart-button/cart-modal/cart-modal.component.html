@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Order Form</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{orderForm.isDelivery ? 'Delivery' : 'Pick Up'}} Order Form</h4>
     <button type="button" class="close" aria-label="Close" (click)="dismissCartModal('Cross click')">
         <i class="fa fa-times-circle text-custom-purple cursor-pointer" aria-hidden="true"></i>
     </button>
@@ -25,25 +25,30 @@
                     <label for="inputIsDelivery">Service Type</label>
                     <div class="btn-group btn-block btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="orderForm.isDelivery">
                         <label ngbButtonLabel class="btn-outline-custom-purple">
-                            <input ngbButton type="radio" [value]="true" (click)="orderForm.address = undefined"> Delivery
+                            <input ngbButton type="radio" [value]="true" (click)="resetAddress(false)"> Delivery
                         </label>
                         <label ngbButtonLabel class="btn-outline-custom-purple">
-                            <input ngbButton type="radio" [value]="false" (click)="orderForm.address = _.cloneDeep(DEFAULT_PICKUP_ADDRESS)"> Pick Up
+                            <input ngbButton type="radio" [value]="false" (click)="resetAddress(true)"> Pick Up
                         </label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputAddress">{{orderForm.isDelivery ? 'Delivery' : 'Pick Up'}} Address</label>
+                <label for="inputAddress">
+                    {{orderForm.isDelivery ? 'Delivery' : 'Pick Up'}} Address
+                </label>
                 <!-- <input [ngClass]="{'border border-danger': formControls.deliveryForm['addressError'] || formControls.deliveryForm['tooFarError'] || formControls.deliveryForm['calcDistanceError']}" [(ngModel)]="orderForm.address" type="text" class="form-control" id="inputAddress" placeholder="Enter your address (i.e. 1234 Main St Seattle, WA 98125)" [disabled]="!orderForm.isDelivery"> -->
-                <div  [ngClass]="{'border border-danger': formControls.deliveryForm['addressError'] || formControls.deliveryForm['tooFarError'] || formControls.deliveryForm['calcDistanceError']}" class="ng-autocomplete">
+                <p *ngIf="!orderForm.isDelivery" class="my-2">{{orderForm.address}}</p>
+                <div *ngIf="orderForm.isDelivery" [ngClass]="{'border border-danger': _.get(formControls, 'deliveryForm.addressError', false) || _.get(formControls, 'deliveryForm.tooFarError', false) || _.get(formControls, 'deliveryForm.calcDistanceError', false)}" class="ng-autocomplete">
                     <ng-autocomplete
-                      placeHolder="Enter your address (i.e. 1234 Main St Seattle, WA 98125)"
+                      placeHolder="Enter your address (i.e. {{globalConstants.company.address}})"
                       [data]="predictedAddresses"
                       [searchKeyword]="keyword"
+                      [initialValue]="orderForm.address"
                       (selected)='selectEvent($event)'
                       (inputChanged)='onChangeSearch($event)'
                       (inputFocused)='onFocused($event)'
+                      (inputCleared)="resetAddress(false)"
                       [itemTemplate]="itemTemplate"
                       [notFoundTemplate]="notFoundTemplate"
                       [disabled]="!orderForm.isDelivery"
@@ -57,7 +62,13 @@
                     <ng-template #notFoundTemplate let-notFound>
                     <div [innerHTML]="notFound"></div>
                     </ng-template>
-                    </div>
+                </div>
+                <p *ngIf="formControls?.deliveryForm?.feeWarning" class="text-custom-purple mt-2 font-weight-bold small">
+                    There will be a {{delivery.fee | currency:'USD':'symbol':'1.0'}} delivery fee over {{delivery.minDistance}} miles and under {{delivery.voidMaxTotal | currency:'USD':'symbol':'1.0'}} total. The address is {{orderForm.deliveryDistance | number}} miles away from our location.
+                </p>
+                <p *ngIf="formControls?.deliveryForm?.tooFarError" class="text-danger mt-2 font-weight-bold small">
+                    Sorry! We can only deliver up to {{delivery.minDistance}} miles from our location. The address is {{orderForm.deliveryDistance | number}} miles away from our location.
+                </p>
             </div>
             <div class="form-group">
                 <label for="inputNotes">Notes</label>
@@ -66,14 +77,12 @@
         </section>
         <hr/>
         <section class="date-time-picker">
-            <p class="small font-weight-bold text-center">
-                We currently deliver Monday-Thursday 5pm-9pm and Friday-Sunday 9am-9pm
-            </p>
+            <h5 class="mb-4">Schedule {{orderForm.isDelivery ? 'Delivery' : 'Pick Up'}} Date &amp; Time</h5>
             <div class="form-row mb-4" [ngClass]="{'border border-danger': formControls.dateTimePicker['tooLate'] || formControls.dateTimePicker['tooEarly']}">
-                <div class="form-group col-md-6 my-auto">
-                    <app-date-picker [date]="orderForm.date" (dateChangeEmitter)="orderForm.date = $event"></app-date-picker>
+                <div class="form-group col-md-12">
+                    <app-date-picker [date]="orderForm.date" (dateChangeEmitter)="orderForm.date = $event; orderForm.selectedDateTime = undefined;this.getEvents();"></app-date-picker>
                 </div>
-                <div class="form-group col-md-6 my-auto">
+                <!-- <div class="form-group col-md-6 my-auto">
                     <app-time-picker [time]="orderForm.time" (timeChangeEmitter)="orderForm.time = $event"></app-time-picker>
                 </div>
                 <div class="form-group col-md-12 my-auto">
@@ -82,7 +91,23 @@
                         <div *ngIf="formControls.dateTimePicker['tooEarly']">It's a bit too early</div>
                     </div>
                 </div>
+                -->
+                <ng-container *ngFor="let dateTimeOption of dateTimeOptions">
+                    <div class="form-group col-md-3" *ngIf="!_.includes(dateTimeOption.summary, 'BOOKED')">
+                        <button class="btn btn-sm btn-block btn-outline-custom-purple"
+                            [ngClass]="{'active': _.isEqual(dateTimeOption, orderForm.selectedDateTime)}"
+                            (click)="orderForm.selectedDateTime = dateTimeOption">
+                            {{dateTimeOption.start.dateTime | date:'shortTime'}} - {{dateTimeOption.end.dateTime | date:'shortTime'}}
+                        </button>
+                    </div>
+                </ng-container>
             </div>
+            <pre>
+                {{orderForm.selectedDateTime | json}}
+            </pre>
+            <button (click)="updateEvent()">
+                update google calendar event
+            </button>
             <!-- Google Calendar Widget -->
             <!-- <ng-container>
                 <h5>See Jennie's Calendar</h5>
@@ -112,21 +137,10 @@
                 <h4 class="font-weight-bold">Grand Total: {{orderForm.grandTotal | currency:'USD':'symbol':'1.0'}}</h4>
             </div>
         </section>
-        <!-- <hr/>
-        <pre class="mt-2">{{orderForm | json}}</pre> -->
     </ng-container>
 </div>
-<button (click)="getEvents()">Get events from google calendar</button>
-
-<div *ngFor="let slot of availableSlots">
-    <h6>{{slot.summary}}</h6>
-    <div>{{slot.start.dateTime}} to {{slot.end.dateTime}}</div>
-    <button (click)="updateEvent(slot)">Book this time</button>
-</div>
-<div class="modal-footer" *ngIf="orderForm.orders.length">
-    <div class="w-100 text-center" *ngIf="!isOrderFormDisabled()">
-        <app-paypal></app-paypal>
-    </div>
+<div class="modal-footer p-0" *ngIf="!isOrderFormDisabled()">
+    <pre class="mt-2">{{orderForm | json}}</pre>
     <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-custom-purple': !isOrderFormDisabled(), 'btn-dark': isOrderFormDisabled()}"
         [disabled]="isOrderFormDisabled()" (click)="submit()">
         Place Order
@@ -134,4 +148,5 @@
             ({{orderForm.totalOrdersQuantity}} Item<span *ngIf="orderForm.totalOrdersQuantity > 1">s</span>)
         </span>
     </button>
+    <app-paypal class="w-100 text-center" *ngIf="!isOrderFormDisabled()"></app-paypal>
 </div>

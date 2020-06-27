@@ -75,21 +75,31 @@ export class PaypalComponent implements OnInit {
 
         // added any since ngx-paypal doesnt have 'phone' interface
         const getPayer = (): IPayer | any => {
-            const orderFormName = _.split(this.orderForm.name, ' ');
-            const orderFormAddress = _.split(this.orderForm.address, ',');
+            // {street_number: "13515", route: "27th Avenue Northeast", neighborhood: "Olympic Hills", political: "United States", locality: "Seattle", …}
+            // administrative_area_level_1: "WA"
+            // administrative_area_level_2: "King County"
+            // country: "US"
+            // locality: "Seattle"
+            // neighborhood: "Olympic Hills"
+            // political: "United States"
+            // postal_code: "98125"
+            // postal_code_suffix: "3424"
+            // route: "27th Avenue Northeast"
+            // street_number: "13515"
 
+            const orderFormName = _.split(this.orderForm.name, ' ');
             return {
                 name: {
                     given_name: _.get(orderFormName, [0], this.orderForm.name),
                     surname: _.get(orderFormName, [1], undefined)
                 },
                 address: {
-                    address_line_1: _.get(orderFormAddress, [0], undefined),
-                    address_line_2: _.get(orderFormAddress, [1], undefined),
-                    admin_area_2: _.get(orderFormAddress, [2], undefined),
-                    admin_area_1: _.get(orderFormAddress, [3], undefined),
-                    postal_code: _.get(orderFormAddress, [4], undefined),
-                    country_code: 'US'
+                    address_line_1: _.trim(`${_.get(this.orderForm, 'addressComponent.street_number', undefined)} ${_.get(this.orderForm, 'addressComponent.route', undefined)}`),
+                    // address_line_2: _.get(this.orderForm, '', undefined),
+                    admin_area_2: _.get(this.orderForm, 'addressComponent.locality', undefined),
+                    admin_area_1: _.get(this.orderForm, 'addressComponent.administrative_area_level_1', undefined),
+                    postal_code: _.get(this.orderForm, 'addressComponent.postal_code', undefined),
+                    country_code: _.get(this.orderForm, 'addressComponent.country', undefined)
                 },
                 email_address: this.orderForm.email,
                 phone: {

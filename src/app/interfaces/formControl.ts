@@ -4,6 +4,7 @@ export interface FormControl {
         tooLate?: boolean;
     };
     deliveryForm: {
+        feeWarning?: boolean;
         tooFarError?: boolean;
         calcDistanceError?: boolean;
         addressError?: boolean;
