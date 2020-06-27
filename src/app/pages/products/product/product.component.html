@@ -12,9 +12,6 @@
             </div>
             <div class="mt-auto">
                 <div class="d-flex flex-wrap align-items-center btn-group mb-2">
-                    <div class="side-info text-center mr-2">
-                        <input [(ngModel)]="product.quantity" min="1" (keyup)="product.quantity = product.quantity || product.quantity = 1" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity">
-                    </div>
                     <button *ngFor="let variation of product.variations; let i = index" (click)="updateSelectedOption(i)" class="btn btn-outline-custom-purple btn-sm" [ngClass]="{ 'active': _.isEqual(i, selectedOptionIndex) }">
                         {{variation.batchSize}} for {{variation.price |  currency:'USD':'symbol':'1.0'}}
                     </button>
@@ -29,12 +26,18 @@
                         </button>
                     </div>
                 </div>
-                <button (click)="addToCart(product)" type="button" class="btn btn-sm btn-block" [ngClass]="{'btn-custom-purple': isCartValid(), 'btn-dark': !isCartValid() }" [disabled]="!isCartValid()">
-                    <span class="mr-2">Add To Cart</span>
-                    <span>
-                        <i class="fas fa-cart-plus"></i>
-                    </span>
-                </button>
+                <div class="d-flex flex-wrap align-items-center btn-group">
+                    <div class="side-info text-center mr-2">
+                        <input [(ngModel)]="product.quantity" min="1" (keyup)="product.quantity = product.quantity || product.quantity = 1" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity">
+                    </div>
+                    <button (click)="addToCart(product)" type="button" class="btn btn-sm" [ngClass]="{'btn-custom-purple': isCartValid(), 'btn-dark': !isCartValid() }" [disabled]="!isCartValid()">
+                        <span class="mr-2">Add To Cart</span>
+                        <span class="mr-2">
+                            <i class="fas fa-cart-plus"></i>
+                        </span>
+                        <span>{{product.quantity * selectedOption.price | currency:'USD':'symbol':'1.0'}}</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

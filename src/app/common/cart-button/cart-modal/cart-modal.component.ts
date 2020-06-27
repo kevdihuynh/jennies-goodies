@@ -189,6 +189,7 @@ export class CartModalComponent implements OnInit {
   }
 
   resetAddress(useDefaultAddress: boolean = false) {
+    this.orderForm.selectedDateTime = undefined;
     this.orderForm.address = useDefaultAddress ? _.cloneDeep(this.globalConstants.company.address) : undefined;
     this.resetDeliveryFee();
   }
@@ -366,6 +367,10 @@ export class CartModalComponent implements OnInit {
       return true;
     }
 
+    if ( this.isDeliveryInvalid ) {
+      return true;
+    }
+
     // All form validations passed. The Order Form is validated
     return false;
   };
@@ -406,66 +411,32 @@ export class CartModalComponent implements OnInit {
     if (this.isOrderFormDisabled()) {
       return;
     }
-    console.log('finalForm', this.orderForm);
-
-    const isDateTimeInvalid = this.isDateTimePickerInValid();
-    const finalDateTime = this.getMomentDateTime();
-    console.log('finalDateTime', finalDateTime);
-
-    if (isDateTimeInvalid) {
-      this.showDateTimePickerErrorOnSubmit(finalDateTime, GlobalConstants.errors.dateTimeErrors.incorrectDateTimeError, GlobalConstants.errors.dateTimeErrors.incorrectDateTimeTitle);
-      return;
-    }
-
-    // TODO: Perform final call check to Google Calendar API to validate if the date & time selected does not conflict
     this.spinner.show();
     try {
-      // maybe add this if we want to show another final message (but dont need to as we already output toaster on calculate transport function)
-      // if (isDeliveryInvalid) {
-      //   this.toastr.error(GlobalConstants.errors.deliveryErrors.submitError, `Delivery Error`,  {
-      //     positionClass: 'toast-bottom-left',
-      //     progressBar: true,
-      //     disableTimeOut: false
-      //   });
-      //   this.spinner.hide();
-      //   return;
-      // }
+      // update the google calendar event with BOOKED status
+      await this.updateEvent();
 
-      const isDateTimeConflicting = false; // TODO: make api call
-      if (isDateTimeConflicting) {
-        this.showDateTimePickerErrorOnSubmit(finalDateTime, GlobalConstants.errors.dateTimeErrors.conflictError, GlobalConstants.errors.dateTimeErrors.conflictTitle);
-        return;
-      }
+      // save order details in firebase
 
-      const isDateTimeValid = !isDateTimeInvalid && !isDateTimeConflicting;
+      // email confirmation AND possibly texting
 
-      if (isDateTimeValid && !this.isDeliveryInvalid) {
-        // removes undefined or null values
-        console.log('finalDateTime is valid', finalDateTime);
-        console.log('finalForm', this.orderForm);
-        this.closeCartModal('payment-success');
-        this.toastr.success(`We have received your order. You will receive an email confirmation soon. Thank you!`, `Order Success!`,  {
-          positionClass: 'toast-bottom-left',
-          progressBar: true,
-          disableTimeOut: true
-        });
-        this.cartService.clearCart();
-      } else if (this.isDeliveryInvalid) {
-        this.toastr.error('', GlobalConstants.errors.deliveryErrors.submitError, {
-          positionClass: 'toast-bottom-left',
-          progressBar: true,
-          disableTimeOut: false
-        });
-      }
-      this.spinner.hide();
-    } catch {
+      // send out toaster message that order is completed
+      console.log('finalForm', this.orderForm);
+      this.closeCartModal('payment-success');
+      this.toastr.success(`We have received your order. You will receive an email confirmation soon. Thank you!`, `Order Success!`,  {
+        positionClass: 'toast-bottom-left',
+        progressBar: true,
+        disableTimeOut: true
+      });
+      this.cartService.clearCart();
+    } catch (e) {
       this.toastr.error('', GlobalConstants.errors.commonErrors.unknownError, {
         positionClass: 'toast-bottom-left',
         progressBar: true,
         disableTimeOut: false
       });
-      this.spinner.hide();
     }
+    this.spinner.hide();
   }
 
 }
