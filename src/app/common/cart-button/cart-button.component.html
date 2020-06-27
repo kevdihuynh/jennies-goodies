@@ -1,4 +1,5 @@
 <button class="btn btn-sm btn-dark" (click)="openCartModal()">
+    <span class="mr-2">{{orderForm.totalOrdersQuantity}}</span>
     <i class="fa fa-shopping-cart mr-2" aria-hidden="true"></i>
-    <span>{{orderForm.totalOrdersQuantity}}</span>
+    <span *ngIf="orderForm.grandTotal > 0">{{orderForm.grandTotal | currency:'USD':'symbol':'1.0'}}</span>
 </button>
