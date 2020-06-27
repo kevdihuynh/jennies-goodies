@@ -37,7 +37,6 @@ export class CartModalComponent implements OnInit {
   isDeliveryInvalid = true;
   orderForm: OrderForm;
   orders: Order[] = [];
-  grandTotal: number;
   currentSessionToken: string | undefined = undefined;
   timeStart: number | undefined = undefined;
   keyword = 'name';
@@ -72,11 +71,6 @@ export class CartModalComponent implements OnInit {
     this.isDeliveryInvalid = true;
     this.cartService.orderForm.subscribe((orderForm: OrderForm) => {
       this.orderForm = orderForm;
-      this.grandTotal = _.reduce(this.orderForm.orders, (sum: number, order: Order): number => {
-        return sum + (order.quantity * order.price);
-      }, 0);
-      // Add delivery fee to item_total
-      this.grandTotal += (this.orderForm.deliveryFee || 0);
     });
     if (this.orderForm.total < this.delivery.minTotal) {
       this.formControls.deliveryForm.tooPoor = true;

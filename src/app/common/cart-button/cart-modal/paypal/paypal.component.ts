@@ -88,18 +88,18 @@ export class PaypalComponent implements OnInit {
             // street_number: "13515"
 
             const orderFormName = _.split(this.orderForm.name, ' ');
-            return {
+            const payerObj = {
                 name: {
-                    given_name: _.get(orderFormName, [0], this.orderForm.name),
-                    surname: _.get(orderFormName, [1], undefined)
+                    given_name: _.get(orderFormName, [0], ''),
+                    surname: _.get(orderFormName, [1], '')
                 },
                 address: {
-                    address_line_1: _.trim(`${_.get(this.orderForm, 'addressComponent.street_number', undefined)} ${_.get(this.orderForm, 'addressComponent.route', undefined)}`),
-                    // address_line_2: _.get(this.orderForm, '', undefined),
-                    admin_area_2: _.get(this.orderForm, 'addressComponent.locality', undefined),
-                    admin_area_1: _.get(this.orderForm, 'addressComponent.administrative_area_level_1', undefined),
-                    postal_code: _.get(this.orderForm, 'addressComponent.postal_code', undefined),
-                    country_code: _.get(this.orderForm, 'addressComponent.country', undefined)
+                    address_line_1: _.trim(`${_.get(this.orderForm, 'addressComponent.street_number', '')} ${_.get(this.orderForm, 'addressComponent.route', '')}`),
+                    address_line_2: _.get(this.orderForm, '', ''),
+                    admin_area_2: _.get(this.orderForm, 'addressComponent.locality', ''),
+                    admin_area_1: _.get(this.orderForm, 'addressComponent.administrative_area_level_1', ''),
+                    postal_code: _.get(this.orderForm, 'addressComponent.postal_code', ''),
+                    country_code: _.get(this.orderForm, 'addressComponent.country', '')
                 },
                 email_address: this.orderForm.email,
                 phone: {
@@ -108,7 +108,18 @@ export class PaypalComponent implements OnInit {
                         national_number: this.orderForm.phoneNumber
                     }
                 }
-            }
+            };
+
+            const getObjectsWithEmpty = (obj) => {
+                return _(obj)
+                  .pickBy(_.isObject) // get only objects
+                  .mapValues(getObjectsWithEmpty) // call only for values as objects
+                  .assign(_.omitBy(obj, _.isObject)) // save back result that is not object
+                  .omitBy(_.isEmpty) // remove null and undefined from object
+                  .value(); // get value
+            };
+
+            return getObjectsWithEmpty(payerObj);
         }
 
         this.payPalConfig = {
