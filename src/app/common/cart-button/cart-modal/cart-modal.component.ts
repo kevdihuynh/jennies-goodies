@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { OrderForm, Order } from 'src/app/interfaces/cart';
 import { CartService } from 'src/app/services/cart/cart.service';
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 import * as _ from 'lodash';
 import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
@@ -390,8 +390,8 @@ export class CartModalComponent implements OnInit {
     // time sent to google needs to be in RFC 3339
     this.spinner.show();
     try {
-      const dateTimeStart = moment().set({year: this.orderForm.date.year, month: this.orderForm.date.month, day: this.orderForm.date.day, hour: 0, minute: 0, second: 0}).format('YYYY-MM-DDTHH:mm:ss');
-      const dateTimeEnd = moment().set({year: this.orderForm.date.year, month: this.orderForm.date.month, day: this.orderForm.date.day, hour: 24, minute: 0, second: 0}).format('YYYY-MM-DDTHH:mm:ss');
+      const dateTimeStart = moment().set({year: this.orderForm.date.year, month: this.orderForm.date.month, day: this.orderForm.date.day, hour: 0, minute: 0, second: 0}).tz('America/Los_Angeles');
+      const dateTimeEnd = moment().set({year: this.orderForm.date.year, month: this.orderForm.date.month, day: this.orderForm.date.day, hour: 24, minute: 0, second: 0}).tz('America/Los_Angeles');
       const events = await this.googleCalendarService.getEvents(dateTimeStart, dateTimeEnd);
       this.dateTimeOptions = events;
       console.log('google calendar getEvents response:: ', events);
