@@ -25,9 +25,9 @@ export class CartModalComponent implements OnInit {
   _ = _;
   globalConstants = GlobalConstants;
   delivery = {
-    voidMaxTotal: 20,
+    minTotal: 20,
     minDistance: 10,
-    maxDistance: 12,
+    maxDistance: 15,
     fee: 5
   }
   formControls: FormControl = {
@@ -78,11 +78,20 @@ export class CartModalComponent implements OnInit {
       // Add delivery fee to item_total
       this.grandTotal += (this.orderForm.deliveryFee || 0);
     });
+    if (this.orderForm.total < this.delivery.minTotal) {
+      this.formControls.deliveryForm.tooPoor = true;
+      // this.toastr.error(GlobalConstants.errors.deliveryErrors.tooPoorError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
+      //   positionClass: 'toast-bottom-left',
+      //   progressBar: true,
+      //   disableTimeOut: false
+      // });
+      this.isDeliveryFormInvalid();
+    }
     this.getEvents();
   }
 
-  async selectEvent(item) {
-    try {
+  selectEvent(item) {
+
       // do something with selected item
       this.generateNewSessionToken();
       // reset when place is selected
@@ -90,6 +99,16 @@ export class CartModalComponent implements OnInit {
       this.timeStart = undefined;
       console.log('selectEvent: ', item.name);
       this.orderForm.address = item.name;
+  }
+
+  resetDeliveryFee(): void {
+    this.formControls.deliveryForm = {};
+    this.orderForm.deliveryFee = 0;
+  }
+
+  async confirmAddress(): Promise<void> {
+    this.spinner.show();
+    try {
       if (_.isEmpty(this.orderForm.address)) {
         return;
       }
@@ -113,6 +132,16 @@ export class CartModalComponent implements OnInit {
       // get deliveryDistance in miles
       this.orderForm.deliveryDistance = await this.googleMapsService.getDeliveryDistance(lat, lon);
       this.validateDeliveryFee();
+
+      // store the last confirmed address
+      this.orderForm.confirmedAddress = this.orderForm.address;
+      if (!this.isDeliveryInvalid) {
+        this.toastr.success(`Address is valid`, `Address Success!`,  {
+          positionClass: 'toast-bottom-left',
+          progressBar: true,
+          disableTimeOut: false,
+        });
+      }
     } catch (error) {
 
       // show error if anything wrong happens with APIs or bad data
@@ -124,11 +153,7 @@ export class CartModalComponent implements OnInit {
       });
       this.isDeliveryFormInvalid();
     }
-  }
-
-  resetDeliveryFee(): void {
-    this.formControls.deliveryForm = {};
-    this.orderForm.deliveryFee = 0;
+    this.spinner.hide();
   }
 
   validateDeliveryFee(): void {
@@ -140,6 +165,18 @@ export class CartModalComponent implements OnInit {
     }
 
     console.log('miles to destination: ', this.orderForm.deliveryDistance);
+
+    if (this.orderForm.total < this.delivery.minTotal) {
+      this.formControls.deliveryForm.tooPoor = true;
+      this.toastr.error(GlobalConstants.errors.deliveryErrors.tooPoorError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
+        positionClass: 'toast-bottom-left',
+        progressBar: true,
+        disableTimeOut: false
+      });
+      this.isDeliveryFormInvalid();
+      return;
+    }
+
     // show error if delivery distance is over 15 miles
     if (this.orderForm.deliveryDistance > this.delivery.maxDistance) {
       this.formControls.deliveryForm.tooFarError = true;
@@ -154,7 +191,7 @@ export class CartModalComponent implements OnInit {
 
     // charge $5 delivery fee if delivery distance is between 10 to 12 miles AND under 20
     if (this.orderForm.deliveryDistance > this.delivery.minDistance && this.orderForm.deliveryDistance <= this.delivery.maxDistance
-      && this.orderForm.total < this.delivery.voidMaxTotal) {
+      && this.orderForm.total >= this.delivery.minTotal) {
       this.formControls.deliveryForm.feeWarning = true;
       this.orderForm.deliveryFee = this.delivery.fee
     }
@@ -309,7 +346,8 @@ export class CartModalComponent implements OnInit {
     return (
       this.formControls.deliveryForm.addressError ||
       this.formControls.deliveryForm.calcDistanceError ||
-      this.formControls.deliveryForm.tooFarError
+      this.formControls.deliveryForm.tooFarError ||
+      this.formControls.deliveryForm.tooPoor
     );
   }
 

@@ -8,5 +8,6 @@ export interface FormControl {
         tooFarError?: boolean;
         calcDistanceError?: boolean;
         addressError?: boolean;
+        tooPoor?: boolean;
     };
 }
