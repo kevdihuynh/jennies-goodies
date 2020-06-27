@@ -18,8 +18,8 @@ export class DatePickerComponent implements OnInit {
   minDateFromToday = moment().add(this.minDaysFromToday, 'day');
   maxDateFromToday = _.cloneDeep(this.minDateFromToday).add(this.maxDaysFromToday, 'day');
 
-  datePickerMinDate: NgbDateStruct = { year: this.minDateFromToday.year(), month: this.minDateFromToday.month(), day: this.minDateFromToday.date() };
-  datePickerMaxDate: NgbDateStruct = { year: this.maxDateFromToday.year(), month: this.maxDateFromToday.month(), day: this.maxDateFromToday.date() };
+  datePickerMinDate: NgbDateStruct = { year: this.minDateFromToday.year(), month: this.minDateFromToday.month() + 1, day: this.minDateFromToday.date() };
+  datePickerMaxDate: NgbDateStruct = { year: this.maxDateFromToday.year(), month: this.maxDateFromToday.month() + 1, day: this.maxDateFromToday.date() };
 
   constructor() {}
 

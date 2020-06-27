@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { OrderForm, Order } from 'src/app/interfaces/cart';
 import { CartService } from 'src/app/services/cart/cart.service';
-import * as moment from 'moment-timezone';
+import * as moment from 'moment';
 import * as _ from 'lodash';
 import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
@@ -257,7 +257,7 @@ export class CartModalComponent implements OnInit {
       return null;
     }
     const date = this.orderForm.date;
-    return moment().set({year: date.year, month: date.month, day: date.day});
+    return moment(`${date.year}-${date.month}-${date.day}`);
 
   }
 
@@ -267,7 +267,7 @@ export class CartModalComponent implements OnInit {
     }
     const date = this.orderForm.date;
     const time = this.orderForm.time;
-    return moment().set({year: date.year, month: date.month, day: date.day, hour: time.hour, minute: time.minute, second: time.second});
+    return moment(`${date.year}-${date.month}-${date.day} ${time.hour}:${time.minute}:${time.second}`);
   }
 
   getDateTimeText() {
@@ -390,10 +390,11 @@ export class CartModalComponent implements OnInit {
     // time sent to google needs to be in RFC 3339
     this.spinner.show();
     try {
+      const modDay = this.orderForm.date.month <= 9 ? `0${this.orderForm.date.day}` : `${this.orderForm.date.day}`;
       const modMonth = this.orderForm.date.month <= 9 ? `0${this.orderForm.date.month}` : `${this.orderForm.date.month}`;
 
-      const dateTimeStart = moment.tz(`${this.orderForm.date.year}-${modMonth}-${this.orderForm.date.day} 00:00`, 'America/Los_Angeles').format();
-      const dateTimeEnd = moment.tz(`${this.orderForm.date.year}-${modMonth}-${this.orderForm.date.day} 24:00`, 'America/Los_Angeles').format();
+      const dateTimeStart = moment(`${this.orderForm.date.year}-${modMonth}-${modDay} 00:00:00`).format();
+      const dateTimeEnd = moment(`${this.orderForm.date.year}-${modMonth}-${modDay} 24:00:00`).format();
       const events = await this.googleCalendarService.getEvents(dateTimeStart, dateTimeEnd);
       this.dateTimeOptions = events;
       console.log('google calendar getEvents response:: ', events);
