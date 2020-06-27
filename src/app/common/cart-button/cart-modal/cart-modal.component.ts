@@ -81,6 +81,10 @@ export class CartModalComponent implements OnInit {
       // });
       this.isDeliveryFormInvalid();
     }
+    if (this.formControls.deliveryForm && this.formControls.deliveryForm.tooPoor) {
+      this.orderForm.isDelivery = false;
+      this.orderForm.address = GlobalConstants.company.address;
+    }
     this.getEvents();
   }
 
@@ -98,6 +102,15 @@ export class CartModalComponent implements OnInit {
   resetDeliveryFee(): void {
     this.formControls.deliveryForm = {};
     this.orderForm.deliveryFee = 0;
+    if (this.orderForm.total < this.delivery.minTotal) {
+      this.formControls.deliveryForm.tooPoor = true;
+      // this.toastr.error(GlobalConstants.errors.deliveryErrors.tooPoorError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
+      //   positionClass: 'toast-bottom-left',
+      //   progressBar: true,
+      //   disableTimeOut: false
+      // });
+      this.isDeliveryFormInvalid();
+    }
   }
 
   async confirmAddress(): Promise<void> {

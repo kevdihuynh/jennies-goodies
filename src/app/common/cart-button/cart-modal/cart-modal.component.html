@@ -68,10 +68,10 @@
                     </div>
                     </div>
                     <div class="col-3">
-                        <button type="button" [disabled]="(!orderForm.isDelivery || formControls.deliveryForm.tooPoor || orderForm.address ===  orderForm.confirmedAddress)" (click)="confirmAddress()" class="btn btn-outline-custom-purple btn-block h-100">Confirm <i *ngIf="orderForm.confirmedAddress &&  orderForm.address ===  orderForm.confirmedAddress" class="fa fa-check text-custom-purple mr-2"></i></button>
+                        <button *ngIf="orderForm.isDelivery" type="button" [disabled]="(!orderForm.isDelivery || formControls.deliveryForm.tooPoor || orderForm.address ===  orderForm.confirmedAddress)" (click)="confirmAddress()" class="btn btn-outline-custom-purple btn-block h-100">Confirm <i *ngIf="orderForm.confirmedAddress &&  orderForm.address ===  orderForm.confirmedAddress" class="fa fa-check text-custom-purple mr-2"></i></button>
                     </div>
                 </div>
-                <div>
+                <div *ngIf="orderForm.isDelivery">
                     <p *ngIf="formControls?.deliveryForm?.feeWarning" class="text-custom-purple mt-2 font-weight-bold small">
                         There will be a {{delivery.fee | currency:'USD':'symbol':'1.0'}} delivery fee over {{delivery.minDistance}} miles and under {{delivery.minTotal | currency:'USD':'symbol':'1.0'}} total. The address is {{orderForm.deliveryDistance | number}} miles away from our location.
                     </p>
@@ -105,6 +105,11 @@
                     </div>
                 </div>
                 -->
+                <div *ngIf="!dateTimeOptions || (dateTimeOptions && dateTimeOptions.length === 0)">
+                    <p class="text-custom-purple mt-2 font-weight-bold small">
+                        No available time slots on this day.
+                    </p>
+                </div>
                 <ng-container *ngFor="let dateTimeOption of dateTimeOptions">
                     <div class="form-group col-md-3" *ngIf="!_.includes(dateTimeOption.summary, 'BOOKED')">
                         <button class="btn btn-sm btn-block btn-outline-custom-purple"
