@@ -18,6 +18,7 @@ export interface OrderForm {
     orders: Order[];
     totalOrdersQuantity: number;
     selectedDateTime: object;
+    confirmedAddress: string;
 }
 export interface Order {
     imageUrls: string[];

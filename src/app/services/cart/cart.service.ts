@@ -25,7 +25,8 @@ export class CartService {
       deliveryFee: 0,
       total: 0,
       grandTotal: 0,
-      selectedDateTime: undefined
+      selectedDateTime: undefined,
+      confirmedAddress: undefined,
     }
   );
   public orderForm: Observable<OrderForm>  = this.orderFormSubject.asObservable();

@@ -16,7 +16,8 @@ export class GlobalConstants {
             addressError: 'Address is not valid',
             calcDistanceError: 'Could not calculate distance from selected address',
             tooFarError: 'Sorry address is too far for delivery, please select pickup',
-            submitError: 'Sorry! Please check delivery address.'
+            submitError: 'Sorry! Please check delivery address.',
+            tooPoorError: 'Sorry! Your order amount does not meet the $20 minimum for delivery'
         },
         commonErrors: {
             unknownError: 'Sorry! Error occured.',
