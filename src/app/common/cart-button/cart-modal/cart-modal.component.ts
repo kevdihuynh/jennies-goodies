@@ -390,8 +390,10 @@ export class CartModalComponent implements OnInit {
     // time sent to google needs to be in RFC 3339
     this.spinner.show();
     try {
-      const dateTimeStart = moment().set({year: this.orderForm.date.year, month: this.orderForm.date.month, day: this.orderForm.date.day, hour: 0, minute: 0, second: 0}).tz('America/Los_Angeles');
-      const dateTimeEnd = moment().set({year: this.orderForm.date.year, month: this.orderForm.date.month, day: this.orderForm.date.day, hour: 24, minute: 0, second: 0}).tz('America/Los_Angeles');
+      const modMonth = this.orderForm.date.month <= 9 ? `0${this.orderForm.date.month}` : `${this.orderForm.date.month}`;
+
+      const dateTimeStart = moment.tz(`${this.orderForm.date.year}-${modMonth}-${this.orderForm.date.day} 00:00`, 'America/Los_Angeles').format();
+      const dateTimeEnd = moment.tz(`${this.orderForm.date.year}-${modMonth}-${this.orderForm.date.day} 24:00`, 'America/Los_Angeles').format();
       const events = await this.googleCalendarService.getEvents(dateTimeStart, dateTimeEnd);
       this.dateTimeOptions = events;
       console.log('google calendar getEvents response:: ', events);
