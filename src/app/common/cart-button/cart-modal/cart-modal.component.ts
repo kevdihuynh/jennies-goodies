@@ -257,7 +257,7 @@ export class CartModalComponent implements OnInit {
       return null;
     }
     const date = this.orderForm.date;
-    return moment().set({year: this.orderForm.date.year, month: this.orderForm.date.month, day: this.orderForm.date.day});
+    return moment().set({year: date.year, month: date.month, day: date.day});
 
   }
 
