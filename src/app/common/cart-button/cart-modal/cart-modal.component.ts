@@ -257,7 +257,8 @@ export class CartModalComponent implements OnInit {
       return null;
     }
     const date = this.orderForm.date;
-    return moment(`${date.year}-${date.month}-${date.day}`);
+    return moment().set({year: this.orderForm.date.year, month: this.orderForm.date.month, day: this.orderForm.date.day});
+
   }
 
   getMomentDateTime() {
@@ -266,7 +267,7 @@ export class CartModalComponent implements OnInit {
     }
     const date = this.orderForm.date;
     const time = this.orderForm.time;
-    return moment(`${date.year}-${date.month}-${date.day} ${time.hour}:${time.minute}:${time.second}`);
+    return moment().set({year: date.year, month: date.month, day: date.day, hour: time.hour, minute: time.minute, second: time.second});
   }
 
   getDateTimeText() {
@@ -389,8 +390,8 @@ export class CartModalComponent implements OnInit {
     // time sent to google needs to be in RFC 3339
     this.spinner.show();
     try {
-      const dateTimeStart = moment(`${this.orderForm.date.year}-${this.orderForm.date.month}-${this.orderForm.date.day} 00:00:00`).format();
-      const dateTimeEnd = moment(`${this.orderForm.date.year}-${this.orderForm.date.month}-${this.orderForm.date.day} 24:00:00`).format();
+      const dateTimeStart = moment().set({year: this.orderForm.date.year, month: this.orderForm.date.month, day: this.orderForm.date.day, hour: 0, minute: 0, second: 0}).format('YYYY-MM-DDTHH:mm:ss');
+      const dateTimeEnd = moment().set({year: this.orderForm.date.year, month: this.orderForm.date.month, day: this.orderForm.date.day, hour: 24, minute: 0, second: 0}).format('YYYY-MM-DDTHH:mm:ss');
       const events = await this.googleCalendarService.getEvents(dateTimeStart, dateTimeEnd);
       this.dateTimeOptions = events;
       console.log('google calendar getEvents response:: ', events);
