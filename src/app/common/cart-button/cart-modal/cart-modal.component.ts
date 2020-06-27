@@ -390,7 +390,7 @@ export class CartModalComponent implements OnInit {
     // time sent to google needs to be in RFC 3339
     this.spinner.show();
     try {
-      const modDay = this.orderForm.date.month <= 9 ? `0${this.orderForm.date.day}` : `${this.orderForm.date.day}`;
+      const modDay = this.orderForm.date.day <= 9 ? `0${this.orderForm.date.day}` : `${this.orderForm.date.day}`;
       const modMonth = this.orderForm.date.month <= 9 ? `0${this.orderForm.date.month}` : `${this.orderForm.date.month}`;
 
       const dateTimeStart = moment(`${this.orderForm.date.year}-${modMonth}-${modDay} 00:00:00`).format();
