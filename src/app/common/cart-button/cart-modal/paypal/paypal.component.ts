@@ -146,19 +146,15 @@ export class PaypalComponent implements OnInit {
                 layout: 'vertical'
             },
             onApprove: (data, actions) => {
-                this.toastr.success(`We have approved your Payment Form`, `Payment Form Approved!`,  {
-                    positionClass: 'toast-bottom-left',
-                    progressBar: true,
-                    disableTimeOut: true
-                });
-            },
-            onClientAuthorization: (data) => {
                 this.toastr.success(`We have received your order. You will receive an email confirmation soon. Thank you!`, `Transaction Completed!`,  {
                     positionClass: 'toast-bottom-left',
                     progressBar: true,
                     disableTimeOut: true
                   });
                 // this.cartService.clearCart();
+            },
+            onClientAuthorization: (data) => {
+                // This step is optional. It triggers when user starts interacting with our website again after onApprove
             },
             onCancel: (data, actions) => {
                 this.toastr.info('You have closed the Payment Form', 'Payment Form Cancelled', {

@@ -12,7 +12,7 @@ import { GlobalConstants } from '../../../utils/global-constants';
 import { FormControl } from 'src/app/interfaces/formControl';
 import { GooglePlacesService } from 'src/app/services/google-places/google-places.service';
 import { v4 as uuidv4 } from 'uuid';
-import { GoogleCalendarService } from 'src/app/service/google-calendar/google-calendar.service';
+import { GoogleCalendarService } from 'src/app/services/google-calendar/google-calendar.service';
 import calendarResponse from './../../../db_mock/calendar_response.json';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
