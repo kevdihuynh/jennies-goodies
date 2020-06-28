@@ -3,7 +3,10 @@ import { IPayPalConfig, ICreateOrderRequest, ITransactionItem, IUnitAmount, IPay
 import { environment } from '../../../../../environments/environment';
 import { OrderForm, Order } from '../../../../interfaces/cart';
 import { CartService } from 'src/app/services/cart/cart.service';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 import * as _ from 'lodash';
+import { GlobalConstants } from '../../../../utils/global-constants';
 
 @Component({
     selector: 'app-paypal',
@@ -17,6 +20,8 @@ export class PaypalComponent implements OnInit {
     public orderForm: OrderForm;
 
     constructor(
+        private toastr: ToastrService,
+        private spinner: NgxSpinnerService,
         public cartService: CartService
     ) { }
 
@@ -141,17 +146,42 @@ export class PaypalComponent implements OnInit {
                 layout: 'vertical'
             },
             onApprove: (data, actions) => {
-                actions.order.get().then(details => { });
+                this.toastr.success(`We have approved your Payment Form`, `Payment Form Approved!`,  {
+                    positionClass: 'toast-bottom-left',
+                    progressBar: true,
+                    disableTimeOut: true
+                });
             },
             onClientAuthorization: (data) => {
-                // this.toastrService.success('Transaction completed!');
+                this.toastr.success(`We have received your order. You will receive an email confirmation soon. Thank you!`, `Transaction Completed!`,  {
+                    positionClass: 'toast-bottom-left',
+                    progressBar: true,
+                    disableTimeOut: true
+                  });
+                // this.cartService.clearCart();
             },
             onCancel: (data, actions) => {
+                this.toastr.info('You have closed the Payment Form', 'Payment Form Cancelled', {
+                    positionClass: 'toast-bottom-left',
+                    progressBar: true,
+                    disableTimeOut: false,
+                    timeOut: 3000
+                });
             },
             onError: err => {
-                // this.toastrService.warning(err);
+                this.toastr.error('An error has occured in the Payment Form', 'Payment Form Error', {
+                    positionClass: 'toast-bottom-left',
+                    progressBar: true,
+                    disableTimeOut: false
+                });
             },
             onClick: (data, actions) => {
+                this.toastr.info('You have opened the Payment Form', 'Last Step To Complete Your Order!', {
+                    positionClass: 'toast-bottom-left',
+                    progressBar: true,
+                    disableTimeOut: false,
+                    timeOut: 3000
+                });
             },
         };
     };
