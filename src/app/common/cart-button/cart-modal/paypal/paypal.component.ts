@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as _ from 'lodash';
 import { GlobalConstants } from '../../../../utils/global-constants';
+import { FirestoreService } from '../../../../services/firestore/firestore.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-paypal',
@@ -22,7 +24,9 @@ export class PaypalComponent implements OnInit {
     constructor(
         private toastr: ToastrService,
         private spinner: NgxSpinnerService,
-        public cartService: CartService
+        private firestoreService: FirestoreService,
+        public cartService: CartService,
+        public activeModal: NgbActiveModal
     ) { }
 
     ngOnInit(): void {
@@ -146,15 +150,34 @@ export class PaypalComponent implements OnInit {
                 layout: 'vertical'
             },
             onApprove: (data, actions) => {
+                // This triggers when user's credit card gets approved
+                // const data = {
+                //     billingtoken: null,
+                //     facilitatorAccessToken: "A21AAEm-E7FkbqKWadgERJdTRbIV8vplaFKcJfrjF3m9I13YbxQqGOOGfNNqIK4haJfqE03GcYngqm-Zhejv2_PQOf4mhM0Jg",
+                //     orderID: "0GU08901S4582814A",
+                //     payerID: "FBH3PT3KJBY5W"
+                // }
+                this.toastr.info(`We are now waiting for the transaction to complete...`, `Your Payment Form Has Been Approved!`,  {
+                    positionClass: 'toast-bottom-left',
+                    progressBar: true,
+                    disableTimeOut: false,
+                    timeOut: 5000
+                });
+            },
+            onClientAuthorization: async (data: any) => {
                 this.toastr.success(`We have received your order. You will receive an email confirmation soon. Thank you!`, `Transaction Completed!`,  {
                     positionClass: 'toast-bottom-left',
                     progressBar: true,
                     disableTimeOut: true
-                  });
-                // this.cartService.clearCart();
-            },
-            onClientAuthorization: (data) => {
-                // This step is optional. It triggers when user starts interacting with our website again after onApprove
+                });
+                // This triggers after transaction completes. Can't put toaster message here some reason
+                try {
+                    await this.firestoreService.post('orders', data.id, {paypal: data, orderForm: this.orderForm});
+                    this.cartService.clearCart();
+                    this.activeModal.close('transaction-completed');
+                } catch (error) {
+                    console.log(error);
+                }
             },
             onCancel: (data, actions) => {
                 this.toastr.info('You have closed the Payment Form', 'Payment Form Cancelled', {
@@ -171,7 +194,8 @@ export class PaypalComponent implements OnInit {
                     disableTimeOut: false
                 });
             },
-            onClick: (data, actions) => {
+            onClick: async (data, actions) => {
+                console.log(this.orderForm);
                 this.toastr.info('You have opened the Payment Form', 'Last Step To Complete Your Order!', {
                     positionClass: 'toast-bottom-left',
                     progressBar: true,

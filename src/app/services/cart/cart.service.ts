@@ -14,8 +14,8 @@ export class CartService {
       email: 'johndoe@example.com',
       phoneNumber: '2067650458',
       isDelivery: true,
-      address: undefined,
-      addressComponent: undefined,
+      address: null,
+      addressComponent: null,
       notes: 'John Doe will pick it up for me',
       date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
       time: { hour: 17, minute: 0, second: 0 },
@@ -25,8 +25,8 @@ export class CartService {
       deliveryFee: 0,
       total: 0,
       grandTotal: 0,
-      selectedDateTime: undefined,
-      confirmedAddress: undefined,
+      selectedDateTime: null,
+      confirmedAddress: null,
     }
   );
   public orderForm: Observable<OrderForm>  = this.orderFormSubject.asObservable();
