@@ -7,8 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as _ from 'lodash';
 import { GlobalConstants } from '../../../../utils/global-constants';
-import { FirestoreService } from '../../../../services/firestore/firestore.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
     selector: 'app-paypal',
@@ -24,9 +24,9 @@ export class PaypalComponent implements OnInit {
     constructor(
         private toastr: ToastrService,
         private spinner: NgxSpinnerService,
-        private firestoreService: FirestoreService,
         public cartService: CartService,
-        public activeModal: NgbActiveModal
+        public activeModal: NgbActiveModal,
+        private afs: AngularFirestore
     ) { }
 
     ngOnInit(): void {
@@ -172,7 +172,7 @@ export class PaypalComponent implements OnInit {
                 });
                 // This triggers after transaction completes. Can't put toaster message here some reason
                 try {
-                    await this.firestoreService.post('orders', data.id, {paypal: data, orderForm: this.orderForm});
+                    await this.afs.collection('orders').doc(data.id).set({paypal: data, orderForm: this.orderForm});
                     this.cartService.clearCart();
                     this.activeModal.close('transaction-completed');
                 } catch (error) {
