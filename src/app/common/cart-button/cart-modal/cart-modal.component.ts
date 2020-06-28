@@ -285,6 +285,7 @@ export class CartModalComponent implements OnInit {
       timeOut: 2000
     });
     this.cartService.removeFromCart(index);
+    this.validateDeliveryFee();
   }
 
   isClosedDays() {

@@ -31,8 +31,9 @@ import { PaypalComponent } from './common/cart-button/cart-modal/paypal/paypal.c
 import { AngularFireFunctionsModule, ORIGIN } from '@angular/fire/functions';
 import { HttpClientModule } from '@angular/common/http';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
-import { CreateButtonComponent } from './common/create-button/create-button.component';
-import { CreateModalComponent } from './common/create-button/create-modal/create-modal.component';
+import { EditButtonComponent } from './common/edit-button/edit-button.component';
+import { EditModalContentComponent } from './common/edit-button/edit-modal-content/edit-modal-content.component';
+import { EditModalConfirmComponent } from './common/edit-button/edit-modal-confirm/edit-modal-confirm.component';
 
 @NgModule({
   declarations: [
@@ -48,8 +49,9 @@ import { CreateModalComponent } from './common/create-button/create-modal/create
     DatePickerComponent,
     PaypalComponent,
     NgbToDatePipe,
-    CreateButtonComponent,
-    CreateModalComponent
+    EditButtonComponent,
+    EditModalContentComponent,
+    EditModalConfirmComponent
   ],
   imports: [
     BrowserModule,

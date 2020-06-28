@@ -1,6 +1,6 @@
 <div class="row no-gutters border">
     <div class="col-xs-12 col-sm-6 col-md-4 my-auto">
-        <img [src]="product.imageUrls[0]" class="img-fluid w-100"/>
+        <img [src]="_.get(product, 'imageUrls[0]')" class="img-fluid w-100"/>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-8 my-2">
         <div class="d-flex flex-column h-100 container-fluid">
@@ -9,6 +9,7 @@
                     <h5 class="mb-0">{{product.name}}</h5>
                 </div>
                 <p>{{product.description}}</p>
+                <!-- <app-edit-button [collection]="'products'" [id]="product.slug" [data]="product" [isNew]="false" [inputsConfig]="inputsConfig"></app-edit-button> -->
             </div>
             <div class="mt-auto">
                 <div class="d-flex flex-wrap align-items-center btn-group mb-2">
@@ -19,7 +20,7 @@
                 <div class="mb-2">
                     <div class="d-flex flex-wrap align-items-center btn-group">
                         <div class="side-info text-center mr-2">
-                            Max {{selectedOption.maxFlavors}}
+                            Max {{selectedOption?.maxFlavors}}
                         </div>
                         <button *ngFor="let flavor of product.flavors; let i = index" (click)="toggleFlavor(flavor)" class="btn btn-outline-custom-purple btn-sm" [ngClass]="{ 'active': isActiveFlavor(flavor) }">
                             {{flavor}}
@@ -35,7 +36,7 @@
                         <span class="mr-2">
                             <i class="fas fa-cart-plus"></i>
                         </span>
-                        <span>{{product.quantity * selectedOption.price | currency:'USD':'symbol':'1.0'}}</span>
+                        <span>{{_.get(product, 'quantity', 0) * _.get(selectedOption, 'price', 0) | currency:'USD':'symbol':'1.0'}}</span>
                     </button>
                 </div>
             </div>

@@ -4,6 +4,7 @@ import { Order } from 'src/app/interfaces/cart';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
+import { InputsConfig } from '../../../interfaces/inputs-config';
 
 @Component({
   selector: 'app-product',
@@ -16,6 +17,15 @@ export class ProductComponent implements OnInit {
   selectedOptionIndex = 0;
   selectedOption: Option;
   selectedFlavors: Array<string> = [];
+  public inputsConfig: InputsConfig = {
+    string: ['slug', 'name', 'description'],
+    number: [],
+    url: [],
+    quill: [],
+    date: [],
+    boolean: ['publish'],
+    disabled: ['slug']
+  };
 
   constructor(
     public cartService: CartService,
@@ -26,7 +36,7 @@ export class ProductComponent implements OnInit {
     // custom adding quantity
     this.product.quantity = 1;
 
-    this.selectedOption = this.product.variations[this.selectedOptionIndex];
+    this.selectedOption = _.get(this.product.variations, [this.selectedOptionIndex], undefined);
   }
 
   updateSelectedOption(index: number): void {
@@ -37,7 +47,7 @@ export class ProductComponent implements OnInit {
   }
 
   getRemainingFlavorsCount(): number {
-    return this.selectedOption.maxFlavors - this.selectedFlavors.length;
+    return _.get(this.selectedOption, 'maxFlavors', 0) - this.selectedFlavors.length;
   }
 
   isActiveFlavor(flavor: string): boolean {

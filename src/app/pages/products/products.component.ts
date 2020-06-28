@@ -5,6 +5,7 @@ import { Product } from 'src/app/interfaces/products';
 import { getResponse } from 'src/app/utils/utility-functions';
 import productsJson from './../../db_mock/products.json';
 import { GlobalConstants } from '../../utils/global-constants';
+import { InputsConfig } from '../../interfaces/inputs-config';
 
 @Component({
   selector: 'app-products',
@@ -12,6 +13,16 @@ import { GlobalConstants } from '../../utils/global-constants';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
+  collection = 'products';
+  public inputsConfig: InputsConfig = {
+    string: ['slug', 'name', 'description'],
+    number: [],
+    url: [],
+    quill: [],
+    date: [],
+    boolean: ['publish'],
+    disabled: ['slug']
+  };
   products: Product[] = [];
   globalConstants = GlobalConstants;
 
