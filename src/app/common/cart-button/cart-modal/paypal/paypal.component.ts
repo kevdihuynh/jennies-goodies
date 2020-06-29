@@ -173,7 +173,7 @@ export class PaypalComponent implements OnInit {
                 // This triggers after transaction completes. Can't put toaster message here some reason
                 try {
                     const transactionId: string = data.purchase_units[0].payments.captures[0].id;
-                    await this.afs.collection('orders').doc(transactionId).set({paypal: data, orderForm: this.orderForm});
+                    await this.afs.collection('transactions').doc(transactionId).set({paypal: data, orderForm: this.orderForm});
                     this.cartService.clearCart();
                     this.activeModal.close('transaction-completed');
                 } catch (error) {
