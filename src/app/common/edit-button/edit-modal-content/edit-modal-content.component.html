@@ -7,16 +7,18 @@
     </button>
 </div>
 <div class="modal-body row">
-    <div class="mb-3" [ngClass]="{'col-12': _.includes(_.get(inputsConfig, ['quill']), key), 'col-xs-12 col-md-6': !_.includes(_.get(inputsConfig, ['quill']), key)}" *ngFor="let key of keys">
+    <div class="mb-3" [ngClass]="{'col-12': _.includes(_.get(inputsConfig, ['quill']), key), 'col-xs-12 col-md-6': !_.includes(_.get(inputsConfig, ['quill']), key)}"
+        *ngFor="let key of keys">
         <h4 class="text-capitalize mb-2">{{_.startCase(key)}}</h4>
         <div class="mb-3">
             <ng-container *ngIf="_.includes(inputsConfig?.string, key)">
                 <div class="input-group custom-input-group">
-                    <input type="input" class="form-control" placeholder="Add {{key}}" [ngModel]="data[key]"  (ngModelChange)="data[key] = transformString(key, $event)" [required]="true" [disabled]="isDisabled(key)">
+                    <input type="input" class="form-control" placeholder="Add {{key}}" [ngModel]="data[key]" (ngModelChange)="data[key] = transformString(key, $event)"
+                        [required]="true" [disabled]="isDisabled(key)">
                     <div class="input-group-append">
                         <span class="input-group-text">
-                            <i class="fas fa-check" class="text-success" *ngIf="isValidString(key)"></i>
-                            <i class="fas fa-asterisk" class="text-danger" *ngIf="!isValidString(key)"></i>
+                            <i class="fas fa-check text-success" *ngIf="isValidString(key)"></i>
+                            <i class="fas fa-asterisk text-danger" *ngIf="!isValidString(key)"></i>
                         </span>
                     </div>
                 </div>
@@ -27,8 +29,8 @@
                     <input type="number" class="form-control" placeholder="Add {{key}}" [(ngModel)]="data[key]" [required]="true" [disabled]="isDisabled(key)">
                     <div class="input-group-append">
                         <span class="input-group-text">
-                            <i class="fas fa-check" class="text-success" *ngIf="_.isNumber(data[key])"></i>
-                            <i class="fas fa-asterisk" class="text-danger" *ngIf="!_.isNumber(data[key])"></i>
+                            <i class="fas fa-check text-success" *ngIf="_.isNumber(data[key])"></i>
+                            <i class="fas fa-asterisk text-danger" *ngIf="!_.isNumber(data[key])"></i>
                         </span>
                     </div>
                 </div>
@@ -39,11 +41,11 @@
                     <input type="url" class="form-control" placeholder="Add {{key}}" [(ngModel)]="data[key]" [required]="true" [disabled]="isDisabled(key)">
                     <div class="input-group-append">
                         <button (click)="selectLocalImage(key)" class="btn btn-outline-secondary" type="button" [disabled]="isDisabled(key)">
-                            <fa-icon [icon]="['fas', 'image']" class="text-dark"></fa-icon>
+                            <i class="fas fa-image text-dark"></i>
                         </button>
                         <span class="input-group-text">
                             <img class="padding-0 valid-image" *ngIf="isValidUrl(key)" [src]="_.get(data, [key])">
-                            <fa-icon [icon]="['fas', 'asterisk']" class="text-danger" *ngIf="!isValidUrl(key)"></fa-icon>
+                            <i class="fas fa-asterisk text-danger" *ngIf="!isValidUrl(key)"></i>
                         </span>
                     </div>
                 </div>
@@ -53,27 +55,26 @@
             </ng-container>
             <ng-container *ngIf="_.includes(inputsConfig?.date, key)">
                 <div class="input-group custom-input-group">
-                    <input class="form-control" placeholder="yyyy-mm-dd"
-                            name="datePicker" [(ngModel)]="data[key]" ngbDatepicker #datePicker="ngbDatepicker" (click)="datePicker.toggle()" [disabled]="isDisabled(key)">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="datePicker" [(ngModel)]="data[key]" ngbDatepicker #datePicker="ngbDatepicker"
+                        (click)="datePicker.toggle()" [disabled]="isDisabled(key)">
                     <div class="input-group-append" *ngIf="data[key]">
                         <div class="input-group-text">
-                            <fa-icon [icon]="['fas', 'check']" class="text-success" *ngIf="_.isDate(data[key].toDate())"></fa-icon>
-                            <fa-icon [icon]="['fas', 'asterisk']" class="text-danger" *ngIf="!_.isDate(data[key].toDate())"></fa-icon>
+                            <i class="fas fa-check text-success" *ngIf="_.isDate(data[key].toDate())"></i>
+                            <i class="fas fa-asterisk text-danger" *ngIf="!_.isDate(data[key].toDate())"></i>
                         </div>
                     </div>
                 </div>
             </ng-container>
-            <ng-container *ngIf="_.includes(inputsConfig?.boolean, key)" >
+            <ng-container *ngIf="_.includes(inputsConfig?.boolean, key)">
                 <div class="form-check d-inline-block my-1 mr-3">
                     <label class="form-check-label cursor-pointer">
-                        <input class="form-check-input" type="radio" name="yesNoRadio" id="yesNoRadio" [value]="true" [(ngModel)]="data[key]" [disabled]="isDisabled(key)" checked>
-                        Yes
+                        <input class="form-check-input" type="radio" name="yesNoRadio" id="yesNoRadio" [value]="true" [(ngModel)]="data[key]" [disabled]="isDisabled(key)"
+                            checked> Yes
                     </label>
                 </div>
                 <div class="form-check d-inline-block">
                     <label class="form-check-label cursor-pointer">
-                        <input class="form-check-input" type="radio" name="yesNoRadio" id="yesNoRadio" [value]="false" [(ngModel)]="data[key]" [disabled]="isDisabled(key)">
-                        No
+                        <input class="form-check-input" type="radio" name="yesNoRadio" id="yesNoRadio" [value]="false" [(ngModel)]="data[key]" [disabled]="isDisabled(key)"> No
                     </label>
                 </div>
             </ng-container>
@@ -81,17 +82,18 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button *ngIf="!isNew && _.isEqual(collection, 'products')" type="button" class="btn btn-danger" (click)="delete()"><fa-icon [icon]="['fas', 'trash-alt']"></fa-icon> Delete</button>
+    <button *ngIf="!isNew && _.isEqual(collection, 'products')" type="button" class="btn btn-danger" (click)="delete()">
+        <i class="fas fa-trash-alt"></i> Delete</button>
     <button class="btn btn-primary" (click)="copyToClipboard(data)">
         Copy JSON
     </button>
-    <button [ngClass]="{ 'btn-warning': isValid(), 'btn-secondary': !isValid() }" [disabled]="!isValid()"
-    type="button" class="btn ml-auto" (click)="activeModal.close({ reason: isNew ? 'create' : 'update', data: data})">
-      <span *ngIf="isNew">
-        <i class="fas fa-plus-circle"></i> Create
-      </span>
-      <span *ngIf="!isNew">
-        <i class="fas fa-save"></i> Save
-      </span>
+    <button [ngClass]="{ 'btn-warning': isValid(), 'btn-secondary': !isValid() }" [disabled]="!isValid()" type="button" class="btn ml-auto"
+        (click)="activeModal.close({ reason: isNew ? 'create' : 'update', data: data})">
+        <span *ngIf="isNew">
+            <i class="fas fa-plus-circle"></i> Create
+        </span>
+        <span *ngIf="!isNew">
+            <i class="fas fa-save"></i> Save
+        </span>
     </button>
 </div>
