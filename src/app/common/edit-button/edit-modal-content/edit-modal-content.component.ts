@@ -155,12 +155,12 @@ export class EditModalContentComponent implements OnInit {
   }
 
 
-  // getEditorInstance(editorInstance: any, key: string) {
-  //   this.quillKey = key;
-  //   this.quillEditorRef = editorInstance;
-  //   const toolbar = editorInstance.getModule('toolbar');
-  //   toolbar.addHandler('image', this.imageHandler);
-  // }
+  getEditorInstance(editorInstance: any, key: string) {
+    this.quillKey = key;
+    this.quillEditorRef = editorInstance;
+    // const toolbar = editorInstance.getModule('toolbar');
+    // toolbar.addHandler('image', this.imageHandler);
+  }
 
   // imageHandler = (image, callback) => {
   //   this.selectLocalImage();

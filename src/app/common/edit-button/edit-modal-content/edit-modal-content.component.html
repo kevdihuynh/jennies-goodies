@@ -48,9 +48,9 @@
                     </div>
                 </div>
             </ng-container> -->
-            <!-- <ng-container *ngIf="_.includes(inputsConfig?.quill, key)">
+            <ng-container *ngIf="_.includes(inputsConfig?.quill, key)">
                 <quill-editor [modules]="customQuillEditor" (onEditorCreated)="getEditorInstance($event, key)" [(ngModel)]="data[key]" [disabled]="isDisabled(key)"></quill-editor>
-            </ng-container> -->
+            </ng-container>
             <ng-container *ngIf="_.includes(inputsConfig?.date, key)">
                 <div class="input-group custom-input-group">
                     <input class="form-control" placeholder="yyyy-mm-dd"

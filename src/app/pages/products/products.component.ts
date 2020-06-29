@@ -15,10 +15,10 @@ import { InputsConfig } from '../../interfaces/inputs-config';
 export class ProductsComponent implements OnInit {
   collection = 'products';
   public inputsConfig: InputsConfig = {
-    string: ['slug', 'name', 'description'],
+    string: ['slug', 'name'],
     number: [],
     url: [],
-    quill: [],
+    quill: ['description'],
     date: [],
     boolean: ['publish'],
     disabled: ['slug']

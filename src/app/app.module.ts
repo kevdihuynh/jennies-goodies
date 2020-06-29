@@ -6,6 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPayPalModule } from 'ngx-paypal';
+import { QuillModule } from 'ngx-quill';
 
 import { environment } from '../environments/environment';
 
@@ -66,7 +67,8 @@ import { EditModalConfirmComponent } from './common/edit-button/edit-modal-confi
     ToastrModule.forRoot(),
     NgxSpinnerModule,
     NgxPayPalModule,
-    AutocompleteLibModule
+    AutocompleteLibModule,
+    QuillModule.forRoot()
   ],
   entryComponents: [],
   schemas: [

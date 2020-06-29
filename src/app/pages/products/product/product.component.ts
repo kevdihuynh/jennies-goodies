@@ -18,10 +18,10 @@ export class ProductComponent implements OnInit {
   selectedOption: Option;
   selectedFlavors: Array<string> = [];
   public inputsConfig: InputsConfig = {
-    string: ['slug', 'name', 'description'],
+    string: ['slug', 'name'],
     number: [],
     url: [],
-    quill: [],
+    quill: ['description'],
     date: [],
     boolean: ['publish'],
     disabled: ['slug']

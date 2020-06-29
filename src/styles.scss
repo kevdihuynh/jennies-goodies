@@ -48,3 +48,25 @@ $theme-colors: (
 .ng-autocomplete {
     width: 100% !important;
 }
+
+/* Custom ngx-quill */
+quill-view-html .ql-container {
+    height: unset;
+    .ql-editor {
+        padding: 0;
+        width: 100%;
+    }
+    .ql-editor img  {
+        width: 100%;
+        max-width: 90%;
+        height: auto;
+    }
+}
+
+quill-editor .ql-toolbar {
+    background-color: #ffffff;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+}
