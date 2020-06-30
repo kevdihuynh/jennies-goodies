@@ -143,8 +143,11 @@ export const updateCalendarEvent = functions.https.onRequest(async (request, res
     const email = _.get(orderForm, 'email', '');
 
     if (selectedDateTime && name) {
-        selectedDateTime.summary = `BOOKED ${name} ${email ? `(${email})` : ''}`;
+        const isPaid = _.get(orderForm, 'grandTotal', undefined);
+        const isDelivery = _.get(orderForm, 'isDelivery', undefined);
+        selectedDateTime.summary = `[Website] [${isPaid ? 'Paid' : 'Not Paid'}] [${isDelivery ? 'Delivery' : 'Pickup'}] [${name ? name : ''}] [${email ? `(${email})` : ''}]`;
         selectedDateTime.description = description;
+        selectedDateTime.colorId = isDelivery ? '11' : '3';
         console.log('event::', selectedDateTime);
         const eventData = {
             calendarId:'primary',

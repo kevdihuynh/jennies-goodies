@@ -105,7 +105,6 @@ export class ProductComponent implements OnInit {
   }
 
   toggleFlavor(flavor: string): void {
-    debugger;
     if (this.isActiveFlavor(flavor) && !this.product.allowMultiple) {
       _.remove(this.selectedFlavors, (currentFlavor: string) => _.isEqual(currentFlavor, flavor));
       return;

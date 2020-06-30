@@ -155,7 +155,7 @@
     </ng-container>
 </div>
 <div class="modal-footer p-0">
-    <!-- <pre class="mt-2">{{orderForm | json}}</pre> -->
+    <pre class="mt-2">{{orderForm | json}}</pre>
     <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-custom-purple': !isOrderFormDisabled(), 'btn-dark': isOrderFormDisabled()}"
         [disabled]="isOrderFormDisabled()" (click)="submit()">
         Place Order
