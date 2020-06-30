@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource, NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Option, Product } from 'src/app/interfaces/products';
 import { Order } from 'src/app/interfaces/cart';
 import { CartService } from 'src/app/services/cart/cart.service';
@@ -9,9 +10,19 @@ import { InputsConfig } from '../../../interfaces/inputs-config';
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
-  styleUrls: ['./product.component.scss']
+  styleUrls: ['./product.component.scss'],
+  providers: [ NgbCarouselConfig ]
 })
 export class ProductComponent implements OnInit {
+  @ViewChild('carousel', {static : true}) carousel: NgbCarousel;
+  interval = 1000;
+  showNavigationArrows = false;
+  showNavigationIndicators = false;
+  paused = false;
+  unpauseOnArrow = false;
+  pauseOnIndicator = false;
+  pauseOnHover = true;
+
   @Input() product: Product;
   _ = _;
   selectedOptionIndex = 0;
@@ -37,6 +48,29 @@ export class ProductComponent implements OnInit {
     this.product.quantity = 1;
 
     this.selectedOption = _.get(this.product.variations, [this.selectedOptionIndex], undefined);
+    if (_.get(this.product, 'imageUrls', []).length > 1) {
+      this.showNavigationArrows = true;
+      this.showNavigationIndicators = true;
+    }
+  }
+
+  togglePaused() {
+    if (this.paused) {
+      this.carousel.cycle();
+    } else {
+      this.carousel.pause();
+    }
+    this.paused = !this.paused;
+  }
+
+  onSlide(slideEvent: NgbSlideEvent) {
+    if (this.unpauseOnArrow && slideEvent.paused &&
+      (slideEvent.source === NgbSlideEventSource.ARROW_LEFT || slideEvent.source === NgbSlideEventSource.ARROW_RIGHT)) {
+      this.togglePaused();
+    }
+    if (this.pauseOnIndicator && !slideEvent.paused && slideEvent.source === NgbSlideEventSource.INDICATOR) {
+      this.togglePaused();
+    }
   }
 
   updateSelectedOption(index: number): void {

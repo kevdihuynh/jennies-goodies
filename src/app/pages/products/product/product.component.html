@@ -1,6 +1,13 @@
 <div class="row no-gutters border">
     <div class="col-xs-12 col-sm-6 col-md-4 my-auto">
-        <img [src]="_.get(product, 'imageUrls[0]')" class="img-fluid w-100"/>
+        <ngb-carousel #carousel [showNavigationArrows]="showNavigationArrows" [showNavigationIndicators]="showNavigationIndicators" [interval]="interval" [pauseOnHover]="pauseOnHover" (slide)="onSlide($event)">
+            <ng-template ngbSlide *ngFor="let img of product.imageUrls; index as i">
+                <!-- <div class="carousel-caption">
+                    <h3>My slide {{i + 1}} title</h3>
+                </div> -->
+                <img class="img-fluid w-100" [src]="img" alt="My image {{i + 1}} description">
+            </ng-template>
+        </ngb-carousel>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-8 my-2">
         <div class="d-flex flex-column h-100 container-fluid">
