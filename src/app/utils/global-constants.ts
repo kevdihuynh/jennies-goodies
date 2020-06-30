@@ -1,7 +1,7 @@
 export class GlobalConstants {
     public static apiURL: string = "https://wwww.itsolutionstuff.com/";
     public static company = {
-        name: "Jennie's Goodies",
+        name: "Johnson Huynh and Kevin Huynh",
         slogan: "Fresh homemade pastries & sweets served every day!",
         email: 'jenniesgoodies@yahoo.com',
         logo: '../assets/images/jennies_goodies_logo.jpg',
