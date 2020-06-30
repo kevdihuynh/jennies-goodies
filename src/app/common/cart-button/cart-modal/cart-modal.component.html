@@ -154,14 +154,14 @@
         </section>
     </ng-container>
 </div>
-<div class="modal-footer p-0">
-    <pre class="mt-2">{{orderForm | json}}</pre>
-    <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-custom-purple': !isOrderFormDisabled(), 'btn-dark': isOrderFormDisabled()}"
+<div class="modal-footer p-0" *ngIf="!isOrderFormDisabled()">
+    <!-- <pre class="mt-2">{{orderForm | json}}</pre> -->
+    <!-- <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-custom-purple': !isOrderFormDisabled(), 'btn-dark': isOrderFormDisabled()}"
         [disabled]="isOrderFormDisabled()" (click)="submit()">
         Place Order
         <span *ngIf="orderForm.totalOrdersQuantity">
             ({{orderForm.totalOrdersQuantity}} Item<span *ngIf="orderForm.totalOrdersQuantity > 1">s</span>)
         </span>
-    </button>
+    </button> -->
     <app-paypal class="w-100 text-center"></app-paypal>
 </div>
