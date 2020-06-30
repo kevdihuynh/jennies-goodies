@@ -84,6 +84,10 @@ export class ProductComponent implements OnInit {
     return _.get(this.selectedOption, 'maxFlavors', 0) - this.selectedFlavors.length;
   }
 
+  getRemainingSelectedCount(): number {
+    return _.get(this.selectedOption, 'batchSize', 0) - this.selectedFlavors.length;
+  }
+
   isActiveFlavor(flavor: string): boolean {
     return _.includes(this.selectedFlavors, flavor);
   }
@@ -97,18 +101,23 @@ export class ProductComponent implements OnInit {
   }
 
   isCartValid(): boolean {
-    return (this.isZeroRemainingFlavorsCount() || this.isSelectedFlavorsValid()) && (this.product.quantity > 0);
+    return ((this.product.allowMultiple && this.getRemainingSelectedCount() === 0) || (!this.product.allowMultiple && (this.isZeroRemainingFlavorsCount() || this.isSelectedFlavorsValid()) && (this.product.quantity > 0)));
   }
 
   toggleFlavor(flavor: string): void {
-    if (this.isActiveFlavor(flavor)) {
+    debugger;
+    if (this.isActiveFlavor(flavor) && !this.product.allowMultiple) {
       _.remove(this.selectedFlavors, (currentFlavor: string) => _.isEqual(currentFlavor, flavor));
       return;
     }
-    if (this.isZeroRemainingFlavorsCount()) {
+    if (this.isZeroRemainingFlavorsCount() && !this.product.allowMultiple) {
       this.selectedFlavors.shift();
     }
-    this.selectedFlavors.push(flavor);
+
+    if ((this.product.allowMultiple && this.getRemainingSelectedCount() > 0) || !this.product.allowMultiple) {
+      this.selectedFlavors.push(flavor);
+    }
+    console.log(this.selectedFlavors);
   }
 
   addToCart(product: Product): void {
@@ -126,6 +135,7 @@ export class ProductComponent implements OnInit {
       quantity: product.quantity
     };
     this.cartService.addToCart(order);
+    this.selectedFlavors = [];
     this.toastr.info(`${order.quantity} ${order.name} (${_.join(order.selectedFlavors, ', ')}) - ${order.batchSize} for $${order.price}`, 'Added to Cart', {
       positionClass: 'toast-bottom-left',
       progressBar: true,

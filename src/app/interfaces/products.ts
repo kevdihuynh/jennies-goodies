@@ -13,4 +13,5 @@ export interface Product {
     description: string;
     quantity: number;
     slug: string;
+    allowMultiple: boolean;
 }
