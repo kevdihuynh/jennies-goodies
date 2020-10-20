@@ -10,6 +10,7 @@ import { GlobalConstants } from '../../../../utils/global-constants';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { DatePipe } from '@angular/common';
+import { GoogleCalendarService } from 'src/app/services/google-calendar/google-calendar.service';
 @Component({
     selector: 'app-paypal',
     templateUrl: './paypal.component.html',
@@ -27,7 +28,8 @@ export class PaypalComponent implements OnInit {
         public cartService: CartService,
         public activeModal: NgbActiveModal,
         private afs: AngularFirestore,
-        private datePipe: DatePipe
+        private datePipe: DatePipe,
+        public googleCalendarService: GoogleCalendarService
     ) { }
 
     ngOnInit(): void {
@@ -178,6 +180,7 @@ export class PaypalComponent implements OnInit {
                     await this.afs.collection('transactions').doc(transactionId).set({paypal: data, orderForm: this.orderForm});
                     this.cartService.clearCart();
                     this.activeModal.close('transaction-completed');
+                    await this.googleCalendarService.bookCalendar(this.orderForm);
                 } catch (error) {
                     console.log(error);
                 }

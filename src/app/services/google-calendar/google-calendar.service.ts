@@ -41,7 +41,7 @@ export class GoogleCalendarService {
       });
       return itemList;
     };
-
+    console.log(orderForm);
     const descriptionHTML = `
       <section>
         <p>

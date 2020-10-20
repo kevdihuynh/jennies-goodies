@@ -11,13 +11,13 @@ import { GlobalConstants } from '../../utils/global-constants';
 export class CartService {
   private orderFormSubject = new BehaviorSubject<OrderForm>(
     {
-      name: undefined, // 'John Doe',
-      email: undefined, // 'johndoe@example.com',
-      phoneNumber: undefined, // '2067650458',
+      name: '', // 'John Doe',
+      email: '', // 'johndoe@example.com',
+      phoneNumber: '', // '2067650458',
       isDelivery: false,
       address: GlobalConstants.company.address,
       addressComponent: null,
-      notes: undefined, // 'John Doe will pick it up for me',
+      notes: '', // 'John Doe will pick it up for me',
       date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
       // time: { hour: 17, minute: 0, second: 0 }, // TODO: Remove ngb time picker references as we are no longer using it
       orders: [],
