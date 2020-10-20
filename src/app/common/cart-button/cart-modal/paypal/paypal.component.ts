@@ -198,7 +198,7 @@ export class PaypalComponent implements OnInit {
                 });
             },
             onClick: async (data, actions) => {
-                console.log(this.orderForm);
+                // console.log(this.orderForm);
                 this.toastr.info('You have opened the Payment Form', 'Last Step To Complete Your Order!', {
                     positionClass: 'toast-bottom-left',
                     progressBar: true,
