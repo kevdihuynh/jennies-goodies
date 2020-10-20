@@ -32,7 +32,7 @@ export class ProductsComponent implements OnInit {
     getResponse(callback, productsJson).subscribe((res) => {
       const products: Product[] = res as Product[];
       this.products = products;
-      console.log(this.products);
+      // console.log(this.products);
     });
   }
 
