@@ -6,7 +6,6 @@
     ],
     "source": "functions"
   },
-  "public": "dist/jennies-goodies",
   "hosting": {
     "public": "dist/jennies-goodies",
     "ignore": [
