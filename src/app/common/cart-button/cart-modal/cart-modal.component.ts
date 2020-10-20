@@ -535,39 +535,6 @@ export class CartModalComponent implements OnInit {
     this.spinner.hide();
   }
 
-  async updateEvent() {
-    // time sent to google needs to be in RFC 3339
-    const getOrderItems = () => {
-      let itemList = '';
-      this.orderForm.orders.map((order) => {
-        itemList += `<li>${order.quantity} x ${order.name} (${_.join(order.selectedFlavors, ', ')}) - ${order.batchSize} for $${order.price}</li>`;
-      });
-      return itemList;
-    };
-
-    const descriptionHTML = `
-      <section>
-        <p>
-          phone: ${this.orderForm.phoneNumber}
-        </p>
-        <p>
-          ${this.orderForm.notes}
-        </p>
-        <p>
-          ${this.orderForm.isDelivery ? `${this.orderForm.address} (${this.orderForm.deliveryDistance})` : 'Pickup'}
-        </p>
-        <p>
-          Total: $${this.orderForm.total} + $${this.orderForm.deliveryFee}
-        </p>
-        <ul>
-          ${getOrderItems()}
-        </ul>
-      </section>
-    `;
-    const events = await this.googleCalendarService.updateEvent(this.orderForm, descriptionHTML);
-    console.log('google calendar updateEvents response:: ', events);
-  }
-
   async submit(): Promise<void> {
     // Extra check to prevent submitting when form validations are invalid
     if (this.isOrderFormDisabled()) {
@@ -576,7 +543,7 @@ export class CartModalComponent implements OnInit {
     this.spinner.show();
     try {
       // update the google calendar event with BOOKED status
-      await this.updateEvent();
+      await this.googleCalendarService.bookCalendar(this.orderForm);
 
       // save order details in firebase
 
