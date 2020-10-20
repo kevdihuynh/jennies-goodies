@@ -3,15 +3,16 @@ import { AngularFireFunctions } from '@angular/fire/functions';
 import { HttpClient } from '@angular/common/http';
 import { getBaseUrl, getResponse } from 'src/app/utils/utility-functions';
 import getEventsResponse from './../../db_mock/get_events_response.json';
-import * as _ from 'lodash';
 import { OrderForm } from '../../interfaces/cart';
+import { DatePipe } from '@angular/common';
+import * as _ from 'lodash';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GoogleCalendarService {
 
-  constructor(private fns: AngularFireFunctions, private http: HttpClient){}
+  constructor(private fns: AngularFireFunctions, private http: HttpClient, private datePipe: DatePipe){}
 
   async getEvents(timeMin: string, timeMax: string): Promise<any[]> {
     const reqBody = { timeMin, timeMax};
@@ -32,8 +33,11 @@ export class GoogleCalendarService {
     return updateCalendarEventResponse;
   }
 
-  async bookCalendar(orderForm: OrderForm) {
+  async bookCalendar(orderForm: OrderForm, transactionId: string = 'N/A') {
     // time sent to google needs to be in RFC 3339
+    const getDescription = (): string => {
+      return `${_.get(orderForm, ['isDelivery']) ? 'Delivery' : 'Pickup'} at ${_.get(orderForm, ['address'])}  on ${this.datePipe.transform(orderForm.selectedDateTime.end.dateTime, 'longDate')} between ${this.datePipe.transform(orderForm.selectedDateTime.start.dateTime, 'shortTime')} and ${this.datePipe.transform(orderForm.selectedDateTime.end.dateTime, 'shortTime')}`;
+    }
     const getOrderItems = () => {
       let itemList = '';
       orderForm.orders.map((order) => {
@@ -44,21 +48,15 @@ export class GoogleCalendarService {
     console.log(orderForm);
     const descriptionHTML = `
       <section>
-        <p>
-          phone: ${orderForm.phoneNumber}
-        </p>
-        <p>
-          ${orderForm.notes}
-        </p>
-        <p>
-          ${orderForm.isDelivery ? `${orderForm.address} (${orderForm.deliveryDistance})` : 'Pickup'}
-        </p>
-        <p>
-          Total: $${orderForm.total} + $${orderForm.deliveryFee}
-        </p>
-        <ul>
-          ${getOrderItems()}
-        </ul>
+        <p><b>Name:</b> ${orderForm.name}</p>
+        <p><b>Orders:</b></p>
+        <ul>${getOrderItems()}</ul>
+        ${!_.isEmpty(orderForm.notes) ? `<p><b>Notes:</b> ${orderForm.notes}</p>` : ``}
+        <p><b>Email:</b> ${orderForm.email}</p>
+        <p><b>Phone:</b> ${orderForm.phoneNumber}</p>
+        <p><b>Total:</b> $${orderForm.total} ${(orderForm.deliveryFee > 0) ? `+ ${orderForm.deliveryFee} Delievery Fee` : ``}</p>
+        <p><b>Transaction ID:</b> ${transactionId}</p>
+        <p><b>Description:</b> ${getDescription()}</p>
       </section>
     `;
     console.log(descriptionHTML);

@@ -43,6 +43,10 @@ export class PaypalComponent implements OnInit {
         const currency = 'USD';
         let item_total = this.orderForm.grandTotal;
 
+        const getDescription = (): string => {
+            return `${_.get(this.orderForm, ['isDelivery']) ? 'Delivery' : 'Pickup'} at ${_.get(this.orderForm, ['address'])}  on ${this.datePipe.transform(this.orderForm.selectedDateTime.end.dateTime, 'longDate')} between ${this.datePipe.transform(this.orderForm.selectedDateTime.start.dateTime, 'shortTime')} and ${this.datePipe.transform(this.orderForm.selectedDateTime.end.dateTime, 'shortTime')}`;
+        }
+
         const getAmount = (): IUnitAmount => {
             const amountObj: IUnitAmount = {
                 currency_code: _.toUpper(currency),
@@ -142,7 +146,7 @@ export class PaypalComponent implements OnInit {
                 purchase_units: [{
                     amount: getAmount(),
                     items: getItems(),
-                    description: `${_.get(this.orderForm, ['isDelivery']) ? 'Delivery' : 'Pickup'} at ${_.get(this.orderForm, ['address'])}  on ${this.datePipe.transform(this.orderForm.selectedDateTime.end.dateTime, 'longDate')} between ${this.datePipe.transform(this.orderForm.selectedDateTime.start.dateTime, 'shortTime')} and ${this.datePipe.transform(this.orderForm.selectedDateTime.end.dateTime, 'shortTime')}`
+                    description: getDescription()
                 }],
                 payer: getPayer()
             },
@@ -180,7 +184,7 @@ export class PaypalComponent implements OnInit {
                     await this.afs.collection('transactions').doc(transactionId).set({paypal: data, orderForm: this.orderForm});
                     this.cartService.clearCart();
                     this.activeModal.close('transaction-completed');
-                    await this.googleCalendarService.bookCalendar(this.orderForm);
+                    await this.googleCalendarService.bookCalendar(this.orderForm, transactionId);
                 } catch (error) {
                     console.log(error);
                 }
