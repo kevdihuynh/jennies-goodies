@@ -10,14 +10,14 @@ export interface OrderForm {
     addressComponent: FormattedAddressComponent;
     notes?: string;
     date: NgbDateStruct;
-    time: NgbTimeStruct;
+    // time: NgbTimeStruct; // TODO: Remove ngb time picker references as we are no longer using it
     deliveryDistance: number;
     deliveryFee: number;
     total: number;
     grandTotal: number;
     orders: Order[];
     totalOrdersQuantity: number;
-    selectedDateTime: object;
+    selectedDateTime: any;
     confirmedAddress: string;
 }
 export interface Order {

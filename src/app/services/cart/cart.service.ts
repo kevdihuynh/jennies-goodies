@@ -3,6 +3,7 @@ import { Order, OrderForm } from 'src/app/interfaces/cart';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { GlobalConstants } from '../../utils/global-constants';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,12 @@ export class CartService {
       name: 'John Doe',
       email: 'johndoe@example.com',
       phoneNumber: '2067650458',
-      isDelivery: true,
-      address: null,
+      isDelivery: false,
+      address: GlobalConstants.company.address,
       addressComponent: null,
       notes: 'John Doe will pick it up for me',
       date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
-      time: { hour: 17, minute: 0, second: 0 },
+      // time: { hour: 17, minute: 0, second: 0 }, // TODO: Remove ngb time picker references as we are no longer using it
       orders: [],
       totalOrdersQuantity: 0,
       deliveryDistance: 0,

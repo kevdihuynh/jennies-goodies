@@ -116,7 +116,6 @@ export class ProductComponent implements OnInit {
     if ((this.product.allowMultiple && this.getRemainingSelectedCount() > 0) || !this.product.allowMultiple) {
       this.selectedFlavors.push(flavor);
     }
-    console.log(this.selectedFlavors);
   }
 
   addToCart(product: Product): void {

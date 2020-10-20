@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 import { GlobalConstants } from '../../../../utils/global-constants';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFirestore } from '@angular/fire/firestore';
-
+import { DatePipe } from '@angular/common';
 @Component({
     selector: 'app-paypal',
     templateUrl: './paypal.component.html',
@@ -26,7 +26,8 @@ export class PaypalComponent implements OnInit {
         private spinner: NgxSpinnerService,
         public cartService: CartService,
         public activeModal: NgbActiveModal,
-        private afs: AngularFirestore
+        private afs: AngularFirestore,
+        private datePipe: DatePipe
     ) { }
 
     ngOnInit(): void {
@@ -138,7 +139,8 @@ export class PaypalComponent implements OnInit {
                 intent: 'CAPTURE',
                 purchase_units: [{
                     amount: getAmount(),
-                    items: getItems()
+                    items: getItems(),
+                    description: `${_.get(this.orderForm, ['isDelivery']) ? 'Delivery' : 'Pickup'} at ${_.get(this.orderForm, ['address'])}  on ${this.datePipe.transform(this.orderForm.selectedDateTime.end.dateTime, 'longDate')} between ${this.datePipe.transform(this.orderForm.selectedDateTime.start.dateTime, 'shortTime')} and ${this.datePipe.transform(this.orderForm.selectedDateTime.end.dateTime, 'shortTime')}`
                 }],
                 payer: getPayer()
             },
