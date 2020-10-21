@@ -60,6 +60,21 @@ function addEvent(event:any, auth:any) {
                     'dateTime': event.endTime,
                     'timeZone': TIME_ZONE,
                 },
+                'location': "Jennie's House",
+                'reminders': {
+                    'useDefault': false,
+                    'overrides': [
+                      {
+                        'minutes': 60,
+                        'method': 'email'
+                      },
+                      {
+                        'minutes': 60,
+                        'method': 'popup'
+                      }
+                    ]
+                },
+                'visibility': 'private'
             },
         }, (err:any, res:any) => {
             if (err) {
@@ -149,11 +164,35 @@ export const updateCalendarEvent = functions.https.onRequest(async (request, res
         selectedDateTime.summary = `[Website] [${isPaid ? 'Paid' : 'Not Paid'}] [${isDelivery ? 'Delivery' : 'Pickup'}] [${name ? name : ''}] [${email ? `(${email})` : ''}]`;
         selectedDateTime.description = description;
         selectedDateTime.colorId = isDelivery ? '11' : '3';
+        const optional = {
+            'location': _.get(orderForm, 'address'),
+            "attendees": [
+                {
+                  "displayName": _.get(orderForm, 'name'),
+                  "email": _.get(orderForm, 'email')
+                }
+            ],
+            'reminders': {
+                'useDefault': false,
+                'overrides': [
+                  {
+                    'minutes': 60,
+                    'method': 'email'
+                  },
+                  {
+                    'minutes': 60,
+                    'method': 'popup'
+                  }
+                ]
+            },
+            'visibility': 'private'
+        };
         console.log('event::', selectedDateTime);
         const eventData = {
             calendarId:'primary',
             eventId: _.get(selectedDateTime, 'id', undefined),
-            resource: selectedDateTime,
+            sendUpdates: 'all',
+            resource: _.assign(selectedDateTime, optional)
         };
         calendarApi.updateCalendarEvent(eventData).then(data => {
             // console.log('data::', data);
