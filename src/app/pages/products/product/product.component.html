@@ -32,16 +32,8 @@
                 <div class="mb-2">
                     <div class="d-flex flex-wrap align-items-center btn-group">
                         <div class="side-info text-center mr-2">
-                            <span>
-                                <ng-container *ngIf="!product.allowMultiple">
-                                    <ng-container *ngIf="getRemainingFlavorsCount() !== 0">Pick {{getRemainingFlavorsCount()}}</ng-container>
-                                    <ng-container *ngIf="getRemainingFlavorsCount() === 0"><i class="fa fa-check-circle cursor-pointer text-custom-purple" aria-hidden="true"></i></ng-container>
-                                </ng-container>
-                                <ng-container *ngIf="product.allowMultiple">
-                                    <ng-container *ngIf="getRemainingSelectedCount() !== 0">Pick {{getRemainingSelectedCount()}}</ng-container>
-                                    <ng-container *ngIf="getRemainingSelectedCount() === 0"><i class="fa fa-check-circle cursor-pointer text-custom-purple" aria-hidden="true"></i></ng-container>
-                                </ng-container>
-                            </span>
+                            <span *ngIf="!product.allowMultiple">Max: {{selectedOption?.maxFlavors}}</span>
+                            <span *ngIf="product.allowMultiple">Left: {{getRemainingSelectedCount()}}</span>
                         </div>
                         <button *ngFor="let flavor of product.flavors; let i = index" (click)="toggleFlavor(flavor)" class="btn btn-outline-custom-purple btn-sm" [ngClass]="{ 'active': isActiveFlavor(flavor) && !product.allowMultiple }">
                             {{flavor}}
