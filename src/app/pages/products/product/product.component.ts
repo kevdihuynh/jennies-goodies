@@ -134,7 +134,7 @@ export class ProductComponent implements OnInit {
     };
     this.cartService.addToCart(order);
     this.selectedFlavors = [];
-    this.toastr.info(`${order.quantity} ${order.name} (${_.join(order.selectedFlavors, ', ')}) - ${order.batchSize} for $${order.price}`, 'Added to Cart', {
+    this.toastr.info(`${order.quantity} x ${order.name} (${_.join(order.selectedFlavors, ', ')}) - ${order.batchSize} for $${order.price}`, 'Added to Cart', {
       positionClass: 'toast-top-left',
       progressBar: true,
       disableTimeOut: false,
