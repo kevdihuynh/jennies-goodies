@@ -10,15 +10,15 @@
         <section class="order-form">
             <div class="form-row">
                 <div class="form-group col-md-12">
-                    <label for="inputName">Name</label>
+                    <label for="inputName">Name <span class="text-danger">*</span></label>
                     <input [(ngModel)]="orderForm.name" type="text" class="form-control" id="inputName" placeholder="Enter your name (i.e. John Doe)">
                 </div>
                 <div class="form-group col-md-12">
-                    <label fogitr="inputEmail">Email</label>
+                    <label fogitr="inputEmail">Email <span class="text-danger">*</span></label>
                     <input [(ngModel)]="orderForm.email" type="email" class="form-control" id="inputEmail" placeholder="Enter your email (i.e. johndoe@example.com)">
                 </div>
                 <div class="form-group col-md-12">
-                    <label for="inputPhoneNumber">Phone Number</label>
+                    <label for="inputPhoneNumber">Phone Number <span class="text-danger">*</span></label>
                     <input [(ngModel)]="orderForm.phoneNumber" type="text" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number (i.e. (206) 123-4567)">
                 </div>
                 <!-- **** Disabled Delivery Feature **** -->
@@ -88,14 +88,14 @@
                 </div> -->
             </div>
             <div class="form-group">
-                <label for="inputNotes">Notes</label>
-                <textarea [(ngModel)]="orderForm.notes" class="form-control" id="inputNotes" rows="3" placeholder="Enter any specific requests"></textarea>
+                <label for="inputNotes">Notes (Optional)</label>
+                <textarea [(ngModel)]="orderForm.notes" class="form-control" id="inputNotes" rows="3" placeholder="Enter any additional notes"></textarea>
             </div>
         </section>
         <hr/>
         <section class="date-time-picker">
             <label for="dateTimePicker">
-                Schedule {{orderForm.isDelivery ? 'Delivery' : 'Pickup'}} Date &amp; Time
+                Schedule {{orderForm.isDelivery ? 'Delivery' : 'Pickup'}} Date &amp; Time <span class="text-danger">*</span>
             </label>
             <div class="form-row mb-4" [ngClass]="{'border border-danger': formControls.dateTimePicker['tooLate'] || formControls.dateTimePicker['tooEarly']}">
                 <div class="form-group col-md-12">
@@ -111,19 +111,26 @@
                     </div>
                 </div>
                 -->
-                <div *ngIf="!dateTimeOptions || (dateTimeOptions && dateTimeOptions.length === 0)">
+                <ng-container *ngIf="isDateTimeLoading">
                     <p class="text-custom-purple mt-2 font-weight-bold small">
-                        No available time slots on this day.
+                        Loading...
                     </p>
-                </div>
-                <ng-container *ngFor="let dateTimeOption of dateTimeOptions">
-                    <div class="form-group col-md-3" *ngIf="!_.includes(dateTimeOption.summary, 'BOOKED')">
-                        <button class="btn btn-md btn-block btn-outline-custom-purple"
-                            [ngClass]="{'active': _.isEqual(dateTimeOption, orderForm.selectedDateTime)}"
-                            (click)="orderForm.selectedDateTime = dateTimeOption">
-                            {{dateTimeOption.start.dateTime | date:'shortTime'}} - {{dateTimeOption.end.dateTime | date:'shortTime'}}
-                        </button>
+                </ng-container>
+                <ng-container *ngIf="!isDateTimeLoading">
+                    <div *ngIf="!dateTimeOptions || (dateTimeOptions && dateTimeOptions.length === 0)">
+                        <p class="text-custom-purple mt-2 font-weight-bold small">
+                            No available time slots on this day.
+                        </p>
                     </div>
+                    <ng-container *ngFor="let dateTimeOption of dateTimeOptions">
+                        <div class="form-group col-md-3" *ngIf="!_.includes(dateTimeOption.summary, 'BOOKED')">
+                            <button class="btn btn-md btn-block btn-outline-custom-purple"
+                                [ngClass]="{'active': _.isEqual(dateTimeOption, orderForm.selectedDateTime)}"
+                                (click)="orderForm.selectedDateTime = dateTimeOption">
+                                {{dateTimeOption.start.dateTime | date:'shortTime'}} - {{dateTimeOption.end.dateTime | date:'shortTime'}}
+                            </button>
+                        </div>
+                    </ng-container>
                 </ng-container>
             </div>
             <!-- <pre>
@@ -166,14 +173,19 @@
         </section>
     </ng-container>
 </div>
-<div class="modal-footer p-0" *ngIf="!isOrderFormDisabled()">
-    <!-- <pre class="mt-2">{{orderForm | json}}</pre> -->
-    <!-- <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-custom-purple': !isOrderFormDisabled(), 'btn-dark': isOrderFormDisabled()}"
-        [disabled]="isOrderFormDisabled()" (click)="submit()">
-        Place Order
-        <span *ngIf="orderForm.totalOrdersQuantity">
-            ({{orderForm.totalOrdersQuantity}} Item<span *ngIf="orderForm.totalOrdersQuantity > 1">s</span>)
-        </span>
-    </button> -->
-    <app-paypal class="w-100 text-center"></app-paypal>
+<div class="modal-footer d-flex flex-wrap align-items-center justify-content-center">
+    <ng-container *ngIf="isOrderFormDisabled()">
+        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark">
+    </ng-container>
+    <ng-container *ngIf="!isOrderFormDisabled()">
+        <!-- <pre class="mt-2">{{orderForm | json}}</pre> -->
+        <!-- <button type="button" class="btn btn-block" [ngClass]="{'btn-outline-custom-purple': !isOrderFormDisabled(), 'btn-dark': isOrderFormDisabled()}"
+            [disabled]="isOrderFormDisabled()" (click)="submit()">
+            Place Order
+            <span *ngIf="orderForm.totalOrdersQuantity">
+                ({{orderForm.totalOrdersQuantity}} Item<span *ngIf="orderForm.totalOrdersQuantity > 1">s</span>)
+            </span>
+        </button> -->
+        <app-paypal class="w-100 text-center"></app-paypal>
+    </ng-container>
 </div>

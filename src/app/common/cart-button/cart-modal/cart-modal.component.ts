@@ -34,6 +34,7 @@ export class CartModalComponent implements OnInit {
     dateTimePicker: {},
     deliveryForm: {}
   };
+  isDateTimeLoading = true;
   isDeliveryInvalid = true;
   orderForm: OrderForm;
   orders: Order[] = [];
@@ -528,8 +529,8 @@ export class CartModalComponent implements OnInit {
 
   async getEvents() {
     // time sent to google needs to be in RFC 3339
-    this.spinner.show();
     try {
+      this.isDateTimeLoading = true;
       const modDay = this.orderForm.date.day <= 9 ? `0${this.orderForm.date.day}` : `${this.orderForm.date.day}`;
       const modMonth = this.orderForm.date.month <= 9 ? `0${this.orderForm.date.month}` : `${this.orderForm.date.month}`;
 
@@ -540,10 +541,11 @@ export class CartModalComponent implements OnInit {
       // Show only events that contain the title [OPEN]
       this.dateTimeOptions = _.filter(events, (event: any) => _.includes(_.toUpper(_.get(event, ['summary'])), _.toUpper('[OPEN]')));
       console.log('google calendar getEvents response:: ', events);
+      this.isDateTimeLoading = false;
     } catch (e) {
       console.log('error on google getEvents::', e);
+      this.isDateTimeLoading = false;
     }
-    this.spinner.hide();
   }
 
   async submit(): Promise<void> {
