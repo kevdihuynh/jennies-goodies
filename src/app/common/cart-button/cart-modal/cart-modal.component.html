@@ -145,8 +145,10 @@
                     <div class="order-quantity my-2 mr-4">
                         <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" min="1" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity" pattern="\d*" >
                     </div>
-                    <div class="my-2">
-                        <span class="mr-3">{{order.name}} ({{_.join(order.selectedFlavors, ', ')}}) - {{order.batchSize}} for {{order.price | currency:'USD':'symbol':'1.0'}}</span>
+                    <div class="d-flex flex-wrap align-items-center my-2">
+                        <span class="mr-2">{{order.name}}</span>
+                        <span class="mr-2">({{_.join(order.selectedFlavors, ', ')}})</span>
+                        <span class="mr-3">- {{order.batchSize}} for {{order.price | currency:'USD':'symbol':'1.0'}}</span>
                         <i class="fa fa-times-circle text-custom-purple cursor-pointer" aria-hidden="true" (click)="removeFromCart(order, index)"></i>
                     </div>
                     <div class="my-2 ml-auto">
