@@ -140,17 +140,20 @@
         <hr/>
         <section class="orderForm.orders.length">
             <h5>Items</h5>
-            <div class="d-flex flex-wrap align-items-center my-4 pb-3 border-bottom" *ngFor="let order of orderForm.orders; let index = index;">
-                <div class="order-quantity mr-4">
-                    <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" min="1" (keyup)="order.quantity = order.quantity || order.quantity = 1" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity">
+            <div class="my-4 pb-3 border-bottom" *ngFor="let order of orderForm.orders; let index = index;">
+                <div class="d-flex flex-wrap align-items-center ">
+                    <div class="order-quantity mr-4">
+                        <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" min="1" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity" pattern="\d*" >
+                    </div>
+                    <div>
+                        <span class="mr-3">{{order.name}} ({{_.join(order.selectedFlavors, ', ')}}) - {{order.batchSize}} for {{order.price | currency:'USD':'symbol':'1.0'}}</span>
+                        <i class="fa fa-times-circle text-custom-purple cursor-pointer" aria-hidden="true" (click)="removeFromCart(order, index)"></i>
+                    </div>
+                    <div class="ml-auto">
+                        <h5 class="d-inline-block font-weight-bold mb-0">{{order.price * order.quantity | currency:'USD':'symbol':'1.0'}}</h5>
+                    </div>
                 </div>
-                <div>
-                    <span class="mr-3">{{order.name}} ({{_.join(order.selectedFlavors, ', ')}}) - {{order.batchSize}} for {{order.price | currency:'USD':'symbol':'1.0'}}</span>
-                    <i class="fa fa-times-circle text-custom-purple cursor-pointer" aria-hidden="true" (click)="removeFromCart(order, index)"></i>
-                </div>
-                <div class="ml-auto">
-                    <h5 class="d-inline-block font-weight-bold mb-0">{{order.price * order.quantity | currency:'USD':'symbol':'1.0'}}</h5>
-                </div>
+                <p *ngIf="order.quantity < 1" class="text-danger mt-2">Quantity needs to be greater than zero</p>
             </div>
             <div class="mb-1 text-right">
                 <h5 class="font-weight-bold">Total: {{orderForm.total | currency:'USD':'symbol':'1.0'}}</h5>
