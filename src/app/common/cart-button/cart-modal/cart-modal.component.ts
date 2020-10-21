@@ -527,7 +527,9 @@ export class CartModalComponent implements OnInit {
       const dateTimeStart = moment(`${this.orderForm.date.year}-${modMonth}-${modDay} 00:00:00`).format();
       const dateTimeEnd = moment(`${this.orderForm.date.year}-${modMonth}-${modDay} 24:00:00`).format();
       const events = await this.googleCalendarService.getEvents(dateTimeStart, dateTimeEnd);
-      this.dateTimeOptions = events;
+      console.log(events);
+      // Show only events that contain the title [OPEN]
+      this.dateTimeOptions = _.filter(events, (event: any) => _.includes(_.toUpper(_.get(event, ['summary'])), _.toUpper('[OPEN]')));
       console.log('google calendar getEvents response:: ', events);
     } catch (e) {
       console.log('error on google getEvents::', e);
