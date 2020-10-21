@@ -45,21 +45,19 @@ export class GoogleCalendarService {
       });
       return itemList;
     };
-    console.log(orderForm);
     const descriptionHTML = `
       <section>
         <p><b>Name:</b> ${orderForm.name}</p>
-        <p><b>Orders:</b></p>
-        <ul>${getOrderItems()}</ul>
-        ${!_.isEmpty(orderForm.notes) ? `<p><b>Notes:</b> ${orderForm.notes}</p>` : ``}
         <p><b>Email:</b> ${orderForm.email}</p>
         <p><b>Phone:</b> ${orderForm.phoneNumber}</p>
         <p><b>Total:</b> $${orderForm.total} ${(orderForm.deliveryFee > 0) ? `+ ${orderForm.deliveryFee} Delievery Fee` : ``}</p>
-        <p><b>Transaction ID:</b> ${transactionId}</p>
+        <p><b>Orders:</b></p>
+        <ul>${getOrderItems()}</ul>
+        ${!_.isEmpty(orderForm.notes) ? `<p><b>Notes:</b> ${orderForm.notes}</p>` : ``}
         <p><b>Description:</b> ${getDescription()}</p>
+        <p><b>Transaction ID:</b> ${transactionId}</p>
       </section>
     `;
-    console.log(descriptionHTML);
     const events = await this.updateEvent(orderForm, descriptionHTML);
     console.log('google calendar updateEvents response:: ', events);
   }
