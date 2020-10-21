@@ -42,7 +42,7 @@
 
                     <div class="col">
                         <!-- <input [ngClass]="{'border border-danger': formControls.deliveryForm['addressError'] || formControls.deliveryForm['tooFarError'] || formControls.deliveryForm['calcDistanceError']}" [(ngModel)]="orderForm.address" type="text" class="form-control" id="inputAddress" placeholder="Enter your address (i.e. 1234 Main St Seattle, WA 98125)" [disabled]="!orderForm.isDelivery"> -->
-                        <p *ngIf="!orderForm.isDelivery" class="my-2">{{orderForm.address}}</p>
+                        <a class="my-2" *ngIf="!orderForm.isDelivery" target="_blank" href="http://maps.apple.com/?q={{orderForm.address}}">{{orderForm.address}}</a>
                         <!-- **** Disabled Delivery Feature **** -->
                         <!-- <div *ngIf="orderForm.isDelivery" [ngClass]="{'border border-danger': _.get(formControls, 'deliveryForm.addressError', false) || _.get(formControls, 'deliveryForm.tooFarError', false) || _.get(formControls, 'deliveryForm.calcDistanceError', false)} || _.get(formControls, 'deliveryForm.tooPoor', false)" class="ng-autocomplete">
                             <ng-autocomplete
