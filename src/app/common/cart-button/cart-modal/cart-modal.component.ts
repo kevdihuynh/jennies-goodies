@@ -456,7 +456,7 @@ export class CartModalComponent implements OnInit {
   // }
 
   isOrderQuantityInValid(): boolean {
-    return _.every(this.orderForm.orders, (order: Order) => order.quantity < 1);
+    return _.some(this.orderForm.orders, (order: Order) => order.quantity < 1);
   }
 
   isOrderFormDisabled(): boolean {
