@@ -28,7 +28,7 @@ const googleCredentials = {
 }
 
 const {google} = require('googleapis');
-const OAuth2 = google.auth.OAuth2; 
+const OAuth2 = google.auth.OAuth2;
 const calendar = google.calendar('v3');
 
 const ERROR_RESPONSE = {
@@ -48,6 +48,7 @@ function addEvent(event:any, auth:any) {
         calendar.events.insert({
             auth: auth,
             calendarId: 'primary',
+            sendUpdates: 'all',
             resource: {
                 'summary': event.eventName,
                 'description': event.description,
@@ -98,8 +99,8 @@ export const addEventToCalendar = functions.https.onRequest((request, response) 
         response.status(200).send(data);
         return;
     }).catch(err => {
-        console.error('Error adding event: ' + err.message); 
-        response.status(500).send(ERROR_RESPONSE); 
+        console.error('Error adding event: ' + err.message);
+        response.status(500).send(ERROR_RESPONSE);
         return;
     });
 });
@@ -122,8 +123,8 @@ export const getCalendarEvents = functions.https.onRequest(async (request, respo
             response.status(200).send(events);
             return;
         }).catch(err => {
-            console.error('Error adding event: ' + err.message); 
-            response.status(500).send(ERROR_RESPONSE); 
+            console.error('Error adding event: ' + err.message);
+            response.status(500).send(ERROR_RESPONSE);
             return;
         });
     } else {
@@ -138,7 +139,7 @@ export const updateCalendarEvent = functions.https.onRequest(async (request, res
     const orderForm = _.get(request, 'body.orderForm', undefined);
     const selectedDateTime = _.get(orderForm, 'selectedDateTime', undefined);
     const description = _.get(request, 'body.description', undefined);
-    
+
     const name = _.get(orderForm, 'name', undefined);
     const email = _.get(orderForm, 'email', '');
 
@@ -160,8 +161,8 @@ export const updateCalendarEvent = functions.https.onRequest(async (request, res
             response.status(200).send(data);
             return;
         }).catch(err => {
-            console.error('Error adding event: ' + err.message); 
-            response.status(500).send(ERROR_RESPONSE); 
+            console.error('Error adding event: ' + err.message);
+            response.status(500).send(ERROR_RESPONSE);
             return;
         });
     } else {
