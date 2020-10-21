@@ -45,7 +45,7 @@ export class PaypalComponent implements OnInit {
         let item_total = this.orderForm.grandTotal;
 
         const getDescription = (): string => {
-            return `${_.get(this.orderForm, ['isDelivery']) ? 'Delivery' : 'Pickup'} at ${_.get(this.orderForm, ['address'])}  on ${this.datePipe.transform(this.orderForm.selectedDateTime.end.dateTime, 'longDate')} between ${this.datePipe.transform(this.orderForm.selectedDateTime.start.dateTime, 'shortTime')} and ${this.datePipe.transform(this.orderForm.selectedDateTime.end.dateTime, 'shortTime')}`;
+            return `${_.get(this.orderForm, ['isDelivery']) ? 'Delivery' : 'Pickup'} at ${_.get(this.orderForm, ['address'])}  on ${this.datePipe.transform(this.orderForm.selectedDateTime.end.dateTime, 'fullDate')} between ${this.datePipe.transform(this.orderForm.selectedDateTime.start.dateTime, 'shortTime')} and ${this.datePipe.transform(this.orderForm.selectedDateTime.end.dateTime, 'shortTime')}`;
         }
 
         const getAmount = (): IUnitAmount => {

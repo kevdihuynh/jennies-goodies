@@ -36,7 +36,7 @@ export class GoogleCalendarService {
   async bookCalendar(orderForm: OrderForm, transactionId: string = 'N/A') {
     // time sent to google needs to be in RFC 3339
     const getDescription = (): string => {
-      return `${_.get(orderForm, ['isDelivery']) ? 'Delivery' : 'Pickup'} at ${_.get(orderForm, ['address'])}  on ${this.datePipe.transform(orderForm.selectedDateTime.end.dateTime, 'longDate')} between ${this.datePipe.transform(orderForm.selectedDateTime.start.dateTime, 'shortTime')} and ${this.datePipe.transform(orderForm.selectedDateTime.end.dateTime, 'shortTime')}`;
+      return `${_.get(orderForm, ['isDelivery']) ? 'Delivery' : 'Pickup'} at ${_.get(orderForm, ['address'])}  on ${this.datePipe.transform(orderForm.selectedDateTime.end.dateTime, 'fullDate')} between ${this.datePipe.transform(orderForm.selectedDateTime.start.dateTime, 'shortTime')} and ${this.datePipe.transform(orderForm.selectedDateTime.end.dateTime, 'shortTime')}`;
     }
     const getOrderItems = () => {
       let itemList = '';
