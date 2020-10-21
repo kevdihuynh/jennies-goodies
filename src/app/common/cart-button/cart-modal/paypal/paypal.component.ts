@@ -18,6 +18,7 @@ import { GoogleCalendarService } from 'src/app/services/google-calendar/google-c
 })
 export class PaypalComponent implements OnInit {
     public _ = _;
+    public globalConstants: any = GlobalConstants;
     public payPalConfig?: IPayPalConfig;
     public environment = environment;
     public orderForm: OrderForm;
@@ -173,7 +174,7 @@ export class PaypalComponent implements OnInit {
                 });
             },
             onClientAuthorization: async (data: any) => {
-                this.toastr.success(`We have received your order. You will receive an email confirmation soon. Thank you!`, `Transaction Completed!`,  {
+                this.toastr.success(`We have received your order`, `Transaction Completed!`,  {
                     positionClass: 'toast-bottom-left',
                     progressBar: true,
                     disableTimeOut: true
@@ -182,11 +183,21 @@ export class PaypalComponent implements OnInit {
                 try {
                     const transactionId: string = data.purchase_units[0].payments.captures[0].id;
                     await this.afs.collection('transactions').doc(transactionId).set({paypal: data, orderForm: this.orderForm});
+                    await this.googleCalendarService.bookCalendar(this.orderForm, transactionId);
                     this.cartService.clearCart();
                     this.activeModal.close('transaction-completed');
-                    await this.googleCalendarService.bookCalendar(this.orderForm, transactionId);
+                    this.toastr.success(`You will receive an email confirmation soon. Thank you!`, `Booking Completed!`,  {
+                        positionClass: 'toast-bottom-left',
+                        progressBar: true,
+                        disableTimeOut: true
+                    });
                 } catch (error) {
                     console.log(error);
+                    this.toastr.error(`Please Contact Us: ${this.globalConstants.company.phoneNumber}`, `Booking Failed`,  {
+                        positionClass: 'toast-bottom-left',
+                        progressBar: true,
+                        disableTimeOut: true
+                    });
                 }
             },
             onCancel: (data, actions) => {
