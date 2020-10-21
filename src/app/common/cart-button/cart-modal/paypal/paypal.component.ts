@@ -170,7 +170,7 @@ export class PaypalComponent implements OnInit {
                 //     payerID: "FBH3PT3KJBY5W"
                 // }
                 this.toastr.info(`We are now waiting for the transaction to complete...`, `Your Payment Form Has Been Approved!`,  {
-                    positionClass: 'toast-bottom-left',
+                    positionClass: 'toast-top-left',
                     progressBar: true,
                     disableTimeOut: false,
                     timeOut: 5000
@@ -178,7 +178,7 @@ export class PaypalComponent implements OnInit {
             },
             onClientAuthorization: async (data: any) => {
                 this.toastr.success(`We have received your order`, `Transaction Completed!`,  {
-                    positionClass: 'toast-bottom-left',
+                    positionClass: 'toast-top-left',
                     progressBar: true,
                     disableTimeOut: true
                 });
@@ -191,7 +191,7 @@ export class PaypalComponent implements OnInit {
                     this.cartService.clearCart();
                     this.activeModal.close('transaction-completed');
                     this.toastr.success(`You will receive an email confirmation soon. Thank you!`, `Booking Completed!`,  {
-                        positionClass: 'toast-bottom-left',
+                        positionClass: 'toast-top-left',
                         progressBar: true,
                         disableTimeOut: true
                     });
@@ -199,7 +199,7 @@ export class PaypalComponent implements OnInit {
                     console.log(error);
                     this.spinner.hide();
                     this.toastr.error(`Please contact us for confirmation: ${this.globalConstants.company.phoneNumber}`, `Booking Failed`,  {
-                        positionClass: 'toast-bottom-left',
+                        positionClass: 'toast-top-left',
                         progressBar: true,
                         disableTimeOut: true
                     });
@@ -208,7 +208,7 @@ export class PaypalComponent implements OnInit {
             onCancel: (data, actions) => {
                 this.spinner.hide();
                 this.toastr.info('You have closed the Payment Form', 'Payment Form Cancelled', {
-                    positionClass: 'toast-bottom-left',
+                    positionClass: 'toast-top-left',
                     progressBar: true,
                     disableTimeOut: false,
                     timeOut: 3000
@@ -218,7 +218,7 @@ export class PaypalComponent implements OnInit {
                 console.log(err);
                 this.spinner.hide();
                 this.toastr.error('An error has occured in the Payment Form', 'Payment Form Error', {
-                    positionClass: 'toast-bottom-left',
+                    positionClass: 'toast-top-left',
                     progressBar: true,
                     disableTimeOut: false
                 });
@@ -227,7 +227,7 @@ export class PaypalComponent implements OnInit {
                 // console.log(this.orderForm);
                 this.spinner.show();
                 this.toastr.info('You have opened the Payment Form', 'Last Step To Complete Your Order!', {
-                    positionClass: 'toast-bottom-left',
+                    positionClass: 'toast-top-left',
                     progressBar: true,
                     disableTimeOut: false,
                     timeOut: 3000

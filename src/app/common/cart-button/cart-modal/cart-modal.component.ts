@@ -141,7 +141,7 @@ export class CartModalComponent implements OnInit {
     // if (this.orderForm.total < this.delivery.minTotal) {
     //   this.formControls.deliveryForm.tooPoor = true;
     //   // this.toastr.error(GlobalConstants.errors.deliveryErrors.tooPoorError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
-    //   //   positionClass: 'toast-bottom-left',
+    //   //   positionClass: 'toast-top-left',
     //   //   progressBar: true,
     //   //   disableTimeOut: false
     //   // });
@@ -173,7 +173,7 @@ export class CartModalComponent implements OnInit {
   //   if (this.orderForm.total < this.delivery.minTotal) {
   //     this.formControls.deliveryForm.tooPoor = true;
   //     // this.toastr.error(GlobalConstants.errors.deliveryErrors.tooPoorError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
-  //     //   positionClass: 'toast-bottom-left',
+  //     //   positionClass: 'toast-top-left',
   //     //   progressBar: true,
   //     //   disableTimeOut: false
   //     // });
@@ -197,7 +197,7 @@ export class CartModalComponent implements OnInit {
   //     if (_.isNil(lat) || _.isNil(lon)) {
   //       this.formControls.deliveryForm.addressError = true;
   //       this.toastr.error(GlobalConstants.errors.deliveryErrors.addressError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
-  //         positionClass: 'toast-bottom-left',
+  //         positionClass: 'toast-top-left',
   //         progressBar: true,
   //         disableTimeOut: false
   //       });
@@ -213,7 +213,7 @@ export class CartModalComponent implements OnInit {
   //     this.orderForm.confirmedAddress = this.orderForm.address;
   //     if (!this.isDeliveryInvalid) {
   //       this.toastr.success(`Address is valid`, `Address Success!`,  {
-  //         positionClass: 'toast-bottom-left',
+  //         positionClass: 'toast-top-left',
   //         progressBar: true,
   //         disableTimeOut: false,
   //       });
@@ -223,7 +223,7 @@ export class CartModalComponent implements OnInit {
   //     // show error if anything wrong happens with APIs or bad data
   //     this.formControls.deliveryForm.calcDistanceError = true;
   //     this.toastr.error(GlobalConstants.errors.deliveryErrors.calcDistanceError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
-  //       positionClass: 'toast-bottom-left',
+  //       positionClass: 'toast-top-left',
   //       progressBar: true,
   //       disableTimeOut: false
   //     });
@@ -246,7 +246,7 @@ export class CartModalComponent implements OnInit {
   //   if (this.orderForm.total < this.delivery.minTotal) {
   //     this.formControls.deliveryForm.tooPoor = true;
   //     this.toastr.error(GlobalConstants.errors.deliveryErrors.tooPoorError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
-  //       positionClass: 'toast-bottom-left',
+  //       positionClass: 'toast-top-left',
   //       progressBar: true,
   //       disableTimeOut: false
   //     });
@@ -258,7 +258,7 @@ export class CartModalComponent implements OnInit {
   //   if (this.orderForm.deliveryDistance > this.delivery.maxDistance) {
   //     this.formControls.deliveryForm.tooFarError = true;
   //     this.toastr.error(GlobalConstants.errors.deliveryErrors.tooFarError, GlobalConstants.errors.deliveryErrors.errorTitle,  {
-  //       positionClass: 'toast-bottom-left',
+  //       positionClass: 'toast-top-left',
   //       progressBar: true,
   //       disableTimeOut: false
   //     });
@@ -354,7 +354,7 @@ export class CartModalComponent implements OnInit {
 
   removeFromCart(order: Order, index: number): void {
     this.toastr.info(`${order.quantity} ${order.name} (${_.join(order.selectedFlavors, ', ')}) - ${order.batchSize} for $${order.price}`, 'Removed from Cart', {
-      positionClass: 'toast-bottom-left',
+      positionClass: 'toast-top-left',
       progressBar: true,
       disableTimeOut: false,
       timeOut: 2000
@@ -520,7 +520,7 @@ export class CartModalComponent implements OnInit {
   showDateTimePickerErrorOnSubmit(finalDateTime, errorMsg, errorTitle) {
     console.log('finalDateTime is not valid', finalDateTime);
     this.toastr.error(errorMsg, errorTitle,  {
-      positionClass: 'toast-bottom-left',
+      positionClass: 'toast-top-left',
       progressBar: true,
       disableTimeOut: false
     });
@@ -566,14 +566,14 @@ export class CartModalComponent implements OnInit {
       console.log('finalForm', this.orderForm);
       this.closeCartModal('payment-success');
       this.toastr.success(`We have received your order. You will receive an email confirmation soon. Thank you!`, `Order Success!`,  {
-        positionClass: 'toast-bottom-left',
+        positionClass: 'toast-top-left',
         progressBar: true,
         disableTimeOut: true
       });
       this.cartService.clearCart();
     } catch (e) {
       this.toastr.error('', GlobalConstants.errors.commonErrors.unknownError, {
-        positionClass: 'toast-bottom-left',
+        positionClass: 'toast-top-left',
         progressBar: true,
         disableTimeOut: false
       });
