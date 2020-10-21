@@ -182,8 +182,10 @@ export class PaypalComponent implements OnInit {
                 // This triggers after transaction completes. Can't put toaster message here some reason
                 try {
                     const transactionId: string = data.purchase_units[0].payments.captures[0].id;
+                    this.spinner.show();
                     await this.afs.collection('transactions').doc(transactionId).set({paypal: data, orderForm: this.orderForm});
                     await this.googleCalendarService.bookCalendar(this.orderForm, transactionId);
+                    this.spinner.hide();
                     this.cartService.clearCart();
                     this.activeModal.close('transaction-completed');
                     this.toastr.success(`You will receive an email confirmation soon. Thank you!`, `Booking Completed!`,  {
@@ -193,11 +195,12 @@ export class PaypalComponent implements OnInit {
                     });
                 } catch (error) {
                     console.log(error);
-                    this.toastr.error(`Please Contact Us: ${this.globalConstants.company.phoneNumber}`, `Booking Failed`,  {
+                    this.toastr.error(`Please contact us for confirmation: ${this.globalConstants.company.phoneNumber}`, `Booking Failed`,  {
                         positionClass: 'toast-bottom-left',
                         progressBar: true,
                         disableTimeOut: true
                     });
+                    this.spinner.hide();
                 }
             },
             onCancel: (data, actions) => {
@@ -209,6 +212,7 @@ export class PaypalComponent implements OnInit {
                 });
             },
             onError: err => {
+                console.log(err);
                 this.toastr.error('An error has occured in the Payment Form', 'Payment Form Error', {
                     positionClass: 'toast-bottom-left',
                     progressBar: true,
