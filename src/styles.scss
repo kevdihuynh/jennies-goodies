@@ -51,6 +51,7 @@ $theme-colors: (
 
 /* Custom ngx-quill */
 quill-view-html .ql-container {
+    font-size: unset;
     height: unset;
     .ql-editor {
         padding: 0;

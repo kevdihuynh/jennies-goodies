@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">{{orderForm.isDelivery ? 'Delivery' : 'Pickup'}} Order Form</h4>
+    <h2 class="modal-title" id="modal-basic-title">{{orderForm.isDelivery ? 'Delivery' : 'Pickup'}} Order Form</h2>
     <button type="button" class="close" aria-label="Close" (click)="dismissCartModal('Cross click')">
         <i class="fa fa-times-circle text-custom-purple cursor-pointer" aria-hidden="true"></i>
     </button>
@@ -118,7 +118,7 @@
                 </div>
                 <ng-container *ngFor="let dateTimeOption of dateTimeOptions">
                     <div class="form-group col-md-3" *ngIf="!_.includes(dateTimeOption.summary, 'BOOKED')">
-                        <button class="btn btn-sm btn-block btn-outline-custom-purple"
+                        <button class="btn btn-md btn-block btn-outline-custom-purple"
                             [ngClass]="{'active': _.isEqual(dateTimeOption, orderForm.selectedDateTime)}"
                             (click)="orderForm.selectedDateTime = dateTimeOption">
                             {{dateTimeOption.start.dateTime | date:'shortTime'}} - {{dateTimeOption.end.dateTime | date:'shortTime'}}
@@ -143,7 +143,7 @@
             <div class="my-4 pb-3 border-bottom" *ngFor="let order of orderForm.orders; let index = index;">
                 <div class="d-flex flex-wrap align-items-center ">
                     <div class="order-quantity my-2 mr-4">
-                        <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" min="1" type="number" class="form-control form-control-sm" id="inputQuantity" placeholder="Enter Quantity" pattern="\d*" >
+                        <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" min="1" type="number" class="form-control form-control-md" id="inputQuantity" placeholder="Enter Quantity" pattern="\d*" >
                     </div>
                     <div class="d-flex flex-wrap align-items-center my-2">
                         <span class="mr-2">{{order.name}}</span>
