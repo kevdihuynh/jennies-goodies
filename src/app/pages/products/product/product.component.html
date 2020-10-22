@@ -32,18 +32,20 @@
                         {{variation.batchSize}} for {{variation.price |  currency:'USD':'symbol':'1.0'}}
                     </button>
                 </div>
-                <div class="mb-2">
-                    <div class="d-flex flex-wrap align-items-center btn-group">
-                        <div class="side-info text-center mr-2">
-                            <span *ngIf="!product.allowMultiple">Max: {{selectedOption?.maxFlavors}}</span>
-                            <span *ngIf="product.allowMultiple">Left: {{getRemainingSelectedCount()}}</span>
+                <ng-container *ngIf="!_.isEmpty(this.product.flavors)">
+                    <div class="mb-2">
+                        <div class="d-flex flex-wrap align-items-center btn-group">
+                            <div class="side-info text-center mr-2">
+                                <span *ngIf="!product.allowMultiple">Max: {{selectedOption?.maxFlavors}}</span>
+                                <span *ngIf="product.allowMultiple">Left: {{getRemainingSelectedCount()}}</span>
+                            </div>
+                            <button *ngFor="let flavor of product.flavors; let i = index" (click)="toggleFlavor(flavor)" class="btn btn-outline-custom-purple btn-md rounded-0" [ngClass]="{ 'active': isActiveFlavor(flavor) && !product.allowMultiple }">
+                                {{flavor}}
+                                <i *ngIf="product.allowMultiple" class="fa fa-plus ml-2" aria-hidden="true"></i>
+                            </button>
                         </div>
-                        <button *ngFor="let flavor of product.flavors; let i = index" (click)="toggleFlavor(flavor)" class="btn btn-outline-custom-purple btn-md rounded-0" [ngClass]="{ 'active': isActiveFlavor(flavor) && !product.allowMultiple }">
-                            {{flavor}}
-                            <i *ngIf="product.allowMultiple" class="fa fa-plus ml-2" aria-hidden="true"></i>
-                        </button>
                     </div>
-                </div>
+                </ng-container>
                 <div class="d-flex flex-wrap align-items-center btn-group">
                     <button (click)="addToCart(product)" type="button" class="btn btn-lg rounded-0" [ngClass]="{'btn-custom-purple': isCartValid(), 'btn-dark': !isCartValid() }" [disabled]="!isCartValid()">
                         <span class="mr-2">Add To Cart</span>

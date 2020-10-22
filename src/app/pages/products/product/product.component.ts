@@ -101,7 +101,7 @@ export class ProductComponent implements OnInit {
   }
 
   isCartValid(): boolean {
-    return ((this.product.allowMultiple && this.getRemainingSelectedCount() === 0) || (!this.product.allowMultiple && (this.isZeroRemainingFlavorsCount() || this.isSelectedFlavorsValid()) && (this.product.quantity > 0)));
+    return ((this.product.allowMultiple && this.getRemainingSelectedCount() === 0) || (!this.product.allowMultiple && (this.isZeroRemainingFlavorsCount() || this.isSelectedFlavorsValid()) && (this.product.quantity > 0))) || _.isEmpty(this.product.flavors);
   }
 
   toggleFlavor(flavor: string): void {
@@ -134,7 +134,7 @@ export class ProductComponent implements OnInit {
     };
     this.cartService.addToCart(order);
     this.selectedFlavors = [];
-    this.toastr.info(`${order.quantity} x ${order.name} (${_.join(order.selectedFlavors, ', ')}) - ${order.batchSize} for $${order.price}`, 'Added to Cart', {
+    this.toastr.info(`${order.quantity} x ${order.name} ${!_.isEmpty(_.get(order, ['selectedFlavors'], [])) ? `(${_.join(order.selectedFlavors, ', ')})` : ``} - ${order.batchSize} for $${order.price}`, 'Added to Cart', {
       positionClass: 'toast-top-left',
       progressBar: true,
       disableTimeOut: false,

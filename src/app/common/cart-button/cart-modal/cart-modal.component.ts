@@ -353,7 +353,7 @@ export class CartModalComponent implements OnInit {
   }
 
   removeFromCart(order: Order, index: number): void {
-    this.toastr.info(`${order.quantity} ${order.name} (${_.join(order.selectedFlavors, ', ')}) - ${order.batchSize} for $${order.price}`, 'Removed from Cart', {
+    this.toastr.info(`${order.quantity} ${order.name} ${!_.isEmpty(_.get(order, ['selectedFlavors'], [])) ? `(${_.join(order.selectedFlavors, ', ')})` : ``} - ${order.batchSize} for $${order.price}`, 'Removed from Cart', {
       positionClass: 'toast-top-left',
       progressBar: true,
       disableTimeOut: false,

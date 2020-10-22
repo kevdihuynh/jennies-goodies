@@ -41,7 +41,7 @@ export class GoogleCalendarService {
     const getOrderItems = () => {
       let itemList = '';
       orderForm.orders.map((order) => {
-        itemList += `<li>${order.quantity} x ${order.name} (${_.join(order.selectedFlavors, ', ')}) - ${order.batchSize} for $${order.price}</li>`;
+        itemList += `<li>${order.quantity} x ${order.name} ${!_.isEmpty(_.get(order, ['selectedFlavors'], [])) ? `(${_.join(order.selectedFlavors, ', ')})` : ``} - ${order.batchSize} for $${order.price}</li>`;
       });
       return itemList;
     };

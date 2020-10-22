@@ -155,7 +155,7 @@
                     </div>
                     <div class="d-flex flex-wrap align-items-center my-2">
                         <span class="mr-2">{{order.name}}</span>
-                        <span class="mr-2">({{_.join(order.selectedFlavors, ', ')}})</span>
+                        <span class="mr-2" *ngIf="!_.isEmpty(_.get(order, ['selectedFlavors'], []))">({{_.join(order.selectedFlavors, ', ')}})</span>
                         <span class="mr-3">- {{order.batchSize}} for {{order.price | currency:'USD':'symbol':'1.0'}}</span>
                         <i class="fa fa-times-circle text-custom-purple cursor-pointer" aria-hidden="true" (click)="removeFromCart(order, index)"></i>
                     </div>
@@ -166,8 +166,8 @@
                 <p *ngIf="order.quantity < 1" class="text-danger mt-2">Quantity needs to be greater than zero</p>
             </div>
             <div class="mb-1 text-right">
-                <h5 class="font-weight-bold">Total: {{orderForm.total | currency:'USD':'symbol':'1.0'}}</h5>
                 <!-- **** Disabled Delivery Feature **** -->
+                <!-- <h5 class="font-weight-bold">Total: {{orderForm.total | currency:'USD':'symbol':'1.0'}}</h5> -->
                 <!-- <h5 class="font-weight-bold" *ngIf="orderForm.deliveryFee > 0">Delivery Fee: {{orderForm.deliveryFee | currency:'USD':'symbol':'1.0'}}</h5> -->
                 <h4 class="font-weight-bold">Grand Total: {{orderForm.grandTotal | currency:'USD':'symbol':'1.0'}}</h4>
             </div>

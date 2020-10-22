@@ -65,7 +65,7 @@ export class PaypalComponent implements OnInit {
         const getItems = (): ITransactionItem[] => {
             const items = _.map(this.orderForm.orders, (order: Order): any => {
                 return {
-                    name: `${order.quantity} x ${order.name} (${_.join(order.selectedFlavors, ', ')}) - ${order.batchSize} for $${order.price}`,
+                    name: `${order.quantity} x ${order.name} ${!_.isEmpty(_.get(order, ['selectedFlavors'], [])) ? `(${_.join(order.selectedFlavors, ', ')})` : ``} - ${order.batchSize} for $${order.price}`,
                     quantity: order.quantity,
                     category: 'PHYSICAL_GOODS',
                     unit_amount: {
@@ -177,11 +177,6 @@ export class PaypalComponent implements OnInit {
                 });
             },
             onClientAuthorization: async (data: any) => {
-                this.toastr.success(`We have received your order`, `Transaction Completed!`,  {
-                    positionClass: 'toast-top-left',
-                    progressBar: true,
-                    disableTimeOut: true
-                });
                 // This triggers after transaction completes. Can't put toaster message here some reason
                 try {
                     const transactionId: string = data.purchase_units[0].payments.captures[0].id;
@@ -190,7 +185,7 @@ export class PaypalComponent implements OnInit {
                     this.spinner.hide();
                     this.cartService.clearCart();
                     this.activeModal.close('transaction-completed');
-                    this.toastr.success(`You will receive an email confirmation soon. Thank you!`, `Booking Completed!`,  {
+                    this.toastr.success(`You will receive an email confirmation soon. Thank you!`, `Transaction Completed!`,  {
                         positionClass: 'toast-top-left',
                         progressBar: true,
                         disableTimeOut: true
