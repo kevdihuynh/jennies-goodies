@@ -15,7 +15,7 @@ import { InputsConfig } from '../../../interfaces/inputs-config';
 })
 export class ProductComponent implements OnInit {
   @ViewChild('carousel', {static : true}) carousel: NgbCarousel;
-  interval = 1000;
+  interval = 5000;
   showNavigationArrows = false;
   showNavigationIndicators = false;
   paused = false;
