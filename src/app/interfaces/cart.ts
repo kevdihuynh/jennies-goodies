@@ -28,4 +28,6 @@ export interface Order {
     price: number;
     name: string;
     quantity: number;
+    allowMultiple?: boolean;
+    rank?: number;
 }

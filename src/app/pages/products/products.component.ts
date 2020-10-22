@@ -6,6 +6,7 @@ import { getResponse } from 'src/app/utils/utility-functions';
 import productsJson from './../../db_mock/products.json';
 import { GlobalConstants } from '../../utils/global-constants';
 import { InputsConfig } from '../../interfaces/inputs-config';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-products',
@@ -31,7 +32,7 @@ export class ProductsComponent implements OnInit {
 
     getResponse(callback, productsJson).subscribe((res) => {
       const products: Product[] = res as Product[];
-      this.products = products;
+      this.products = _.sortBy(products, ['rank']);
       // console.log(this.products);
     });
   }
