@@ -14,4 +14,5 @@ export interface Product {
     quantity: number;
     slug: string;
     allowMultiple: boolean;
+    rank: number;
 }

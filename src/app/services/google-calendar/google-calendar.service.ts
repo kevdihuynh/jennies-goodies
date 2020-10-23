@@ -5,6 +5,7 @@ import { getBaseUrl, getResponse } from 'src/app/utils/utility-functions';
 import getEventsResponse from './../../db_mock/get_events_response.json';
 import { OrderForm } from '../../interfaces/cart';
 import { DatePipe } from '@angular/common';
+import { CartService } from 'src/app/services/cart/cart.service';
 import * as _ from 'lodash';
 
 @Injectable({
@@ -12,7 +13,7 @@ import * as _ from 'lodash';
 })
 export class GoogleCalendarService {
 
-  constructor(private fns: AngularFireFunctions, private http: HttpClient, private datePipe: DatePipe){}
+  constructor(private cartService: CartService, private fns: AngularFireFunctions, private http: HttpClient, private datePipe: DatePipe){}
 
   async getEvents(timeMin: string, timeMax: string): Promise<any[]> {
     const reqBody = { timeMin, timeMax};
@@ -41,7 +42,7 @@ export class GoogleCalendarService {
     const getOrderItems = () => {
       let itemList = '';
       orderForm.orders.map((order) => {
-        itemList += `<li>${order.quantity} x ${order.name} ${!_.isEmpty(_.get(order, ['selectedFlavors'], [])) ? `(${_.join(order.selectedFlavors, ', ')})` : ``} - ${order.batchSize} for $${order.price}</li>`;
+        itemList += `<li>${this.cartService.displayFriendlyItemText(order)}</li>`;
       });
       return itemList;
     };

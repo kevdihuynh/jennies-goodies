@@ -130,11 +130,13 @@ export class ProductComponent implements OnInit {
       selectedFlavors: copySelectedFlavors,
       price: copySelectedOptions.price,
       name: product.name,
-      quantity: product.quantity
+      quantity: product.quantity,
+      allowMultiple: product.allowMultiple,
+      rank: product.rank
     };
     this.cartService.addToCart(order);
     this.selectedFlavors = [];
-    this.toastr.info(`${order.quantity} x ${order.name} ${!_.isEmpty(_.get(order, ['selectedFlavors'], [])) ? `(${_.join(order.selectedFlavors, ', ')})` : ``} - ${order.batchSize} for $${order.price}`, 'Added to Cart', {
+    this.toastr.info(this.cartService.displayFriendlyItemText(order), 'Added to Cart', {
       positionClass: 'toast-top-left',
       progressBar: true,
       disableTimeOut: false,

@@ -65,7 +65,7 @@ export class PaypalComponent implements OnInit {
         const getItems = (): ITransactionItem[] => {
             const items = _.map(this.orderForm.orders, (order: Order): any => {
                 return {
-                    name: `${order.quantity} x ${order.name} ${!_.isEmpty(_.get(order, ['selectedFlavors'], [])) ? `(${_.join(order.selectedFlavors, ', ')})` : ``} - ${order.batchSize} for $${order.price}`,
+                    name: this.cartService.displayFriendlyItemText(order),
                     quantity: order.quantity,
                     category: 'PHYSICAL_GOODS',
                     unit_amount: {

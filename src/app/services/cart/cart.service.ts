@@ -113,4 +113,26 @@ export class CartService {
       grandTotal: 0
     });
   }
+
+  displayFriendlyItemText(order: Order): string {
+    const selectedFlavors: string[] = _.get(order, ['selectedFlavors'], []);
+    const isSelectedFlavorsEmpty: boolean = _.isEmpty(selectedFlavors);
+    const totalPieces: number = order.batchSize * order.quantity;
+    let text: string = `${_.isNil(_.get(order, ['quantity'])) ? 0 : _.get(order, ['quantity'],0 )} x ${_.get(order, ['name'], 'N/A')} (${_.get(order, ['batchSize'], 0)} For $${_.get(order, ['price'], 0)}) `;
+    text += `= ${totalPieces} Total Pieces`;
+    if (!isSelectedFlavorsEmpty) {
+        const selectedFlavorsDict: object = {};
+        _.forEach(selectedFlavors, (selectedFlavor: string) => {
+          _.set(selectedFlavorsDict, selectedFlavor, _.get(selectedFlavorsDict, [selectedFlavor], 0) + 1);
+        });
+        const selectedFlavorsFlatten: string[] = _.map(selectedFlavorsDict, (value: number, key: string) => {
+          const numPieces: number = order.allowMultiple ? (value * order.quantity) : (totalPieces / selectedFlavors.length);
+          return `${numPieces} ${key}`;
+        });
+        const displaySelectedFlavors: string = _.join(selectedFlavorsFlatten, ', ');
+        text += ` (${displaySelectedFlavors})`;
+    }
+    return text;
+  }
+
 }
