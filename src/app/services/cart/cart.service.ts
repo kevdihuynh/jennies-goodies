@@ -19,7 +19,7 @@ export class CartService {
       address: GlobalConstants.company.address,
       addressComponent: null,
       notes: '', // 'John Doe will pick it up for me',
-      date: { year: moment().add(2, 'day').year(), month: moment().add(2, 'day').month() + 1, day: moment().add(2, 'day').date() },
+      date: { year: moment().add(1, 'day').year(), month: moment().add(1, 'day').month() + 1, day: moment().add(1, 'day').date() }, // 1 day ahead
       // time: { hour: 17, minute: 0, second: 0 }, // TODO: Remove ngb time picker references as we are no longer using it
       orders: [],
       totalOrdersQuantity: 0,
