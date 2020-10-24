@@ -180,6 +180,9 @@ export class PaypalComponent implements OnInit {
                 try {
                     // Make a copy of the orderForm before it gets cleared
                     const finalOrderForm: OrderForm = _.cloneDeep(this.orderForm);
+                    const transactionId: string = data.purchase_units[0].payments.captures[0].id;
+                    this.afs.collection('transactions').doc(transactionId).set({paypal: data, orderForm: finalOrderForm});
+                    await this.googleCalendarService.bookCalendar(finalOrderForm, transactionId);
                     this.cartService.clearCart();
                     this.activeModal.close('transaction-completed');
                     this.spinner.hide();
@@ -188,13 +191,10 @@ export class PaypalComponent implements OnInit {
                         progressBar: true,
                         disableTimeOut: true
                     });
-                    const transactionId: string = data.purchase_units[0].payments.captures[0].id;
-                    await this.afs.collection('transactions').doc(transactionId).set({paypal: data, orderForm: finalOrderForm});
-                    await this.googleCalendarService.bookCalendar(finalOrderForm, transactionId);
                 } catch (error) {
                     console.log(error);
                     this.spinner.hide();
-                    this.toastr.error(`Please contact us for confirmation: ${this.globalConstants.company.phoneNumber}`, `Booking Failed`,  {
+                    this.toastr.error(`Please contact us for confirmation: ${this.globalConstants.company.phoneNumber}`, `Calendar Invite Failed`,  {
                         positionClass: 'toast-top-left',
                         progressBar: true,
                         disableTimeOut: true
