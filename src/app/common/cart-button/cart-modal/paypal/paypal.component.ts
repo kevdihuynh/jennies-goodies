@@ -177,19 +177,19 @@ export class PaypalComponent implements OnInit {
                 });
             },
             onClientAuthorization: async (data: any) => {
+                this.cartService.clearCart();
+                this.activeModal.close('transaction-completed');
+                this.spinner.hide();
+                this.toastr.success(`You will receive an email confirmation soon. Thank you!`, `Transaction Completed!`,  {
+                    positionClass: 'toast-top-left',
+                    progressBar: true,
+                    disableTimeOut: true
+                });
                 // This triggers after transaction completes. Can't put toaster message here some reason
                 try {
                     const transactionId: string = data.purchase_units[0].payments.captures[0].id;
                     await this.afs.collection('transactions').doc(transactionId).set({paypal: data, orderForm: this.orderForm});
                     await this.googleCalendarService.bookCalendar(this.orderForm, transactionId);
-                    this.spinner.hide();
-                    this.cartService.clearCart();
-                    this.activeModal.close('transaction-completed');
-                    this.toastr.success(`You will receive an email confirmation soon. Thank you!`, `Transaction Completed!`,  {
-                        positionClass: 'toast-top-left',
-                        progressBar: true,
-                        disableTimeOut: true
-                    });
                 } catch (error) {
                     console.log(error);
                     this.spinner.hide();
