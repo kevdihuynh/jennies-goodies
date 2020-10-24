@@ -177,19 +177,20 @@ export class PaypalComponent implements OnInit {
                 });
             },
             onClientAuthorization: async (data: any) => {
-                this.cartService.clearCart();
-                this.activeModal.close('transaction-completed');
-                this.spinner.hide();
-                this.toastr.success(`You will receive an email confirmation soon. Thank you!`, `Transaction Completed!`,  {
-                    positionClass: 'toast-top-left',
-                    progressBar: true,
-                    disableTimeOut: true
-                });
-                // This triggers after transaction completes. Can't put toaster message here some reason
                 try {
+                    // Make a copy of the orderForm before it gets cleared
+                    const finalOrderForm: OrderForm = _.cloneDeep(this.orderForm);
+                    this.cartService.clearCart();
+                    this.activeModal.close('transaction-completed');
+                    this.spinner.hide();
+                    this.toastr.success(`You will receive an email confirmation soon. Thank you!`, `Transaction Completed!`,  {
+                        positionClass: 'toast-top-left',
+                        progressBar: true,
+                        disableTimeOut: true
+                    });
                     const transactionId: string = data.purchase_units[0].payments.captures[0].id;
-                    await this.afs.collection('transactions').doc(transactionId).set({paypal: data, orderForm: this.orderForm});
-                    await this.googleCalendarService.bookCalendar(this.orderForm, transactionId);
+                    await this.afs.collection('transactions').doc(transactionId).set({paypal: data, orderForm: finalOrderForm});
+                    await this.googleCalendarService.bookCalendar(finalOrderForm, transactionId);
                 } catch (error) {
                     console.log(error);
                     this.spinner.hide();
