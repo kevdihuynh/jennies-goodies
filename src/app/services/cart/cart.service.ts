@@ -92,13 +92,13 @@ export class CartService {
   };
 
   getTotal(orders: Order[], discount: any = undefined): number {
-    return _.reduce(orders, (sum: number, order: Order): number => {
+    return _.round(_.reduce(orders, (sum: number, order: Order): number => {
       return sum + this.getItemsTotal(_.get(order, ['name']), _.get(order, ['price']), _.get(order, ['quantity']), discount);
-    }, 0);
+    }, 0), 2);
   };
 
   getGrandTotal(orders: Order[], discount: any = undefined, deliveryFee: number = 0): number {
-    return this.getTotal(orders, discount) + deliveryFee;
+    return _.round(this.getTotal(orders, discount) + deliveryFee, 2);
   }
 
   updateOrderFormByFields(updatedFields: object): void {
