@@ -66,7 +66,7 @@ export class CartService {
 
   getSavings(): number {
     const currentOrderForm = _.cloneDeep(this.orderFormSubject.getValue());
-    return this.getGrandTotal(currentOrderForm.orders) - currentOrderForm.grandTotal;
+    return _.round(this.getGrandTotal(currentOrderForm.orders) - currentOrderForm.grandTotal, 2);
   };
 
   getOrdersQuantity(orders: Order[]): number {
@@ -80,7 +80,7 @@ export class CartService {
     if (this.isProductFoundForDiscount(orderName, discount)) {
       price -= (price * (_.get(discount, ['percent']) / 100));
     }
-    return price;
+    return _.round(price, 2);
   }
 
   getItemsTotal(orderName: string, orderPrice: number, orderQuantity: number, discount: any = undefined): number {
@@ -88,7 +88,7 @@ export class CartService {
     if (this.isProductFoundForDiscount(orderName, discount)) {
       total -= (total * (_.get(discount, ['percent']) / 100));
     }
-    return total;
+    return _.round(total, 2);
   };
 
   getTotal(orders: Order[], discount: any = undefined): number {
