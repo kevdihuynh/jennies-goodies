@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+Sitemap: https://jenniesgoodies.com/sitemap.xml
