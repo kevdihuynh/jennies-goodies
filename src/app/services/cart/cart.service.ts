@@ -169,7 +169,8 @@ export class CartService {
     const selectedFlavors: string[] = _.get(order, ['selectedFlavors'], []);
     const isSelectedFlavorsEmpty: boolean = _.isEmpty(selectedFlavors);
     const totalPieces: number = order.batchSize * order.quantity;
-    let text: string = `${_.isNil(_.get(order, ['quantity'])) ? 0 : _.get(order, ['quantity'],0 )} x ${_.get(order, ['name'], 'N/A')} (${_.get(order, ['batchSize'], 0)} For $${_.get(order, ['price'], 0)}) `;
+    const currentOrderForm = _.cloneDeep(this.orderFormSubject.getValue());
+    let text: string = `${_.isNil(_.get(order, ['quantity'])) ? 0 : _.get(order, ['quantity'],0 )} x ${_.get(order, ['name'], 'N/A')} (${_.get(order, ['batchSize'], 0)} For $${this.getItemTotal(_.get(order, ['name']), _.get(order, ['price'], 0), _.get(currentOrderForm, ['discount']))}) `;
     text += `= ${totalPieces} Total Pieces`;
     if (!isSelectedFlavorsEmpty) {
         const selectedFlavorsDict: object = {};
@@ -182,11 +183,6 @@ export class CartService {
         });
         const displaySelectedFlavors: string = _.join(selectedFlavorsFlatten, ', ');
         text += ` (${displaySelectedFlavors})`;
-    }
-    const currentOrderForm = _.cloneDeep(this.orderFormSubject.getValue());
-    const discount = _.get(currentOrderForm, ['discount']);
-    if (this.isProductFoundForDiscount(_.get(order, ['name']), discount)) {
-      text += ` [${discount.percent}% OFF ~ ${discount.code}]`;
     }
 
     return text;
