@@ -24,6 +24,7 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 export class CartModalComponent implements OnInit {
   _ = _;
   globalConstants = GlobalConstants;
+  inputDiscount: string;
   delivery = {
     minTotal: 20,
     minDistance: 10,
@@ -135,6 +136,7 @@ export class CartModalComponent implements OnInit {
     this.isDeliveryInvalid = true;
     this.cartService.orderForm.subscribe((orderForm: OrderForm) => {
       this.orderForm = orderForm;
+      this.inputDiscount = _.get(orderForm, ['discount', 'code']);
     });
 
     /**** Disabled Delivery Feature ****/
