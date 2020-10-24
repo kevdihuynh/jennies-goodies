@@ -46,9 +46,9 @@ export class CartService {
     });
   };
 
-  isProductFoundForDiscount(order: Order, discount: any = undefined): boolean {
+  isProductFoundForDiscount(orderName: string, discount: any = undefined): boolean {
     const isAllDiscount: boolean = _.isEqual(_.toUpper(_.get(discount, ['type'])), 'EVERYTHING');
-    return _.isEqual(_.toLower(_.get(order, ['name'])), _.toLower(_.get(discount, ['type']))) || isAllDiscount;
+    return _.isEqual(_.toLower(orderName), _.toLower(_.get(discount, ['type']))) || isAllDiscount;
   };
 
   validateDiscount(inputDiscount: string): any {
@@ -75,17 +75,17 @@ export class CartService {
     }, 0);
   }
 
-  getItemTotal(order: Order, discount: any = undefined): number {
-    let price: number = order.price;
-    if (this.isProductFoundForDiscount(order, discount)) {
+  getItemTotal(orderName: string, orderPrice: number, discount: any = undefined): number {
+    let price: number = orderPrice;
+    if (this.isProductFoundForDiscount(orderName, discount)) {
       price -= (price * (_.get(discount, ['percent']) / 100));
     }
     return price;
   }
 
-  getItemsTotal(order: Order, discount: any = undefined): number {
-    let total: number = (order.price * order.quantity);
-    if (this.isProductFoundForDiscount(order, discount)) {
+  getItemsTotal(orderName: string, orderPrice: number, orderQuantity: number, discount: any = undefined): number {
+    let total: number = (orderPrice * orderQuantity);
+    if (this.isProductFoundForDiscount(orderName, discount)) {
       total -= (total * (_.get(discount, ['percent']) / 100));
     }
     return total;
@@ -93,7 +93,7 @@ export class CartService {
 
   getTotal(orders: Order[], discount: any = undefined): number {
     return _.reduce(orders, (sum: number, order: Order): number => {
-      return sum + this.getItemsTotal(order, discount);
+      return sum + this.getItemsTotal(_.get(order, ['name']), _.get(order, ['price']), _.get(order, ['quantity']), discount);
     }, 0);
   };
 
@@ -185,7 +185,7 @@ export class CartService {
     }
     const currentOrderForm = _.cloneDeep(this.orderFormSubject.getValue());
     const discount = _.get(currentOrderForm, ['discount']);
-    if (this.isProductFoundForDiscount(order, discount)) {
+    if (this.isProductFoundForDiscount(_.get(order, ['name']), discount)) {
       text += ` [${discount.percent}% OFF ~ ${discount.code}]`;
     }
 

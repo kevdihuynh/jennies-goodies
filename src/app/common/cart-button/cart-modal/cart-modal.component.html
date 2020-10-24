@@ -155,7 +155,7 @@
                         <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" min="1" type="number" class="form-control form-control-md" id="inputQuantity" placeholder="Enter Quantity" pattern="\d*" >
                     </div>
                     <div class="my-2 ml-auto">
-                        <h5 class="d-inline-block font-weight-bold mb-0">{{cartService.getItemsTotal(order, orderForm.discount) | currency:'USD':'symbol':'1.0'}}</h5>
+                        <h5 class="d-inline-block font-weight-bold mb-0">{{cartService.getItemsTotal(order.name, order.price, order.quantity, orderForm.discount) | currency:'USD':'symbol':'1.0'}}</h5>
                     </div>
                 </div>
                 <p *ngIf="order.quantity < 1" class="text-danger mt-2">Quantity needs to be greater than zero</p>

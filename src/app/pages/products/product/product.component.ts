@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource, NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Option, Product } from 'src/app/interfaces/products';
-import { Order } from 'src/app/interfaces/cart';
+import { Order, OrderForm } from 'src/app/interfaces/cart';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
@@ -37,11 +37,16 @@ export class ProductComponent implements OnInit {
     boolean: ['publish'],
     disabled: ['slug']
   };
+  orderForm: OrderForm;
 
   constructor(
     public cartService: CartService,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.cartService.orderForm.subscribe((orderForm: OrderForm) => {
+      this.orderForm = orderForm;
+    });
+  }
 
   ngOnInit(): void {
     // custom adding quantity

@@ -15,4 +15,5 @@ export interface Product {
     slug: string;
     allowMultiple: boolean;
     rank: number;
+    badge?: string;
 }
