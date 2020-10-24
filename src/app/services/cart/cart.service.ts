@@ -76,6 +76,14 @@ export class CartService {
   }
 
   getItemTotal(order: Order, discount: any = undefined): number {
+    let price: number = order.price;
+    if (this.isProductFoundForDiscount(order, discount)) {
+      price -= (price * (_.get(discount, ['percent']) / 100));
+    }
+    return price;
+  }
+
+  getItemsTotal(order: Order, discount: any = undefined): number {
     let total: number = (order.price * order.quantity);
     if (this.isProductFoundForDiscount(order, discount)) {
       total -= (total * (_.get(discount, ['percent']) / 100));
@@ -85,8 +93,7 @@ export class CartService {
 
   getTotal(orders: Order[], discount: any = undefined): number {
     return _.reduce(orders, (sum: number, order: Order): number => {
-      console.log(this.getItemTotal(order, discount));
-      return sum + this.getItemTotal(order, discount);
+      return sum + this.getItemsTotal(order, discount);
     }, 0);
   };
 

@@ -54,68 +54,66 @@ export class CartModalComponent implements OnInit {
   ];
   availableSlots: any[] = [];
   dateTimeOptions: any = [];
-  /*
-  dateTimeOptions: any = [
-    {
-      "kind": "calendar#event",
-      "etag": "\"3186369343340000\"",
-      "id": "5nkra92dtuet5btr6vbvl9tevn",
-      "status": "confirmed",
-      "htmlLink": "https://www.google.com/calendar/event?eid=NW5rcmE5MmR0dWV0NWJ0cjZ2YnZsOXRldm4gamVubmllc2dvb2RpZXMxOTk0QG0",
-      "created": "2020-06-26T15:17:51.000Z",
-      "updated": "2020-06-26T15:17:51.670Z",
-      "summary": "first",
-      "creator": {
-        "email": "jenniesgoodies1994@gmail.com",
-        "self": true
-      },
-      "organizer": {
-        "email": "jenniesgoodies1994@gmail.com",
-        "self": true
-      },
-      "start": {
-        "dateTime": "2020-06-29T10:00:00-07:00"
-      },
-      "end": {
-        "dateTime": "2020-06-29T11:00:00-07:00"
-      },
-      "iCalUID": "5nkra92dtuet5btr6vbvl9tevn@google.com",
-      "sequence": 0,
-      "reminders": {
-        "useDefault": true
-      }
-    },
-    {
-      "kind": "calendar#event",
-      "etag": "\"3186369359516000\"",
-      "id": "06l93kq1100ehctfep5s6u7s1r",
-      "status": "confirmed",
-      "htmlLink": "https://www.google.com/calendar/event?eid=MDZsOTNrcTExMDBlaGN0ZmVwNXM2dTdzMXIgamVubmllc2dvb2RpZXMxOTk0QG0",
-      "created": "2020-06-26T15:17:59.000Z",
-      "updated": "2020-06-26T15:17:59.758Z",
-      "summary": "asdlasklda",
-      "creator": {
-        "email": "jenniesgoodies1994@gmail.com",
-        "self": true
-      },
-      "organizer": {
-        "email": "jenniesgoodies1994@gmail.com",
-        "self": true
-      },
-      "start": {
-        "dateTime": "2020-06-29T18:00:00-07:00"
-      },
-      "end": {
-        "dateTime": "2020-06-29T19:00:00-07:00"
-      },
-      "iCalUID": "06l93kq1100ehctfep5s6u7s1r@google.com",
-      "sequence": 0,
-      "reminders": {
-        "useDefault": true
-      }
-    }
-  ];
-  */
+  // dateTimeOptions: any = [
+  //   {
+  //     "kind": "calendar#event",
+  //     "etag": "\"3186369343340000\"",
+  //     "id": "5nkra92dtuet5btr6vbvl9tevn",
+  //     "status": "confirmed",
+  //     "htmlLink": "https://www.google.com/calendar/event?eid=NW5rcmE5MmR0dWV0NWJ0cjZ2YnZsOXRldm4gamVubmllc2dvb2RpZXMxOTk0QG0",
+  //     "created": "2020-06-26T15:17:51.000Z",
+  //     "updated": "2020-06-26T15:17:51.670Z",
+  //     "summary": "first",
+  //     "creator": {
+  //       "email": "jenniesgoodies1994@gmail.com",
+  //       "self": true
+  //     },
+  //     "organizer": {
+  //       "email": "jenniesgoodies1994@gmail.com",
+  //       "self": true
+  //     },
+  //     "start": {
+  //       "dateTime": "2020-06-29T10:00:00-07:00"
+  //     },
+  //     "end": {
+  //       "dateTime": "2020-06-29T11:00:00-07:00"
+  //     },
+  //     "iCalUID": "5nkra92dtuet5btr6vbvl9tevn@google.com",
+  //     "sequence": 0,
+  //     "reminders": {
+  //       "useDefault": true
+  //     }
+  //   },
+  //   {
+  //     "kind": "calendar#event",
+  //     "etag": "\"3186369359516000\"",
+  //     "id": "06l93kq1100ehctfep5s6u7s1r",
+  //     "status": "confirmed",
+  //     "htmlLink": "https://www.google.com/calendar/event?eid=MDZsOTNrcTExMDBlaGN0ZmVwNXM2dTdzMXIgamVubmllc2dvb2RpZXMxOTk0QG0",
+  //     "created": "2020-06-26T15:17:59.000Z",
+  //     "updated": "2020-06-26T15:17:59.758Z",
+  //     "summary": "asdlasklda",
+  //     "creator": {
+  //       "email": "jenniesgoodies1994@gmail.com",
+  //       "self": true
+  //     },
+  //     "organizer": {
+  //       "email": "jenniesgoodies1994@gmail.com",
+  //       "self": true
+  //     },
+  //     "start": {
+  //       "dateTime": "2020-06-29T18:00:00-07:00"
+  //     },
+  //     "end": {
+  //       "dateTime": "2020-06-29T19:00:00-07:00"
+  //     },
+  //     "iCalUID": "06l93kq1100ehctfep5s6u7s1r@google.com",
+  //     "sequence": 0,
+  //     "reminders": {
+  //       "useDefault": true
+  //     }
+  //   }
+  // ];
 
   constructor(
     private toastr: ToastrService,
