@@ -49,16 +49,16 @@ export class GoogleCalendarService {
     const discount = _.get(orderForm, ['discount']);
     const descriptionHTML = `
       <section>
+        <p><b>Transaction ID:</b> ${transactionId}</p>
         <p><b>Name:</b> ${orderForm.name}</p>
         <p><b>Email:</b> ${orderForm.email}</p>
         <p><b>Phone:</b> ${orderForm.phoneNumber}</p>
-        <p><b>Total:</b> $${orderForm.total} ${(orderForm.deliveryFee > 0) ? `+ ${orderForm.deliveryFee} Delievery Fee` : ``}</p>
         ${!_.isNil(discount) ? `<p><b>Discount Code:</b> ${_.get(discount, ['code'])} (${_.get(discount, ['percent'], 0)}% OFF ${_.get(discount, ['type'])})</p>`: ''}
+        <p><b>Total:</b> $${orderForm.total} ${(orderForm.deliveryFee > 0) ? `+ ${orderForm.deliveryFee} Delievery Fee` : ``}</p>
         <p><b>Orders:</b></p>
         <ul>${getOrderItems()}</ul>
         ${!_.isEmpty(orderForm.notes) ? `<p><b>Notes:</b> ${orderForm.notes}</p>` : ``}
         <p><b>Description:</b> ${getDescription()}</p>
-        <p><b>Transaction ID:</b> ${transactionId}</p>
       </section>
     `;
     const events = await this.updateEvent(orderForm, descriptionHTML);
