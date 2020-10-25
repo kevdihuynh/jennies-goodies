@@ -8,6 +8,10 @@ $theme-colors: (
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 
+html, body {
+    font-family: 'Open Sans' !important;
+}
+
 .min-height-100vh {
     min-height: 100vh;
 }
