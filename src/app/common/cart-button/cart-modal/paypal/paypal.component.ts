@@ -177,6 +177,8 @@ export class PaypalComponent implements OnInit {
                 });
             },
             onClientAuthorization: async (data: any) => {
+                // Spinner has to turn off early due to inconsistent forever spinning
+                this.spinner.hide();
                 try {
                     // Make a copy of the orderForm before it gets cleared
                     const finalOrderForm: OrderForm = _.cloneDeep(this.orderForm);
@@ -185,7 +187,6 @@ export class PaypalComponent implements OnInit {
                     await this.googleCalendarService.bookCalendar(finalOrderForm, transactionId);
                     this.cartService.clearCart();
                     this.activeModal.close('transaction-completed');
-                    this.spinner.hide();
                     this.toastr.success(`You will receive an email confirmation soon. Thank you!`, `Transaction Completed!`,  {
                         positionClass: 'toast-top-left',
                         progressBar: true,
