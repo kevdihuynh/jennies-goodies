@@ -13,7 +13,7 @@
         <div class="d-flex flex-column h-100 container-fluid">
             <div class="product-content-container my-4 mt-sm-0">
                 <div class="d-flex flex-wrap align-items-center mb-2">
-                    <h1 class="mb-0 mr-2">{{product.name}}</h1>
+                    <h1 class="mb-0 mr-3">{{product.name}}</h1>
                     <div class="ml-sm-auto">
                         <span *ngIf="!_.isEmpty(_.get(product, ['badge']))" class="badge badge-pill badge-custom-purple text-light p-2">{{product?.badge}}</span>
                         <span *ngIf="cartService.isProductFoundForDiscount(product.name, orderForm.discount)" class="badge badge-pill badge-info text-light p-2 ml-2">{{orderForm?.discount?.percent}}% OFF</span>
