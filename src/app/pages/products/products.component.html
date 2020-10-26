@@ -1,10 +1,10 @@
 
-<main class="row p-0 p-sm-5">
+<main class="row no-gutters mb-5">
     <!-- <div class="col-12">
         <app-edit-button [collection]="'products'" [isNew]="true" [inputsConfig]="inputsConfig"></app-edit-button>
     </div> -->
     <ng-container *ngIf="products.length">
-        <div class="col-xs-12 col-xl-6 mb-3" *ngFor="let product of products">
+        <div class="col-xs-12 col-xl-6" *ngFor="let product of products">
             <app-product [product]="product"></app-product>
         </div>
     </ng-container>
