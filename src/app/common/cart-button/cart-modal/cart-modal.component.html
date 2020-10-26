@@ -155,7 +155,7 @@
                         <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" min="1" type="number" class="form-control form-control-md" id="inputQuantity" placeholder="Enter Quantity" pattern="\d*" >
                     </div>
                     <div class="my-2 ml-auto">
-                        <h5 class="d-inline-block font-weight-bold mb-0">{{cartService.getItemsTotal(order.name, order.price, order.quantity, orderForm.discount) | currency:'USD':'symbol':'1.0'}}</h5>
+                        <h5 class="d-inline-block font-weight-bold mb-0">{{cartService.getItemsTotal(order.name, order.price, order.quantity, _.get(orderForm, ['discount'])) | currency:'USD':'symbol':'1.0'}}</h5>
                     </div>
                 </div>
                 <p *ngIf="order.quantity < 1" class="text-danger mt-2">Quantity needs to be greater than zero</p>
@@ -173,9 +173,9 @@
                     <div>
                         <input [(ngModel)]="inputDiscount" (ngModelChange)="cartService.validateDiscount(inputDiscount)" type="text" class="form-control" id="inputDiscount" placeholder="Enter Discount Code">
                     </div>
-                    <ng-container *ngIf="!_.isNil(orderForm.discount)">
+                    <ng-container *ngIf="!_.isNil(_.get(orderForm, ['discount']))">
                         <i class="fa fa-check-circle text-success mx-2" aria-hidden="true"></i>
-                        <span *ngIf="cartService.getSavings() > 0" class="text-custom-purple font-weight-bold">{{orderForm.discount.percent}}% OFF {{_.toUpper(orderForm.discount.type)}}!</span>
+                        <span *ngIf="cartService.getSavings() > 0" class="text-custom-purple font-weight-bold">{{_.get(orderForm, ['discount', 'percent'], 0)}}% OFF {{_.toUpper(_.get(orderForm, ['discount', 'type']))}}!</span>
                     </ng-container>
                 </div>
                 <!-- **** Disabled Delivery Feature **** -->
@@ -183,7 +183,7 @@
                 <!-- <h5 class="font-weight-bold" *ngIf="orderForm.deliveryFee > 0">Delivery Fee: {{orderForm.deliveryFee | currency:'USD':'symbol':'1.0'}}</h5> -->
                 <div class="ml-auto text-right">
                     <h4 class="font-weight-bold">Grand Total: {{orderForm.grandTotal | currency:'USD':'symbol':'1.0'}}</h4>
-                    <h5 *ngIf="!_.isNil(orderForm.discount)" class="text-custom-purple font-italic">You Save {{cartService.getSavings() | currency:'USD':'symbol':'1.0'}}</h5>
+                    <h5 *ngIf="!_.isNil(_.get(orderForm, ['discount']))" class="text-custom-purple font-italic">You Save {{cartService.getSavings() | currency:'USD':'symbol':'1.0'}}</h5>
                 </div>
             </div>
         </section>

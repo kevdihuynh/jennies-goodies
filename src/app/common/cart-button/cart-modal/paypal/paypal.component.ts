@@ -70,7 +70,7 @@ export class PaypalComponent implements OnInit {
                     category: 'PHYSICAL_GOODS',
                     unit_amount: {
                         currency_code: _.toUpper(currency),
-                        value: _.toString(this.cartService.getItemTotal(order.name, order.price, this.orderForm.discount))
+                        value: _.toString(this.cartService.getItemTotal(order.name, order.price, _.get(this.orderForm, ['discount'])))
                     }
                 };
             });

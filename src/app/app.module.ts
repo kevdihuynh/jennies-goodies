@@ -36,6 +36,7 @@ import { EditButtonComponent } from './common/edit-button/edit-button.component'
 import { EditModalContentComponent } from './common/edit-button/edit-modal-content/edit-modal-content.component';
 import { EditModalConfirmComponent } from './common/edit-button/edit-modal-confirm/edit-modal-confirm.component';
 import { DatePipe } from '@angular/common';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { DatePipe } from '@angular/common';
     NgxSpinnerModule,
     NgxPayPalModule,
     AutocompleteLibModule,
-    QuillModule.forRoot()
+    QuillModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   entryComponents: [],
   schemas: [

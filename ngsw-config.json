@@ -1,0 +1,40 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/manifest.webmanifest",
+          "/*.css",
+          "/*.js"
+        ],
+        "urls":[
+          "https://firebasestorage.googleapis.com/v0/b/*"
+        ]
+      }
+    }, {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/**",
+          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
+        ],
+        "urls": [
+          "https://csi.gstatic.com/**",
+          "https://d.agkn.com/**",
+          "https://tpc.googlesyndication.com/**",
+          "https://cm.g.doubleclick.net/**",
+          "https://c.disquscdn.com/**",
+          "https://fonts.gstatic.com/**"
+        ]
+      }
+    }
+  ]
+}

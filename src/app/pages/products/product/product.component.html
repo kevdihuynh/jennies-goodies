@@ -16,7 +16,7 @@
                     <h1 class="mb-0 mr-3">{{product.name}}</h1>
                     <div class="ml-sm-auto">
                         <span *ngIf="!_.isEmpty(_.get(product, ['badge']))" class="badge badge-pill badge-custom-purple text-light p-2">{{product?.badge}}</span>
-                        <span *ngIf="cartService.isProductFoundForDiscount(product.name, orderForm.discount)" class="badge badge-pill badge-info text-light p-2 ml-2">{{orderForm?.discount?.percent}}% OFF</span>
+                        <span *ngIf="cartService.isProductFoundForDiscount(product.name, _.get(orderForm, ['discount']))" class="badge badge-pill badge-info text-light p-2 ml-2">{{orderForm?.discount?.percent}}% OFF</span>
                     </div>
                 </div>
                 <!-- <app-edit-button [collection]="'products'" [id]="product.slug" [data]="product" [isNew]="false" [inputsConfig]="inputsConfig"></app-edit-button> -->
@@ -28,7 +28,7 @@
                         <input [(ngModel)]="product.quantity" min="1" type="number" class="form-control form-control-md" id="inputQuantity" placeholder="Enter Quantity" pattern="\d*" />
                     </div>
                     <button *ngFor="let variation of product.variations; let i = index" (click)="updateSelectedOption(i)" class="btn btn-outline-custom-purple btn-md rounded-0" [ngClass]="{ 'active': _.isEqual(i, selectedOptionIndex) }">
-                        {{variation.batchSize}} for {{cartService.getItemTotal(product.name, variation.price, orderForm.discount) |  currency:'USD':'symbol':'1.0'}}
+                        {{variation.batchSize}} for {{cartService.getItemTotal(product.name, variation.price, _.get(orderForm, ['discount'])) |  currency:'USD':'symbol':'1.0'}}
                     </button>
                 </div>
                 <ng-container *ngIf="!_.isEmpty(this.product.flavors)">
@@ -55,7 +55,7 @@
                             <i class="fas fa-cart-plus"></i>
                         </span>
                         <span>
-                            {{cartService.getItemsTotal(_.get(product, 'name'), _.get(selectedOption, 'price', 0), _.get(product, 'quantity', 0), orderForm.discount) |  currency:'USD':'symbol':'1.0'}}
+                            {{cartService.getItemsTotal(_.get(product, 'name'), _.get(selectedOption, 'price', 0), _.get(product, 'quantity', 0), _.get(orderForm, ['discount'])) |  currency:'USD':'symbol':'1.0'}}
                         </span>
                     </button>
                 </div>

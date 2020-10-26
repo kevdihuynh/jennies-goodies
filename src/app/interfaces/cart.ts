@@ -19,7 +19,7 @@ export interface OrderForm {
     totalOrdersQuantity: number;
     selectedDateTime: any;
     confirmedAddress: string;
-    discount: any;
+    discount?: any;
 }
 export interface Order {
     imageUrls: string[];

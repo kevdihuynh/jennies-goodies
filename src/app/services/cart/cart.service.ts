@@ -29,7 +29,7 @@ export class CartService {
       grandTotal: 0,
       selectedDateTime: null,
       confirmedAddress: null,
-      discount: undefined
+      discount: null
     }
   );
   public orderForm: Observable<OrderForm>  = this.orderFormSubject.asObservable();
@@ -78,7 +78,7 @@ export class CartService {
   getItemTotal(orderName: string, orderPrice: number, discount: any = undefined): number {
     let price: number = orderPrice;
     if (this.isProductFoundForDiscount(orderName, discount)) {
-      price -= (price * (_.get(discount, ['percent']) / 100));
+      price -= (price * (_.get(discount, ['percent'], 0) / 100));
     }
     return _.round(price, 2);
   }
@@ -86,14 +86,14 @@ export class CartService {
   getItemsTotal(orderName: string, orderPrice: number, orderQuantity: number, discount: any = undefined): number {
     let total: number = (orderPrice * orderQuantity);
     if (this.isProductFoundForDiscount(orderName, discount)) {
-      total -= (total * (_.get(discount, ['percent']) / 100));
+      total -= (total * (_.get(discount, ['percent'], 0) / 100));
     }
     return _.round(total, 2);
   };
 
   getTotal(orders: Order[], discount: any = undefined): number {
     return _.round(_.reduce(orders, (sum: number, order: Order): number => {
-      return sum + this.getItemsTotal(_.get(order, ['name']), _.get(order, ['price']), _.get(order, ['quantity']), discount);
+      return sum + this.getItemsTotal(_.get(order, ['name']), _.get(order, ['price'], 0), _.get(order, ['quantity'], 0), discount);
     }, 0), 2);
   };
 
@@ -127,8 +127,8 @@ export class CartService {
     this.updateOrderFormByFields({
       orders: updatedOrders,
       totalOrdersQuantity: this.getOrdersQuantity(updatedOrders),
-      total: this.getTotal(updatedOrders, currentOrderForm.discount),
-      grandTotal: this.getGrandTotal(updatedOrders, currentOrderForm.discount, currentOrderForm.deliveryFee)
+      total: this.getTotal(updatedOrders, _.get(currentOrderForm, ['discount'])),
+      grandTotal: this.getGrandTotal(updatedOrders, _.get(currentOrderForm, ['discount']), currentOrderForm.deliveryFee)
     });
   }
 
@@ -139,8 +139,8 @@ export class CartService {
     this.updateOrderFormByFields({
       orders: updatedOrders,
       totalOrdersQuantity: this.getOrdersQuantity(updatedOrders),
-      total: this.getTotal(updatedOrders, currentOrderForm.discount),
-      grandTotal: this.getGrandTotal(updatedOrders, currentOrderForm.discount, currentOrderForm.deliveryFee)
+      total: this.getTotal(updatedOrders, _.get(currentOrderForm, ['discount'])),
+      grandTotal: this.getGrandTotal(updatedOrders, _.get(currentOrderForm, ['discount']), currentOrderForm.deliveryFee)
     });
   }
 
@@ -151,8 +151,8 @@ export class CartService {
     this.updateOrderFormByFields({
       orders: updatedOrders,
       totalOrdersQuantity: this.getOrdersQuantity(updatedOrders),
-      total: this.getTotal(updatedOrders, currentOrderForm.discount),
-      grandTotal: this.getGrandTotal(updatedOrders, currentOrderForm.discount, currentOrderForm.deliveryFee)
+      total: this.getTotal(updatedOrders, _.get(currentOrderForm, ['discount'])),
+      grandTotal: this.getGrandTotal(updatedOrders, _.get(currentOrderForm, ['discount']), currentOrderForm.deliveryFee)
     });
   }
 
