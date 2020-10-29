@@ -20,12 +20,16 @@
                     </div>
                 </div>
                 <!-- <app-edit-button [collection]="'products'" [id]="product.slug" [data]="product" [isNew]="false" [inputsConfig]="inputsConfig"></app-edit-button> -->
-                <quill-view-html [content]="product?.description" theme="snow"></quill-view-html>
+                <app-see-more
+                    [text]="product?.description"
+                    [maxLength]="75"
+                >
+                </app-see-more>
             </div>
             <div class="mt-auto">
                 <div class="d-flex flex-wrap align-items-center btn-group mb-2">
                     <div class="side-info text-center mr-2">
-                        <input [(ngModel)]="product.quantity" min="1" type="number" class="form-control form-control-md" id="inputQuantity" placeholder="Enter Quantity" pattern="\d*" />
+                        <input [(ngModel)]="product.quantity" min="1" type="number" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control form-control-md" id="inputQuantity" placeholder="Enter Quantity" pattern="\d*" />
                     </div>
                     <button *ngFor="let variation of product.variations; let i = index" (click)="updateSelectedOption(i)" class="btn btn-outline-custom-purple btn-md rounded-0" [ngClass]="{ 'active': _.isEqual(i, selectedOptionIndex) }">
                         {{variation.batchSize}} for {{cartService.getItemTotal(product.name, variation.price, _.get(orderForm, ['discount'])) |  currency:'USD':'symbol':'1.0'}}

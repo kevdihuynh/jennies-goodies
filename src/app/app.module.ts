@@ -37,6 +37,7 @@ import { EditModalContentComponent } from './common/edit-button/edit-modal-conte
 import { EditModalConfirmComponent } from './common/edit-button/edit-modal-confirm/edit-modal-confirm.component';
 import { DatePipe } from '@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { SeeMoreComponent } from './common/see-more/see-more.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     NgbToDatePipe,
     EditButtonComponent,
     EditModalContentComponent,
-    EditModalConfirmComponent
+    EditModalConfirmComponent,
+    SeeMoreComponent
   ],
   imports: [
     BrowserModule,
