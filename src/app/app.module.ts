@@ -35,6 +35,7 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { EditButtonComponent } from './common/edit-button/edit-button.component';
 import { EditModalContentComponent } from './common/edit-button/edit-modal-content/edit-modal-content.component';
 import { EditModalConfirmComponent } from './common/edit-button/edit-modal-confirm/edit-modal-confirm.component';
+import { SeeMoreComponent } from './common/see-more/see-more.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { EditModalConfirmComponent } from './common/edit-button/edit-modal-confi
     NgbToDatePipe,
     EditButtonComponent,
     EditModalContentComponent,
-    EditModalConfirmComponent
+    EditModalConfirmComponent,
+    SeeMoreComponent
   ],
   imports: [
     BrowserModule,
