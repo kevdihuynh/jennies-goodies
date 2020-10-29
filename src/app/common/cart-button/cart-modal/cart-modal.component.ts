@@ -134,6 +134,10 @@ export class CartModalComponent implements OnInit {
     this.isDeliveryInvalid = true;
     this.cartService.orderForm.subscribe((orderForm: OrderForm) => {
       this.orderForm = orderForm;
+      if (this.orderForm && this.orderForm.orders) {
+        // sort the orders so that products are grouped closely together for better readability
+        this.orderForm.orders = _.sortBy(this.orderForm.orders, ['name']);
+      }
       this.inputDiscount = _.get(orderForm, ['discount', 'code']);
     });
 
@@ -540,6 +544,10 @@ export class CartModalComponent implements OnInit {
       console.log(events);
       // Show only events that contain the title [OPEN]
       this.dateTimeOptions = _.filter(events, (event: any) => _.includes(_.toUpper(_.get(event, ['summary'])), _.toUpper('[OPEN]')));
+      this.dateTimeOptions = _.sortBy(this.dateTimeOptions, [(event) => {
+        const startTime = event && event.start && event.start.dateTime;
+        return moment(startTime);
+      }]);
       console.log('google calendar getEvents response:: ', events);
       this.isDateTimeLoading = false;
     } catch (e) {

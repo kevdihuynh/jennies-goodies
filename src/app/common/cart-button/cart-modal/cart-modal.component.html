@@ -152,7 +152,7 @@
                 <div class="d-flex flex-wrap align-items-center ">
                     <i class="fa fa-times-circle text-custom-purple cursor-pointer mr-3" aria-hidden="true" (click)="removeFromCart(order, index)"></i>
                     <div class="order-quantity my-2">
-                        <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" min="1" type="number" class="form-control form-control-md" id="inputQuantity" placeholder="Enter Quantity" pattern="\d*" >
+                        <input [(ngModel)]="order.quantity" (ngModelChange)="updateFromCart(order, index)" min="1" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" class="form-control form-control-md" id="inputQuantity" placeholder="Enter Quantity" pattern="\d*" >
                     </div>
                     <div class="my-2 ml-auto">
                         <h5 class="d-inline-block font-weight-bold mb-0">{{cartService.getItemsTotal(order.name, order.price, order.quantity, _.get(orderForm, ['discount'])) | currency:'USD':'symbol':'1.0'}}</h5>
