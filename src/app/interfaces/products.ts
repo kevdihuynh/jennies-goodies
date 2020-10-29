@@ -16,4 +16,5 @@ export interface Product {
     allowMultiple: boolean;
     rank: number;
     badge?: string;
+    productId?: string;
 }

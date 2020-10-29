@@ -32,9 +32,24 @@ export class ProductsComponent implements OnInit {
 
     getResponse(callback, productsJson).subscribe((res) => {
       const products: Product[] = res as Product[];
-      this.products = _.sortBy(products, ['rank']);
-      // console.log(this.products);
+      const formattedProducts: Product[] = [];
+      products.map((product) => {
+        const currentProduct = _.cloneDeep(product);
+        const productName = currentProduct && currentProduct.name;
+        const productId = productName.toLocaleLowerCase().replace(/ /g, '');
+        currentProduct.productId = productId;
+        formattedProducts.push(currentProduct);
+      });
+      this.products = _.sortBy(formattedProducts, ['rank']);
+      console.log(this.products);
     });
+  }
+
+  scroll(product: Product): void {
+    const elementToScrollTo = document.getElementById(product.productId);
+    if (elementToScrollTo) {
+      elementToScrollTo.scrollIntoView();
+    }
   }
 
   ngOnInit(): void {

@@ -4,6 +4,16 @@
         <app-edit-button [collection]="'products'" [isNew]="true" [inputsConfig]="inputsConfig"></app-edit-button>
     </div> -->
     <ng-container *ngIf="products.length">
+        <div class="col-12 ml-md-5 mr-md-5 mt-1">
+            <h2>Jump To</h2>
+            <div>
+                <span *ngFor="let product of products">
+                    <button class="btn btn-md rounded-0 btn-custom-purple mr-1 mb-2">
+                        <span class="mr-2" (click)="scroll(product)">{{product.name}}</span>
+                    </button>
+                </span>
+            </div>
+        </div>
         <div class="col-xs-12 col-xl-6" *ngFor="let product of products">
             <app-product [product]="product"></app-product>
         </div>
