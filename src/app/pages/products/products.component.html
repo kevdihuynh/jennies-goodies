@@ -4,11 +4,11 @@
         <app-edit-button [collection]="'products'" [isNew]="true" [inputsConfig]="inputsConfig"></app-edit-button>
     </div> -->
     <ng-container *ngIf="products.length">
-        <div class="col-12 ml-md-5 mr-md-5 mt-1">
-            <h2>Jump To</h2>
-            <div>
+        <div class="col-12 ml-md-5 mr-md-5 d-md-none">
+            <div class="mx-3 mx-md-0 my-5 mb-md-0">
+                <span class="mr-2 mb-2 font-weight-bold">Quick Links:</span>
                 <span *ngFor="let product of products">
-                    <button class="btn btn-md rounded-0 btn-custom-purple mr-1 mb-2">
+                    <button class="btn btn-md rounded-0 btn-custom-purple mr-2 mb-2">
                         <span class="mr-2" (click)="scroll(product)">{{product.name}}</span>
                     </button>
                 </span>
