@@ -161,7 +161,7 @@ export const updateCalendarEvent = functions.https.onRequest(async (request, res
     if (selectedDateTime && name) {
         const isPaid = _.get(orderForm, 'grandTotal');
         const isDelivery = _.get(orderForm, 'isDelivery');
-        const summary = `[Website] [${isPaid ? 'Paid' : 'Not Paid'}] [${isDelivery ? 'Delivery' : 'Pickup'}] [${name ? name : ''}] [${email ? `(${email})` : ''}]`;
+        const summary = `[Website] [${isPaid ? 'Paid' : 'Not Paid'}] [${isDelivery ? 'Delivery' : 'Pickup'}] [${name ? name : ''}]`;
         const createResource = {
             'colorId': isDelivery ? '11' : '3',
             'summary': summary,
