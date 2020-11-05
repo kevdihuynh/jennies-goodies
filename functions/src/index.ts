@@ -156,7 +156,6 @@ export const updateCalendarEvent = functions.https.onRequest(async (request, res
     const selectedDateTime = _.get(orderForm, 'selectedDateTime');
 
     const name = _.get(orderForm, 'name');
-    const email = _.get(orderForm, 'email', '');
 
     if (selectedDateTime && name) {
         const isPaid = _.get(orderForm, 'grandTotal');
