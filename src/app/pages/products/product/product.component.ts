@@ -141,7 +141,7 @@ export class ProductComponent implements OnInit {
     };
     this.cartService.addToCart(order);
     this.selectedFlavors = [];
-    this.toastr.info(this.cartService.displayFriendlyItemText(order), 'Added to Cart', {
+    this.toastr.info(`${order.quantity} x ${order.name}`, 'Added to Cart', {
       positionClass: 'toast-top-left',
       progressBar: true,
       disableTimeOut: false,

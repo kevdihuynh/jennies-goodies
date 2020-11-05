@@ -4,7 +4,7 @@ export class GlobalConstants {
         name: "Jennie's Goodies",
         slogan: "Fresh homemade pastries & sweets served every day!",
         email: 'jenniesgoodies@yahoo.com',
-        logo: '../assets/images/jennies_goodies_logo.jpg',
+        logo: '../assets/images/jennies_goodies_cupcake.png',
         facebook: 'https://www.facebook.com/Jennies-Goodies-112088677209362/?ref=page_internal',
         instagram: 'https://www.instagram.com/jenniesgoodies',
         phoneNumber: '(206) 765-0458',
