@@ -19,7 +19,7 @@
                 </div>
                 <div class="form-group col-md-12">
                     <label for="inputPhoneNumber">Phone Number <span class="text-danger">*</span></label>
-                    <input [(ngModel)]="orderForm.phoneNumber" type="text" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number (i.e. (206) 123-4567)">
+                    <input [(ngModel)]="orderForm.phoneNumber" type="text" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number (i.e. 2061234567)" onkeypress="return event.charCode >= 48 && event.charCode <= 57" pattern="\d*">
                 </div>
             </div>
             <div class="form-group">
