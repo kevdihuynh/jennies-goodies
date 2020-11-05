@@ -1,5 +1,14 @@
 .product-content-container {
-    min-height: 12em;
+    min-height: 10em;
+}
+
+.img-carousel {
+    min-height: 400px !important;
+    max-height: 400px !important;
+    min-width: 100%;
+    max-width: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .side-info {

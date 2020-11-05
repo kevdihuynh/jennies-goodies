@@ -28,7 +28,7 @@ const googleCredentials = {
 }
 
 const {google} = require('googleapis');
-const OAuth2 = google.auth.OAuth2; 
+const OAuth2 = google.auth.OAuth2;
 const calendar = google.calendar('v3');
 
 const ERROR_RESPONSE = {
@@ -48,6 +48,7 @@ function addEvent(event:any, auth:any) {
         calendar.events.insert({
             auth: auth,
             calendarId: 'primary',
+            sendUpdates: 'all',
             resource: {
                 'summary': event.eventName,
                 'description': event.description,
@@ -59,6 +60,21 @@ function addEvent(event:any, auth:any) {
                     'dateTime': event.endTime,
                     'timeZone': TIME_ZONE,
                 },
+                'location': "Jennie's House",
+                'reminders': {
+                    'useDefault': false,
+                    'overrides': [
+                      {
+                        'minutes': 60,
+                        'method': 'email'
+                      },
+                      {
+                        'minutes': 60,
+                        'method': 'popup'
+                      }
+                    ]
+                },
+                'visibility': 'private'
             },
         }, (err:any, res:any) => {
             if (err) {
@@ -98,8 +114,8 @@ export const addEventToCalendar = functions.https.onRequest((request, response) 
         response.status(200).send(data);
         return;
     }).catch(err => {
-        console.error('Error adding event: ' + err.message); 
-        response.status(500).send(ERROR_RESPONSE); 
+        console.error('Error adding event: ' + err.message);
+        response.status(500).send(ERROR_RESPONSE);
         return;
     });
 });
@@ -122,8 +138,8 @@ export const getCalendarEvents = functions.https.onRequest(async (request, respo
             response.status(200).send(events);
             return;
         }).catch(err => {
-            console.error('Error adding event: ' + err.message); 
-            response.status(500).send(ERROR_RESPONSE); 
+            console.error('Error adding event: ' + err.message);
+            response.status(500).send(ERROR_RESPONSE);
             return;
         });
     } else {
@@ -132,36 +148,68 @@ export const getCalendarEvents = functions.https.onRequest(async (request, respo
     }
 });
 
+/* THE NEW FUNCTION TO CREATE NEW CALENDAR EVENTS ON SAME DAY */
 export const updateCalendarEvent = functions.https.onRequest(async (request, response) => {
     cors(request, response);
     console.log('request body', request.body);
-    const orderForm = _.get(request, 'body.orderForm', undefined);
-    const selectedDateTime = _.get(orderForm, 'selectedDateTime', undefined);
-    const description = _.get(request, 'body.description', undefined);
-    
-    const name = _.get(orderForm, 'name', undefined);
+    const orderForm = _.get(request, 'body.orderForm');
+    const selectedDateTime = _.get(orderForm, 'selectedDateTime');
+
+    const name = _.get(orderForm, 'name');
     const email = _.get(orderForm, 'email', '');
 
     if (selectedDateTime && name) {
-        const isPaid = _.get(orderForm, 'grandTotal', undefined);
-        const isDelivery = _.get(orderForm, 'isDelivery', undefined);
-        selectedDateTime.summary = `[Website] [${isPaid ? 'Paid' : 'Not Paid'}] [${isDelivery ? 'Delivery' : 'Pickup'}] [${name ? name : ''}] [${email ? `(${email})` : ''}]`;
-        selectedDateTime.description = description;
-        selectedDateTime.colorId = isDelivery ? '11' : '3';
+        const isPaid = _.get(orderForm, 'grandTotal');
+        const isDelivery = _.get(orderForm, 'isDelivery');
+        const summary = `[Website] [${isPaid ? 'Paid' : 'Not Paid'}] [${isDelivery ? 'Delivery' : 'Pickup'}] [${name ? name : ''}] [${email ? `(${email})` : ''}]`;
+        const createResource = {
+            'colorId': isDelivery ? '11' : '3',
+            'summary': summary,
+            'description': _.get(request, 'body.description'),
+            'start': {
+                'dateTime': _.get(selectedDateTime, ['start', 'dateTime']),
+                'timeZone': _.get(selectedDateTime, ['start', 'timeZone']),
+            },
+            'end': {
+                'dateTime': _.get(selectedDateTime, ['end', 'dateTime']),
+                'timeZone': _.get(selectedDateTime, ['end', 'timeZone']),
+            },
+            'location': _.get(orderForm, 'address'),
+            "attendees": [
+                {
+                  "displayName": _.get(orderForm, 'name'),
+                  "email": _.get(orderForm, 'email')
+                }
+            ],
+            'reminders': {
+                'useDefault': false,
+                'overrides': [
+                  {
+                    'minutes': 60,
+                    'method': 'email'
+                  },
+                  {
+                    'minutes': 60,
+                    'method': 'popup'
+                  }
+                ]
+            },
+            'visibility': 'private'
+        }
         console.log('event::', selectedDateTime);
         const eventData = {
             calendarId:'primary',
-            eventId: _.get(selectedDateTime, 'id', undefined),
-            resource: selectedDateTime,
+            sendUpdates: 'all',
+            resource: createResource
         };
-        calendarApi.updateCalendarEvent(eventData).then(data => {
+        calendarApi.createCalendarEvent(eventData).then(data => {
             // console.log('data::', data);
             // const events = _.get(data, 'items', {});
             response.status(200).send(data);
             return;
         }).catch(err => {
-            console.error('Error adding event: ' + err.message); 
-            response.status(500).send(ERROR_RESPONSE); 
+            console.error('Error adding event: ' + err.message);
+            response.status(500).send(ERROR_RESPONSE);
             return;
         });
     } else {
@@ -169,6 +217,69 @@ export const updateCalendarEvent = functions.https.onRequest(async (request, res
         return;
     }
 });
+
+/* TO OLD FUNCTION TO OVERWRITE EXISTING CALENDAR EVENTS */
+// export const updateCalendarEvent = functions.https.onRequest(async (request, response) => {
+//     cors(request, response);
+//     console.log('request body', request.body);
+//     const orderForm = _.get(request, 'body.orderForm', undefined);
+//     const selectedDateTime = _.get(orderForm, 'selectedDateTime', undefined);
+//     const description = _.get(request, 'body.description', undefined);
+
+//     const name = _.get(orderForm, 'name', undefined);
+//     const email = _.get(orderForm, 'email', '');
+
+//     if (selectedDateTime && name) {
+//         const isPaid = _.get(orderForm, 'grandTotal', undefined);
+//         const isDelivery = _.get(orderForm, 'isDelivery', undefined);
+//         selectedDateTime.summary = `[Website] [${isPaid ? 'Paid' : 'Not Paid'}] [${isDelivery ? 'Delivery' : 'Pickup'}] [${name ? name : ''}] [${email ? `(${email})` : ''}]`;
+//         selectedDateTime.description = description;
+//         selectedDateTime.colorId = isDelivery ? '11' : '3';
+//         const optional = {
+//             'location': _.get(orderForm, 'address'),
+//             "attendees": [
+//                 {
+//                   "displayName": _.get(orderForm, 'name'),
+//                   "email": _.get(orderForm, 'email')
+//                 }
+//             ],
+//             'reminders': {
+//                 'useDefault': false,
+//                 'overrides': [
+//                   {
+//                     'minutes': 60,
+//                     'method': 'email'
+//                   },
+//                   {
+//                     'minutes': 60,
+//                     'method': 'popup'
+//                   }
+//                 ]
+//             },
+//             'visibility': 'private'
+//         };
+//         console.log('event::', selectedDateTime);
+//         const eventData = {
+//             calendarId:'primary',
+//             eventId: _.get(selectedDateTime, 'id', undefined),
+//             sendUpdates: 'all',
+//             resource: _.assign(selectedDateTime, optional)
+//         };
+//         calendarApi.updateCalendarEvent(eventData).then(data => {
+//             // console.log('data::', data);
+//             // const events = _.get(data, 'items', {});
+//             response.status(200).send(data);
+//             return;
+//         }).catch(err => {
+//             console.error('Error adding event: ' + err.message);
+//             response.status(500).send(ERROR_RESPONSE);
+//             return;
+//         });
+//     } else {
+//         response.status(200).send(ERROR_RESPONSE_2);
+//         return;
+//     }
+// });
 
 export const helloWorld = functions.https.onRequest((request, response) => {
  response.send("Hello from Firebase!");

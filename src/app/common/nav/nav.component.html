@@ -1,13 +1,14 @@
-<nav class="p-3 px-md-4 border-bottom border-dark box-shadow bg-custom-purple sticky-top">
+<div *ngIf="!_.isEmpty(banner)" class="text-center bg-custom-vanilla py-2 font-weight-bold">{{banner}}</div>
+<nav class="p-3 px-md-4 bg-custom-purple sticky-top">
     <div class="d-flex flex-wrap align-items-center">
         <a [routerLink]="['']" [title]="globalConstants.company.name" class="text-decoration-none font-weight-bold text-dark">
             <img
                 class="mr-2"
-                width="40"
+                height="35"
                 alt="{{globalConstants.company.name + ' Logo'}}"
                 [src]="globalConstants.company.logo"
             />
-            <span>{{globalConstants.company.name}}</span>
+            <span class="navbar-brand">{{globalConstants.company.name}}</span>
         </a>
         <div class="ml-auto">
             <app-cart-button></app-cart-button>

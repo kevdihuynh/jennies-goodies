@@ -1,26 +1,35 @@
 @import '~bootstrap/scss/functions';
 @import "~bootstrap/scss/variables";
 $theme-colors: (
-    'custom-purple': #A497E4
+    'custom-purple': #A497E4,
+    'custom-vanilla': #FAF3DD
 );
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+html, body {
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
 
 .min-height-100vh {
     min-height: 100vh;
 }
 
 .cursor-pointer {
-    cursor: pointer;
+    cursor: pointer !important;
 }
 
 .text-underline {
-    text-decoration: underline;
+    text-decoration: underline !important;
 }
 
 .text-decoration-none {
-    text-decoration: none;
+    text-decoration: none !important;
+}
+
+.box-shadow {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 // Large devices (desktops, less than 1200px)
@@ -51,6 +60,7 @@ $theme-colors: (
 
 /* Custom ngx-quill */
 quill-view-html .ql-container {
+    font-size: unset;
     height: unset;
     .ql-editor {
         padding: 0;
@@ -69,4 +79,18 @@ quill-editor .ql-toolbar {
     position: sticky;
     top: 0;
     z-index: 1020;
+}
+
+label {
+    font-weight: bold;
+}
+
+.carousel-indicators {
+    bottom: -50px;
+    li {
+        width: 10px;
+        height: 10px;
+        border-radius: 100%;
+        background-color: theme-color('custom-purple');
+    }
 }

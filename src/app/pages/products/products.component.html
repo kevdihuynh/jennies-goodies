@@ -1,9 +1,19 @@
 
-<main class="row no-gutters m-0 m-md-3">
+<main class="row no-gutters mb-5">
     <!-- <div class="col-12">
         <app-edit-button [collection]="'products'" [isNew]="true" [inputsConfig]="inputsConfig"></app-edit-button>
     </div> -->
     <ng-container *ngIf="products.length">
+        <div class="col-12 ml-md-5 mr-md-5 d-md-none">
+            <div class="mx-3 mx-md-0 my-5 mb-md-0">
+                <span class="mr-2 mb-2 font-weight-bold">Quick Links:</span>
+                <span *ngFor="let product of products">
+                    <button class="btn btn-md rounded-0 btn-custom-purple mr-2 mb-2">
+                        <span class="mr-2" (click)="scroll(product)">{{product.name}}</span>
+                    </button>
+                </span>
+            </div>
+        </div>
         <div class="col-xs-12 col-xl-6" *ngFor="let product of products">
             <app-product [product]="product"></app-product>
         </div>

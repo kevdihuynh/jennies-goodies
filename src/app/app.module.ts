@@ -35,6 +35,8 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { EditButtonComponent } from './common/edit-button/edit-button.component';
 import { EditModalContentComponent } from './common/edit-button/edit-modal-content/edit-modal-content.component';
 import { EditModalConfirmComponent } from './common/edit-button/edit-modal-confirm/edit-modal-confirm.component';
+import { DatePipe } from '@angular/common';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { SeeMoreComponent } from './common/see-more/see-more.component';
 
 @NgModule({
@@ -70,13 +72,16 @@ import { SeeMoreComponent } from './common/see-more/see-more.component';
     NgxSpinnerModule,
     NgxPayPalModule,
     AutocompleteLibModule,
-    QuillModule.forRoot()
+    QuillModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   entryComponents: [],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  providers: [],
+  providers: [
+    DatePipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

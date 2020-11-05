@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource, NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Option, Product } from 'src/app/interfaces/products';
-import { Order } from 'src/app/interfaces/cart';
+import { Order, OrderForm } from 'src/app/interfaces/cart';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
@@ -15,7 +15,7 @@ import { InputsConfig } from '../../../interfaces/inputs-config';
 })
 export class ProductComponent implements OnInit {
   @ViewChild('carousel', {static : true}) carousel: NgbCarousel;
-  interval = 1000;
+  interval = 0;
   showNavigationArrows = false;
   showNavigationIndicators = false;
   paused = false;
@@ -37,11 +37,16 @@ export class ProductComponent implements OnInit {
     boolean: ['publish'],
     disabled: ['slug']
   };
+  orderForm: OrderForm;
 
   constructor(
     public cartService: CartService,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.cartService.orderForm.subscribe((orderForm: OrderForm) => {
+      this.orderForm = orderForm;
+    });
+  }
 
   ngOnInit(): void {
     // custom adding quantity
@@ -101,7 +106,7 @@ export class ProductComponent implements OnInit {
   }
 
   isCartValid(): boolean {
-    return ((this.product.allowMultiple && this.getRemainingSelectedCount() === 0) || (!this.product.allowMultiple && (this.isZeroRemainingFlavorsCount() || this.isSelectedFlavorsValid()) && (this.product.quantity > 0)));
+    return ((this.product.allowMultiple && this.getRemainingSelectedCount() === 0) || (!this.product.allowMultiple && (this.isZeroRemainingFlavorsCount() || this.isSelectedFlavorsValid()) && (this.product.quantity > 0))) || _.isEmpty(this.product.flavors);
   }
 
   toggleFlavor(flavor: string): void {
@@ -116,7 +121,6 @@ export class ProductComponent implements OnInit {
     if ((this.product.allowMultiple && this.getRemainingSelectedCount() > 0) || !this.product.allowMultiple) {
       this.selectedFlavors.push(flavor);
     }
-    console.log(this.selectedFlavors);
   }
 
   addToCart(product: Product): void {
@@ -131,12 +135,14 @@ export class ProductComponent implements OnInit {
       selectedFlavors: copySelectedFlavors,
       price: copySelectedOptions.price,
       name: product.name,
-      quantity: product.quantity
+      quantity: product.quantity,
+      allowMultiple: product.allowMultiple,
+      rank: product.rank
     };
     this.cartService.addToCart(order);
     this.selectedFlavors = [];
-    this.toastr.info(`${order.quantity} ${order.name} (${_.join(order.selectedFlavors, ', ')}) - ${order.batchSize} for $${order.price}`, 'Added to Cart', {
-      positionClass: 'toast-bottom-left',
+    this.toastr.info(`${order.quantity} x ${order.name}`, 'Added to Cart', {
+      positionClass: 'toast-top-left',
       progressBar: true,
       disableTimeOut: false,
       timeOut: 2000

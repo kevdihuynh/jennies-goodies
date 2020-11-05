@@ -10,15 +10,16 @@ export interface OrderForm {
     addressComponent: FormattedAddressComponent;
     notes?: string;
     date: NgbDateStruct;
-    time: NgbTimeStruct;
+    // time: NgbTimeStruct; // TODO: Remove ngb time picker references as we are no longer using it
     deliveryDistance: number;
     deliveryFee: number;
     total: number;
     grandTotal: number;
     orders: Order[];
     totalOrdersQuantity: number;
-    selectedDateTime: object;
+    selectedDateTime: any;
     confirmedAddress: string;
+    discount?: any;
 }
 export interface Order {
     imageUrls: string[];
@@ -28,4 +29,6 @@ export interface Order {
     price: number;
     name: string;
     quantity: number;
+    allowMultiple: boolean;
+    rank: number;
 }

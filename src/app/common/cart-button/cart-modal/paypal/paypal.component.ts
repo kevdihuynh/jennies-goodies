@@ -9,7 +9,8 @@ import * as _ from 'lodash';
 import { GlobalConstants } from '../../../../utils/global-constants';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFirestore } from '@angular/fire/firestore';
-
+import { DatePipe } from '@angular/common';
+import { GoogleCalendarService } from 'src/app/services/google-calendar/google-calendar.service';
 @Component({
     selector: 'app-paypal',
     templateUrl: './paypal.component.html',
@@ -17,6 +18,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class PaypalComponent implements OnInit {
     public _ = _;
+    public globalConstants: any = GlobalConstants;
     public payPalConfig?: IPayPalConfig;
     public environment = environment;
     public orderForm: OrderForm;
@@ -26,7 +28,9 @@ export class PaypalComponent implements OnInit {
         private spinner: NgxSpinnerService,
         public cartService: CartService,
         public activeModal: NgbActiveModal,
-        private afs: AngularFirestore
+        private afs: AngularFirestore,
+        private datePipe: DatePipe,
+        public googleCalendarService: GoogleCalendarService
     ) { }
 
     ngOnInit(): void {
@@ -39,6 +43,10 @@ export class PaypalComponent implements OnInit {
     private initConfig(): void {
         const currency = 'USD';
         let item_total = this.orderForm.grandTotal;
+
+        const getDescription = (): string => {
+            return `${_.get(this.orderForm, ['isDelivery']) ? 'Delivery' : 'Pickup'} at ${_.get(this.orderForm, ['address'])}  on ${this.datePipe.transform(this.orderForm.selectedDateTime.end.dateTime, 'fullDate')} between ${this.datePipe.transform(this.orderForm.selectedDateTime.start.dateTime, 'shortTime')} and ${this.datePipe.transform(this.orderForm.selectedDateTime.end.dateTime, 'shortTime')}`;
+        }
 
         const getAmount = (): IUnitAmount => {
             const amountObj: IUnitAmount = {
@@ -57,12 +65,12 @@ export class PaypalComponent implements OnInit {
         const getItems = (): ITransactionItem[] => {
             const items = _.map(this.orderForm.orders, (order: Order): any => {
                 return {
-                    name: `${order.quantity} x ${order.name}  (${_.join(order.selectedFlavors, ', ')})`,
+                    name: this.cartService.displayFriendlyItemText(order),
                     quantity: order.quantity,
                     category: 'PHYSICAL_GOODS',
                     unit_amount: {
                         currency_code: _.toUpper(currency),
-                        value: _.toString(order.price),
+                        value: _.toString(this.cartService.getItemTotal(order.name, order.price, _.get(this.orderForm, ['discount'])))
                     }
                 };
             });
@@ -138,9 +146,13 @@ export class PaypalComponent implements OnInit {
                 intent: 'CAPTURE',
                 purchase_units: [{
                     amount: getAmount(),
-                    items: getItems()
+                    items: getItems(),
+                    description: getDescription()
                 }],
-                payer: getPayer()
+                payer: getPayer(),
+                application_context: {
+                    shipping_preference: 'NO_SHIPPING'
+                }
             },
             advanced: {
                 commit: 'true'
@@ -158,47 +170,66 @@ export class PaypalComponent implements OnInit {
                 //     payerID: "FBH3PT3KJBY5W"
                 // }
                 this.toastr.info(`We are now waiting for the transaction to complete...`, `Your Payment Form Has Been Approved!`,  {
-                    positionClass: 'toast-bottom-left',
+                    positionClass: 'toast-top-left',
                     progressBar: true,
                     disableTimeOut: false,
                     timeOut: 5000
                 });
             },
             onClientAuthorization: async (data: any) => {
-                this.toastr.success(`We have received your order. You will receive an email confirmation soon. Thank you!`, `Transaction Completed!`,  {
-                    positionClass: 'toast-bottom-left',
+                // Spinner has to turn off early due to inconsistent forever spinning
+                this.spinner.hide();
+                this.toastr.info('You will receive an email confirmation soon. Thank you!', 'Payment Received!', {
+                    positionClass: 'toast-top-left',
                     progressBar: true,
                     disableTimeOut: true
                 });
-                // This triggers after transaction completes. Can't put toaster message here some reason
                 try {
+                    // Make a copy of the orderForm before it gets cleared
+                    const finalOrderForm: OrderForm = _.cloneDeep(this.orderForm);
                     const transactionId: string = data.purchase_units[0].payments.captures[0].id;
-                    await this.afs.collection('transactions').doc(transactionId).set({paypal: data, orderForm: this.orderForm});
+                    this.afs.collection('transactions').doc(transactionId).set({paypal: data, orderForm: finalOrderForm});
+                    await this.googleCalendarService.bookCalendar(finalOrderForm, transactionId);
                     this.cartService.clearCart();
                     this.activeModal.close('transaction-completed');
+                    this.toastr.success(`Check your email to add this to your calendar!`, `Google Invite Sent!`,  {
+                        positionClass: 'toast-top-left',
+                        progressBar: true,
+                        disableTimeOut: true
+                    });
                 } catch (error) {
                     console.log(error);
+                    this.spinner.hide();
+                    this.toastr.error(`Please contact us for confirmation: ${this.globalConstants.company.phoneNumber}`, `Calendar Invite Failed`,  {
+                        positionClass: 'toast-top-left',
+                        progressBar: true,
+                        disableTimeOut: true
+                    });
                 }
             },
             onCancel: (data, actions) => {
+                this.spinner.hide();
                 this.toastr.info('You have closed the Payment Form', 'Payment Form Cancelled', {
-                    positionClass: 'toast-bottom-left',
+                    positionClass: 'toast-top-left',
                     progressBar: true,
                     disableTimeOut: false,
                     timeOut: 3000
                 });
             },
             onError: err => {
+                console.log(err);
+                this.spinner.hide();
                 this.toastr.error('An error has occured in the Payment Form', 'Payment Form Error', {
-                    positionClass: 'toast-bottom-left',
+                    positionClass: 'toast-top-left',
                     progressBar: true,
                     disableTimeOut: false
                 });
             },
             onClick: async (data, actions) => {
-                console.log(this.orderForm);
+                // console.log(this.orderForm);
+                this.spinner.show();
                 this.toastr.info('You have opened the Payment Form', 'Last Step To Complete Your Order!', {
-                    positionClass: 'toast-bottom-left',
+                    positionClass: 'toast-top-left',
                     progressBar: true,
                     disableTimeOut: false,
                     timeOut: 3000

@@ -9,14 +9,14 @@ export function placeHolderReplace(text: string, variables: { [key: string]: str
            const replaceRegex = new RegExp(replacer, 'g');
            if (variables[variableName]) {
             modText = modText.replace(replaceRegex, variables[variableName].toString());
-           } 
+           }
         });
     }
     return modText;
 }
 
 export const cors = function(request: any, response: any): void {
-    const allowedOrigins: Array<String> = ['http://localhost:4200', 'https://www.ventrips.com', 'http://localhost:5001', 'https://jennies-goodies.web.app'];
+    const allowedOrigins: Array<String> = ['https://jenniesgoodies.com', 'https://www.jenniesgoodies.com', 'https://jennies-goodies.web.app', 'http://localhost:4200', 'http://localhost:5001'];
     const origin: any = request.headers.origin;
     if (_.indexOf(allowedOrigins, origin) > -1) {
         response.setHeader('Access-Control-Allow-Origin', origin);

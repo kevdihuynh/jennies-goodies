@@ -24,7 +24,7 @@ const googleCredentials = {
 }
 
 const {google} = require('googleapis');
-const OAuth2 = google.auth.OAuth2; 
+const OAuth2 = google.auth.OAuth2;
 const calendar = google.calendar('v3');
 
 // const ERROR_RESPONSE = {
@@ -81,6 +81,22 @@ function getEvents(eventData: any, auth:any) {
     });
 }
 
+const createEvent = (eventData: any, auth:any) => {
+    return new Promise(function(resolve, reject) {
+        const oauth = {
+            auth,
+        };
+        calendar.events.insert(_.merge(oauth, eventData), (err:any, res:any) => {
+            if (err) {
+                console.log('Rejecting because of error');
+                reject(err);
+            }
+            console.log('Request successful');
+            resolve(res.data);
+        });
+    });
+}
+
 const updateEvent = (eventData: any, auth:any) => {
     return new Promise(function(resolve, reject) {
         const oauth = {
@@ -101,6 +117,7 @@ export class CalendarApi extends Api {
     public constructor (config?: AxiosRequestConfig) {
         super(config);
         this.getCalendarEvents = this.getCalendarEvents.bind(this);
+        this.createCalendarEvent = this.createCalendarEvent.bind(this);
         this.updateCalendarEvent = this.updateCalendarEvent.bind(this);
     }
 
@@ -110,24 +127,37 @@ export class CalendarApi extends Api {
             googleCredentials.web.client_secret,
             googleCredentials.web.redirect_uris[0]
         );
-    
+
         oAuth2Client.setCredentials({
             refresh_token: googleCredentials.refresh_token
         });
         return getEvents(eventData, oAuth2Client);
     }
 
-    public updateCalendarEvent(selectedDateTime: any): Promise<any> {
+    public createCalendarEvent(eventData: any): Promise<any> {
         const oAuth2Client = new OAuth2(
             googleCredentials.web.client_id,
             googleCredentials.web.client_secret,
             googleCredentials.web.redirect_uris[0]
         );
-    
+
         oAuth2Client.setCredentials({
             refresh_token: googleCredentials.refresh_token
         });
-        return updateEvent(selectedDateTime, oAuth2Client);
+        return createEvent(eventData, oAuth2Client);
+    }
+
+    public updateCalendarEvent(eventData: any): Promise<any> {
+        const oAuth2Client = new OAuth2(
+            googleCredentials.web.client_id,
+            googleCredentials.web.client_secret,
+            googleCredentials.web.redirect_uris[0]
+        );
+
+        oAuth2Client.setCredentials({
+            refresh_token: googleCredentials.refresh_token
+        });
+        return updateEvent(eventData, oAuth2Client);
     }
 }
 

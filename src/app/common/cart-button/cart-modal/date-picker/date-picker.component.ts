@@ -13,7 +13,7 @@ export class DatePickerComponent implements OnInit {
   @Output() dateChangeEmitter: EventEmitter<NgbDateStruct> = new EventEmitter<NgbDateStruct>();
 
   readOnly: boolean = true;
-  minDaysFromToday: number = 2;
+  minDaysFromToday: number = 1;
   maxDaysFromToday: number = 90;
   minDateFromToday = moment().add(this.minDaysFromToday, 'day');
   maxDateFromToday = _.cloneDeep(this.minDateFromToday).add(this.maxDaysFromToday, 'day');
