@@ -48,7 +48,7 @@ export class ProductsComponent implements OnInit {
   scroll(product: Product): void {
     const elementToScrollTo = document.getElementById(product.productId);
     if (elementToScrollTo) {
-      elementToScrollTo.scrollIntoView();
+      elementToScrollTo.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }
 
