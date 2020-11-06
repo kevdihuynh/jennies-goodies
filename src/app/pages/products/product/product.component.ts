@@ -140,12 +140,13 @@ export class ProductComponent implements OnInit {
       rank: product.rank
     };
     this.cartService.addToCart(order);
-    this.selectedFlavors = [];
     this.toastr.info(`${order.quantity} x ${order.name}`, 'Added to Cart', {
       positionClass: 'toast-top-left',
       progressBar: true,
       disableTimeOut: false,
       timeOut: 2000
     });
+    this.selectedFlavors = [];
+    product.quantity = 1;
   }
 }
