@@ -32,7 +32,7 @@
                         <input [(ngModel)]="product.quantity" min="1" type="number" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control form-control-md" id="inputQuantity" placeholder="Enter Quantity" pattern="\d*" />
                     </div>
                     <button *ngFor="let variation of product.variations; let i = index" (click)="updateSelectedOption(i)" class="btn btn-outline-custom-purple btn-md rounded-0" [ngClass]="{ 'active': _.isEqual(i, selectedOptionIndex) }">
-                        {{variation.batchSize}} for {{cartService.getItemTotal(product.name, variation.price, _.get(orderForm, ['discount'])) |  currency:'USD':'symbol':'1.0'}}
+                        {{variation.batchSize}} for {{cartService.getItemTotal(product.name, variation.price, _.get(orderForm, ['discount'])) |  currency:'USD':'symbol':'1.2-2'}}
                     </button>
                 </div>
                 <ng-container *ngIf="!_.isEmpty(this.product.flavors)">
@@ -59,7 +59,7 @@
                             <i class="fas fa-cart-plus"></i>
                         </span>
                         <span>
-                            {{cartService.getItemsTotal(_.get(product, 'name'), _.get(selectedOption, 'price', 0), _.get(product, 'quantity', 0), _.get(orderForm, ['discount'])) |  currency:'USD':'symbol':'1.0'}}
+                            {{cartService.getItemsTotal(_.get(product, 'name'), _.get(selectedOption, 'price', 0), _.get(product, 'quantity', 0), _.get(orderForm, ['discount'])) |  currency:'USD':'symbol':'1.2-2'}}
                         </span>
                     </button>
                 </div>
