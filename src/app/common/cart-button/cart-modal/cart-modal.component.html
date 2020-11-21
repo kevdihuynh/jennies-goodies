@@ -11,15 +11,15 @@
             <div class="form-row">
                 <div class="form-group col-md-12">
                     <label for="inputName">Name <span class="text-danger">*</span></label>
-                    <input [(ngModel)]="orderForm.name" type="text" class="form-control" id="inputName" placeholder="Enter your name (i.e. John Doe)">
+                    <input [(ngModel)]="orderForm.name" type="text" class="form-control" id="inputName" placeholder="Enter name (i.e. John Doe)" >
                 </div>
                 <div class="form-group col-md-12">
                     <label fogitr="inputEmail">Email <span class="text-danger">*</span></label>
-                    <input [(ngModel)]="orderForm.email" type="email" class="form-control" id="inputEmail" placeholder="Enter your email (i.e. johndoe@example.com)">
+                    <input [(ngModel)]="orderForm.email" type="email" class="form-control" id="inputEmail" placeholder="Enter email (i.e. johndoe@example.com)">
                 </div>
                 <div class="form-group col-md-12">
                     <label for="inputPhoneNumber">Phone Number <span class="text-danger">*</span></label>
-                    <input [(ngModel)]="orderForm.phoneNumber" type="text" class="form-control" id="inputPhoneNumber" placeholder="Enter your 10-digit phone number (i.e. 2061234567)" onkeypress="return event.charCode >= 48 && event.charCode <= 57" pattern="(09)[0-9]{9}" maxlength=10>
+                    <input [(ngModel)]="orderForm.phoneNumber" type="text" class="form-control" id="inputPhoneNumber" placeholder="Enter 10-digit phone number (i.e. 2061234567)" onkeypress="return event.charCode >= 48 && event.charCode <= 57" pattern="(09)[0-9]{9}" maxlength=10>
                 </div>
             </div>
             <div class="form-group">

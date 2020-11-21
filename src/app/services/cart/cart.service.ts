@@ -5,32 +5,33 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { GlobalConstants } from '../../utils/global-constants';
 import { AngularFirestore } from '@angular/fire/firestore';
+const DEFAULT_ORDER_FORM: OrderForm = {
+  name: '', // 'John Doe',
+  email: '', // 'johndoe@example.com',
+  phoneNumber: '', // '2067650458',
+  isDelivery: false,
+  address: GlobalConstants.company.address,
+  addressComponent: null,
+  notes: '', // 'John Doe will pick it up for me',
+  date: { year: moment().add(1, 'day').year(), month: moment().add(1, 'day').month() + 1, day: moment().add(1, 'day').date() }, // 1 day ahead
+  // time: { hour: 17, minute: 0, second: 0 }, // TODO: Remove ngb time picker references as we are no longer using it
+  orders: [],
+  totalOrdersQuantity: 0,
+  deliveryDistance: 0,
+  deliveryFee: 0,
+  total: 0,
+  grandTotal: 0,
+  selectedDateTime: null,
+  confirmedAddress: null,
+  discount: null
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
   private orderFormSubject = new BehaviorSubject<OrderForm>(
-    {
-      name: '', // 'John Doe',
-      email: '', // 'johndoe@example.com',
-      phoneNumber: '', // '2067650458',
-      isDelivery: false,
-      address: GlobalConstants.company.address,
-      addressComponent: null,
-      notes: '', // 'John Doe will pick it up for me',
-      date: { year: moment().add(1, 'day').year(), month: moment().add(1, 'day').month() + 1, day: moment().add(1, 'day').date() }, // 1 day ahead
-      // time: { hour: 17, minute: 0, second: 0 }, // TODO: Remove ngb time picker references as we are no longer using it
-      orders: [],
-      totalOrdersQuantity: 0,
-      deliveryDistance: 0,
-      deliveryFee: 0,
-      total: 0,
-      grandTotal: 0,
-      selectedDateTime: null,
-      confirmedAddress: null,
-      discount: null
-    }
+    _.assign(DEFAULT_ORDER_FORM, JSON.parse(localStorage.getItem(`order_form`)), _.pick(DEFAULT_ORDER_FORM, ['date']))
   );
   public orderForm: Observable<OrderForm>  = this.orderFormSubject.asObservable();
   private discounts: any;
@@ -105,6 +106,7 @@ export class CartService {
     const currentOrderForm = _.cloneDeep(this.orderFormSubject.getValue());
     const updatedOrderForm = _.assign(currentOrderForm, updatedFields);
     this.orderFormSubject.next(updatedOrderForm);
+    localStorage.setItem(`order_form`, JSON.stringify(updatedOrderForm));
   }
 
   addToCart(order: Order): void {
