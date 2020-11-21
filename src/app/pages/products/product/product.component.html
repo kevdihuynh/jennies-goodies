@@ -11,7 +11,7 @@
     </div>
     <div class="col-xs-12 col-sm-6 col-xl-8 pl-0 pl-md-4">
         <div class="d-flex flex-column h-100 container-fluid">
-            <div class="product-content-container my-4 mt-sm-0">
+            <div class="product-content-container mt-5 mb-4 mt-sm-0">
                 <div class="d-flex flex-wrap align-items-center mb-2">
                     <h1 class="mb-0 mr-3">{{product.name}}</h1>
                     <div>
@@ -36,11 +36,11 @@
                     </button>
                 </div>
                 <ng-container *ngIf="!_.isEmpty(this.product.flavors)">
-                    <div class="font-weight-bold mb-2">
-                        <span *ngIf="!product.allowMultiple">Choose up to <span class="h4 text-underline font-weight-bolder mx-1">{{selectedOption?.maxFlavors}}</span> flavor{{(selectedOption?.maxFlavors > 1) ? 's' : ''}}</span>
+                    <div class="font-weight-bold mb-3">
+                        <span *ngIf="!product.allowMultiple">Choose <span *ngIf="_.get(selectedOption, ['maxFlavors'], 0) > 1">up to</span> <span class="h4 text-underline font-weight-bolder mx-1">{{selectedOption?.maxFlavors}}</span> flavor{{(selectedOption?.maxFlavors > 1) ? 's' : ''}}</span>
                         <span *ngIf="product.allowMultiple">Choose {{selectedOption?.batchSize}} flavor{{(selectedOption?.batchSize > 1) ? 's' : ''}}</span>
                     </div>
-                    <div class="mb-2">
+                    <div class="mb-3">
                         <div class="d-flex flex-wrap align-items-center btn-group">
                             <button *ngFor="let flavor of product.flavors; let i = index" (click)="toggleFlavor(flavor)" class="btn btn-outline-custom-purple btn-md rounded-0" [ngClass]="{ 'active': isActiveFlavor(flavor) && !product.allowMultiple }">
                                 {{flavor}}
