@@ -140,7 +140,32 @@ export class ProductComponent implements OnInit {
       rank: product.rank
     };
     this.cartService.addToCart(order);
-    this.toastr.info(`${order.quantity} x ${order.name}`, 'Added to Cart', {
+    this.toastr.info(
+      _.sample([
+        `Perfect choice!`,
+        `Yummy choice!`,
+        `Excellent choice!`,
+        `Nice choice!`,
+        `Great pick!`,
+        `Good decision!`,
+        `Good choice!`,
+        `Wonderful choice!`,
+        `Right choice!`,
+        `Awesome choice!`,
+        `A popular choice!`,
+        `You are going to love it!`,
+        `You have good taste!`,
+        `Can't go wrong with that!`,
+        `You won't regret it!`,
+        `You will be satisfied!`,
+        `It's delicious!`,
+        `You know what's good!`,
+        `It's tasty!`,
+        `It's yummy!`,
+        `It's delish!`,
+        `It's mouth-watering!`
+      ]),
+      `${order.name} Added to Cart`, {
       positionClass: 'toast-top-left',
       progressBar: true,
       disableTimeOut: false,
