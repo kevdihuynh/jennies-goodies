@@ -357,7 +357,7 @@ export class CartModalComponent implements OnInit {
   }
 
   removeFromCart(order: Order, index: number): void {
-    this.toastr.info(this.cartService.displayFriendlyItemText(order), 'Removed from Cart', {
+    this.toastr.info(this.cartService.displayFriendlyItemText(order), 'Removed from cart', {
       positionClass: 'toast-top-left',
       progressBar: true,
       disableTimeOut: false,

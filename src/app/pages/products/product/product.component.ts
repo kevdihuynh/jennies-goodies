@@ -165,7 +165,7 @@ export class ProductComponent implements OnInit {
         `It's delish!`,
         `It's mouth-watering!`
       ]),
-      `${order.name} Added to Cart`, {
+      `${order.name} added to cart`, {
       positionClass: 'toast-top-left',
       progressBar: true,
       disableTimeOut: false,
