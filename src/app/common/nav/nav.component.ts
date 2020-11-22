@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalConstants } from './../../utils/global-constants';
-import { AngularFirestore } from '@angular/fire/firestore';
 import * as _ from 'lodash';
 @Component({
   selector: 'app-nav',
@@ -9,14 +8,9 @@ import * as _ from 'lodash';
 })
 export class NavComponent implements OnInit {
   public globalConstants = GlobalConstants;
-  public banner: string;
   public _ = _;
 
-  constructor(firestore: AngularFirestore) {
-    firestore.collection('settings').doc('banner').valueChanges().subscribe((banner) => {
-      this.banner = _.get(banner, ['message']);
-    });
-  }
+  constructor() {}
 
   ngOnInit(): void {
   }

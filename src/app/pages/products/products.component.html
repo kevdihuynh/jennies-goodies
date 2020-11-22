@@ -1,8 +1,11 @@
 
-<main class="row no-gutters mb-5">
+<main class="row no-gutters my-5">
     <!-- <div class="col-12">
         <app-edit-button [collection]="'products'" [isNew]="true" [inputsConfig]="inputsConfig"></app-edit-button>
     </div> -->
+    <div class="col-12 mt-4" *ngIf="!_.isEmpty(banner)">
+        <div class="text-center bg-custom-vanilla py-2 font-weight-bold container-fluid">{{banner}}</div>
+    </div>
     <ng-container *ngIf="products.length">
         <div class="col-12 ml-md-5 mr-md-5 d-md-none">
             <div class="mx-3 mx-md-0 my-5 mb-md-0">

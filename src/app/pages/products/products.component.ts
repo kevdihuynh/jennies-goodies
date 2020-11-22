@@ -14,7 +14,7 @@ import * as _ from 'lodash';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  collection = 'products';
+  public collection = 'products';
   public inputsConfig: InputsConfig = {
     string: ['slug', 'name'],
     number: [],
@@ -24,12 +24,17 @@ export class ProductsComponent implements OnInit {
     boolean: ['publish'],
     disabled: ['slug']
   };
-  products: Product[] = [];
-  globalConstants = GlobalConstants;
+  public products: Product[] = [];
+  public globalConstants = GlobalConstants;
+  public banner: string;
+  public _ = _;
 
   constructor(firestore: AngularFirestore) {
-    const callback = () => firestore.collection('products').valueChanges();
+    firestore.collection('settings').doc('banner').valueChanges().subscribe((banner) => {
+      this.banner = _.get(banner, ['message']);
+    });
 
+    const callback = () => firestore.collection('products').valueChanges();
     getResponse(callback, productsJson).subscribe((res) => {
       const products: Product[] = res as Product[];
       const formattedProducts: Product[] = [];

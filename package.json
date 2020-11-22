@@ -6,6 +6,7 @@
     "start": "ng serve",
     "start:dev": "ng serve --proxy-config proxy.conf.json",
     "deploy": "ng build --prod && firebase deploy",
+    "deploy:hosting": "ng build --prod && firebase deploy --only hosting",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
