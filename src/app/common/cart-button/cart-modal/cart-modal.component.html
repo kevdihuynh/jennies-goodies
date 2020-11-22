@@ -147,7 +147,7 @@
         </section>
         <hr/>
         <section class="orderForm.orders.length">
-            <h5>Items</h5>
+            <h5 class="font-weight-bold">Orders ({{_.get(orderForm, ['totalOrdersQuantity'], 0)}} Item{{_.get(orderForm, ['totalOrdersQuantity'], 0) > 1 ? 's' : ''}})</h5>
             <div class="my-4 pb-3 border-bottom" *ngFor="let order of orderForm.orders; let index = index;">
                 <div class="d-flex flex-wrap align-items-center ">
                     <i class="fa fa-times-circle text-custom-purple cursor-pointer mr-3" aria-hidden="true" (click)="removeFromCart(order, index)"></i>
