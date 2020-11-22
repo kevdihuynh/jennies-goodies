@@ -46,7 +46,6 @@ export class ProductsComponent implements OnInit {
         formattedProducts.push(currentProduct);
       });
       this.products = _.sortBy(formattedProducts, ['rank']);
-      console.log(this.products);
     });
   }
 

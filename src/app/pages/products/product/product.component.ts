@@ -194,7 +194,7 @@ export class ProductComponent implements OnInit {
         `It's mouth-watering!`,
         `You made the right move!`,
         `You already know it!`,
-        `Are you ready!`,
+        `Are you ready for this!`,
         `We're excited for you!`,
         `You make us happy!`,
         `We'll do our best!`,
