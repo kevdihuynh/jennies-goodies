@@ -172,8 +172,8 @@ export class CartService {
     const isSelectedFlavorsEmpty: boolean = _.isEmpty(selectedFlavors);
     const totalPieces: number = order.batchSize * order.quantity;
     const currentOrderForm = _.cloneDeep(this.orderFormSubject.getValue());
-    let text: string = `${_.isNil(_.get(order, ['quantity'])) ? 0 : _.get(order, ['quantity'],0 )} x ${_.get(order, ['name'], 'N/A')} (${_.get(order, ['batchSize'], 0)} For $${this.getItemTotal(_.get(order, ['name']), _.get(order, ['price'], 0), _.get(currentOrderForm, ['discount']))}) `;
-    text += `= ${totalPieces} Total Piece${totalPieces > 1 ? 's' : ''}`;
+    let text: string = `${_.isNil(_.get(order, ['quantity'])) ? 0 : _.get(order, ['quantity'],0 )} x ${_.get(order, ['name'], 'N/A')} (${_.get(order, ['batchSize'], 0)} for $${this.getItemTotal(_.get(order, ['name']), _.get(order, ['price'], 0), _.get(currentOrderForm, ['discount']))}) `;
+    text += `= ${totalPieces} Piece${totalPieces > 1 ? 's' : ''}`;
     if (!isSelectedFlavorsEmpty) {
         const selectedFlavorsDict: object = {};
         _.forEach(selectedFlavors, (selectedFlavor: string) => {
