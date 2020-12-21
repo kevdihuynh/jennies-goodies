@@ -19,7 +19,7 @@
                 Popularity Rank:
             </div>
             <div class="mr-2" *ngFor="let product of popularity; let last = last;">
-                <span>{{product?.name}} ({{product?.quantity || 0}})</span>
+                <span class="mr-2">{{product?.name}} ({{product?.quantity || 0}})</span>
                 <i class="fas fa-angle-right text-primary" *ngIf="!last"></i>
             </div>
         </h6>
