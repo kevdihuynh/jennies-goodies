@@ -45,7 +45,7 @@ export class ProductsComponent implements OnInit {
         currentProduct.productId = productId;
         formattedProducts.push(currentProduct);
       });
-      this.products = _.sortBy(formattedProducts, ['rank']);
+      this.products = _.filter(_.sortBy(formattedProducts, ['rank']), ['visible', true]);
     });
   }
 

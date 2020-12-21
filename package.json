@@ -34,7 +34,7 @@
     "lodash": "^4.17.15",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
-    "ngx-paypal": "^5.0.0",
+    "ngx-paypal": "^6.1.0",
     "ngx-quill": "^11.1.0",
     "ngx-spinner": "^9.0.2",
     "ngx-toastr": "^12.1.0",

@@ -1,1 +1,58 @@
-<p>admin works!</p>
+<section class="my-5 container-fluid table-responsive">
+    <ng-container *ngIf="!_.isEqual(input, _.get(globalConstants, ['company', 'url']))">
+        <input [(ngModel)]="input" type="text" class="form-control form-control-lg text-center my-5" id="inputName" placeholder="Enter secret to view admin dashboard">
+    </ng-container>
+    <ng-container *ngIf="_.isEqual(input, _.get(globalConstants, ['company', 'url']))">
+        <h1 class="text-center my-5">
+            <a
+                href="https://www.paypal.com/mep/dashboard"
+                target="_blank" rel="noopener">
+                https://www.paypal.com/mep/dashboard
+            </a>
+        </h1>
+        <h1 class="text-center my-5">Orders: <span class="text-success">{{transactions.length || 0}}</span> | Profit: <span class="text-success">{{totalProfit | currency:'USD':'symbol':'1.2-2'}}</span></h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Transaction ID</th>
+                <th scope="col">Pickup Date</th>
+                <th scope="col">Date Created</th>
+                <th scope="col">Grand Total</th>
+                <th scope="col">Orders</th>
+                <th scope="col">Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let transaction of transactions; let index = index;">
+                    <th scope="row">{{transactions.length -  index}}</th>
+                    <td>
+                        <a
+                            href="{{'https://www.paypal.com/myaccount/transaction/details/' + _.get(transaction, ['paypal', 'purchase_units', 0, 'payments', 'captures', 0, 'id'], 'N/A')}}"
+                            target="_blank" rel="noopener">
+                            {{_.get(transaction, ['paypal', 'purchase_units', 0, 'payments', 'captures', 0, 'id'], 'N/A')}}
+                        </a>
+                    <td>
+                        {{_.get(transaction, ['orderForm', 'selectedDateTime', 'start', 'dateTime']) | date: 'fullDate'}}
+                        between
+                        {{_.get(transaction, ['orderForm', 'selectedDateTime', 'start', 'dateTime']) | date: 'shortTime'}}
+                        -
+                        {{_.get(transaction, ['orderForm', 'selectedDateTime', 'end', 'dateTime']) | date: 'shortTime'}}
+                    </td>
+                    <td>{{_.get(transaction, ['paypal', 'create_time']) | date: 'full'}}</td>
+                    <td>
+                        {{_.get(transaction, ['orderForm', 'grandTotal']) | currency:'USD':'symbol':'1.2-2'}}
+                    </td>
+                    <td>
+                        <div *ngFor="let item of _.get(transaction, ['paypal', 'purchase_units', 0, 'items'], [])">
+                            {{item.name}}
+                        </div>
+                    </td>
+                    <td class="w-25">
+                        {{_.get(transaction, ['orderForm', 'notes'])}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </ng-container>
+</section>

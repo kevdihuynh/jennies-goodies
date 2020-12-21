@@ -1,5 +1,4 @@
 export class GlobalConstants {
-    public static apiURL: string = "https://wwww.itsolutionstuff.com/";
     public static company = {
         name: "Jennie's Goodies",
         slogan: "Fresh homemade pastries & sweets served every day!",
@@ -9,6 +8,7 @@ export class GlobalConstants {
         instagram: 'https://www.instagram.com/jenniesgoodies',
         phoneNumber: '(206) 765-0458',
         address: '17615 140th Ave SE, Renton, WA 98058, USA',
+        url: 'jenniesgoodies.com'
     };
     public static errors = {
         deliveryErrors: {
