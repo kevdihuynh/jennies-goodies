@@ -3,14 +3,26 @@
         <input [(ngModel)]="input" type="text" class="form-control form-control-lg text-center my-5" id="inputName" placeholder="Enter password to view admin dashboard">
     </ng-container>
     <ng-container *ngIf="_.isEqual(input, _.get(globalConstants, ['company', 'url']))">
-        <h1 class="text-center my-5">
+        <h1 class="text-center mt-5 mb-3">
             <a
                 href="https://www.paypal.com/mep/dashboard"
                 target="_blank" rel="noopener">
                 https://www.paypal.com/mep/dashboard
             </a>
         </h1>
-        <h1 class="text-center my-5">Sales: <span class="text-success">{{transactions.length || 0}}</span> | Profit: <span class="text-success">{{totalProfit | currency:'USD':'symbol':'1.2-2'}}</span></h1>
+        <h3 class="text-center font-wieght-bold mb-3">
+            You made <span class="text-info"><span class="text-underline font-weight-bolder">{{transactions.length || 0}}</span> in sales</span> and earned a <span class="text-success">profit of <span class="text-underline font-weight-bolder">{{totalProfit | currency:'USD':'symbol':'1.2-2'}}</span></span>
+            with an <span class="text-custom-purple">average purchase of <span class="text-underline font-weight-bolder">{{(totalProfit / (transactions.length || 0)) | currency:'USD':'symbol':'1.2-2'}}</span></span>
+        </h3>
+        <h6 class="d-flex flex-wrap justify-content-center mt-3 mb-5 font-weight-bold">
+            <div class="mr-2">
+                Popularity Rank:
+            </div>
+            <div class="mr-2" *ngFor="let product of popularity; let last = last;">
+                <span>{{product?.name}} ({{product?.quantity || 0}})</span>
+                <i class="fas fa-angle-right text-primary" *ngIf="!last"></i>
+            </div>
+        </h6>
         <div class="btn-group btn-block btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="selectedMode">
             <label ngbButtonLabel class="btn-outline-custom-purple">
                 <input ngbButton type="radio" [value]="'all'"> All Order Requests

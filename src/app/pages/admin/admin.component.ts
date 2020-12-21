@@ -18,6 +18,7 @@ export class AdminComponent implements OnInit {
   public transactions: Array<any>;
   public totalProfit: number = 0;
   public selectedMode: string = 'all';
+  public popularity: Array<any> = [];
 
   constructor(firestore: AngularFirestore) {
     firestore.collection('transactions').valueChanges().subscribe((transactions) => {
@@ -25,6 +26,17 @@ export class AdminComponent implements OnInit {
       this.totalProfit = _.reduce(this.transactions, (sum: number, transaction: any) => {
         return sum + _.toNumber(_.get(transaction, ['orderForm', 'grandTotal'], 0));
       }, 0);
+      const popularityDict: object = {};
+      _.forEach(this.transactions, (transaction: any) => {
+        _.forEach(_.get(transaction, ['orderForm', 'orders'], []), (order: any) => {
+          const name: string = _.get(order, ['name']);
+          const quantity: number =  _.toNumber(_.get(order, ['quantity'], 1));
+          popularityDict[name] =  (popularityDict[name] || 0) + quantity;
+        });
+      });
+      this.popularity = _.orderBy(_.map(popularityDict, (quantity: number, name: string) => {
+        return { name, quantity };
+      }), ['quantity'], ['desc']);
     });
   }
 
