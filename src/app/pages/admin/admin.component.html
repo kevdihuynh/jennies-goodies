@@ -30,8 +30,11 @@
             <label ngbButtonLabel class="btn-outline-custom-purple">
                 <input ngbButton type="radio" [value]="'active'"> Active Order Requests
             </label>
+            <label ngbButtonLabel class="btn-outline-success">
+                <input ngbButton type="radio" [value]="'created_today'"> Today's Create Requests
+            </label>
             <label ngbButtonLabel class="btn-outline-info">
-                <input ngbButton type="radio" [value]="'today'"> Today's Order Requests
+                <input ngbButton type="radio" [value]="'pickup_today'"> Today's Pickup Requests
             </label>
             <label ngbButtonLabel class="btn-outline-secondary">
                 <input ngbButton type="radio" [value]="'completed'"> Completed Order Requests
@@ -42,15 +45,15 @@
                 <tr>
                 <th scope="col">#</th>
                 <th scope="col">Transaction ID</th>
-                <th scope="col">Pickup Date</th>
-                <th scope="col">Date Created</th>
+                <th scope="col">Pickup Request Date</th>
+                <th scope="col">Create Request Date</th>
                 <th scope="col">Grand Total</th>
                 <th scope="col">Orders</th>
                 <th scope="col">Notes</th>
                 </tr>
             </thead>
             <tbody>
-                <tr [ngClass]="{'table-info': isTodaySales(transaction), 'table-secondary': isCompletedSales(transaction)}" *ngFor="let transaction of getFilteredTransactions(); let index = index;">
+                <tr [ngClass]="{'table-info': isPickupToday(transaction), 'table-success': isCreatedToday(transaction), 'table-secondary': isCompletedSales(transaction)}" *ngFor="let transaction of getFilteredTransactions(); let index = index;">
                     <th scope="row">{{transactions.length -  index}}</th>
                     <td>
                         <a

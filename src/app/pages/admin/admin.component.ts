@@ -43,8 +43,13 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  isTodaySales(transaction: any): boolean {
+  isPickupToday(transaction: any): boolean {
     const dateSelected = _.get(transaction, ['orderForm', 'selectedDateTime', 'start', 'dateTime']);
+    return moment(moment(dateSelected).format('YYYY-MM-DD')).isSame(moment().format('YYYY-MM-DD'))
+  }
+
+  isCreatedToday(transaction: any): boolean {
+    const dateSelected = _.get(transaction, ['paypal', 'create_time']);
     return moment(moment(dateSelected).format('YYYY-MM-DD')).isSame(moment().format('YYYY-MM-DD'))
   }
 
@@ -55,17 +60,19 @@ export class AdminComponent implements OnInit {
 
   getFilteredTransactions(): Array<any> {
     switch (_.toLower(this.selectedMode)) {
-      case 'today':
-        return _.filter(this.transactions, (transaction: any) => this.isTodaySales(transaction));
+      case 'pickup_today':
+        return _.filter(this.transactions, (transaction: any) => this.isPickupToday(transaction));
+      case 'created_today':
+        return _.filter(this.transactions, (transaction: any) => this.isCreatedToday(transaction));
       case 'active':
-      return _.filter(this.transactions, (transaction: any) => {
-        const dateSelected = _.get(transaction, ['orderForm', 'selectedDateTime', 'start', 'dateTime']);
-        return moment(moment(dateSelected).format('YYYY-MM-DD')).isAfter(moment().format('YYYY-MM-DD'))
-      });
-    case 'completed':
-      return _.filter(this.transactions, (transaction: any) => this.isCompletedSales(transaction));
-    default:
-      return this.transactions;
-    }
+        return _.filter(this.transactions, (transaction: any) => {
+          const dateSelected = _.get(transaction, ['orderForm', 'selectedDateTime', 'start', 'dateTime']);
+          return moment(moment(dateSelected).format('YYYY-MM-DD')).isAfter(moment().format('YYYY-MM-DD'))
+        });
+      case 'completed':
+        return _.filter(this.transactions, (transaction: any) => this.isCompletedSales(transaction));
+      default:
+        return this.transactions;
+      }
   }
 }
