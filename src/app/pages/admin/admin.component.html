@@ -1,6 +1,6 @@
 <section class="my-5 container-fluid table-responsive">
     <ng-container *ngIf="!_.isEqual(input, _.get(globalConstants, ['company', 'url']))">
-        <input [(ngModel)]="input" type="text" class="form-control form-control-lg text-center my-5" id="inputName" placeholder="Enter secret to view admin dashboard">
+        <input [(ngModel)]="input" type="text" class="form-control form-control-lg text-center my-5" id="inputName" placeholder="Enter password to view admin dashboard">
     </ng-container>
     <ng-container *ngIf="_.isEqual(input, _.get(globalConstants, ['company', 'url']))">
         <h1 class="text-center my-5">
@@ -10,7 +10,21 @@
                 https://www.paypal.com/mep/dashboard
             </a>
         </h1>
-        <h1 class="text-center my-5">Orders: <span class="text-success">{{transactions.length || 0}}</span> | Profit: <span class="text-success">{{totalProfit | currency:'USD':'symbol':'1.2-2'}}</span></h1>
+        <h1 class="text-center my-5">Sales: <span class="text-success">{{transactions.length || 0}}</span> | Profit: <span class="text-success">{{totalProfit | currency:'USD':'symbol':'1.2-2'}}</span></h1>
+        <div class="btn-group btn-block btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="selectedMode">
+            <label ngbButtonLabel class="btn-outline-custom-purple">
+                <input ngbButton type="radio" [value]="'all'"> All Order Requests
+            </label>
+            <label ngbButtonLabel class="btn-outline-custom-purple">
+                <input ngbButton type="radio" [value]="'active'"> Active Order Requests
+            </label>
+            <label ngbButtonLabel class="btn-outline-info">
+                <input ngbButton type="radio" [value]="'today'"> Today's Order Requests
+            </label>
+            <label ngbButtonLabel class="btn-outline-secondary">
+                <input ngbButton type="radio" [value]="'completed'"> Completed Order Requests
+            </label>
+        </div>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -24,7 +38,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let transaction of transactions; let index = index;">
+                <tr [ngClass]="{'table-info': isTodaySales(transaction), 'table-secondary': isCompletedSales(transaction)}" *ngFor="let transaction of getFilteredTransactions(); let index = index;">
                     <th scope="row">{{transactions.length -  index}}</th>
                     <td>
                         <a
