@@ -16,6 +16,9 @@
                 <div class="form-group col-md-12">
                     <label fogitr="inputEmail">Email <span class="text-danger">*</span></label>
                     <input [(ngModel)]="orderForm.email" type="email" class="form-control" id="inputEmail" placeholder="Enter email (i.e. johndoe@example.com)">
+                    <div class="text-danger mt-2" *ngIf="isEmailValid(orderForm.email)">
+                        Please make sure your email is valid so we can send your pickup confirmation details
+                    </div>
                 </div>
                 <div class="form-group col-md-12">
                     <label for="inputPhoneNumber">Phone Number <span class="text-danger">*</span></label>
