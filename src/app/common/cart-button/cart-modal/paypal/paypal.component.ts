@@ -228,17 +228,17 @@ export class PaypalComponent implements OnInit {
             onClick: async (data, actions) => {
                 // console.log(this.orderForm);
                 this.spinner.show();
-                if (
-                    data &&
-                    data.fundingSource &&
-                    data.fundingSource === 'card'
-                ) {
-                    // close the spinner since paypal widget not opens the card form
-                    // in app instead of as new tab
-                    setTimeout(() => {
-                        this.spinner.hide();
-                    }, 1000);
-                }
+                // if (
+                //     data &&
+                //     data.fundingSource &&
+                //     data.fundingSource === 'card'
+                // ) {
+                //     // close the spinner since paypal widget not opens the card form
+                //     // in app instead of as new tab
+                //     setTimeout(() => {
+                //         this.spinner.hide();
+                //     }, 1000);
+                // }
                 this.toastr.info('You have opened the Payment Form', 'Last Step To Complete Your Order!', {
                     positionClass: 'toast-top-left',
                     progressBar: true,
