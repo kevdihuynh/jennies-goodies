@@ -1,5 +1,4 @@
 
-<p class="mb-0" >Select flavor:</p>
 <div class="d-flex flex-wrap align-items-center btn-group">
     <button *ngFor="let flavor of objectKeys(product.multiFlavors) ; let i = index" (click)="toggleFlavor(flavor)" class="btn btn-outline-custom-purple btn-md rounded-0" [ngClass]="{ 'active': isActiveFlavor(flavor) && !product.allowMultiple }">
         {{flavor}}
@@ -7,7 +6,9 @@
     </button>
 </div>
 <div *ngIf="currentSelectedFlavors.length > 0">
-    <p class="mb-0 mt-2">Select {{product.secondOptionHeading ? product.secondOptionHeading : 'filling'}}:</p>
+    <div class="font-weight-bold mb-3 mt-3">
+        <span>Choose {{product.secondOptionHeading ? product.secondOptionHeading : 'filling'}}</span>
+    </div>
     <div class="d-flex flex-wrap align-items-center btn-group">
         <button *ngFor="let filling of product.multiFlavors[currentSelectedFlavors[0]] ; let i = index" (click)="toggleFilling(filling)" class="btn btn-outline-custom-purple btn-md rounded-0" [ngClass]="{ 'active': isActiveFilling(filling) && !product.allowMultiple }">
             {{filling}}

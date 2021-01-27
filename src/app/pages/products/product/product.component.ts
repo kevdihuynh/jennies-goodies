@@ -64,6 +64,13 @@ export class ProductComponent implements OnInit {
     }
   }
 
+  removeSelectedFlavorPill(i) {
+    this.selectedFlavors.splice(i, 1);
+    if (this.product.hasFilling) {
+      this.openCal();
+    }
+  }
+
   openCal() {
     this.toggleCalEvent.next({ type: 'action', data: 'clear' });
   }
