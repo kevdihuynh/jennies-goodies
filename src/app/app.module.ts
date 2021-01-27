@@ -38,6 +38,7 @@ import { EditModalConfirmComponent } from './common/edit-button/edit-modal-confi
 import { DatePipe } from '@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { SeeMoreComponent } from './common/see-more/see-more.component';
+import { MultiFlavorsComponent } from './common/multi-flavors/multi-flavors.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { SeeMoreComponent } from './common/see-more/see-more.component';
     EditButtonComponent,
     EditModalContentComponent,
     EditModalConfirmComponent,
-    SeeMoreComponent
+    SeeMoreComponent,
+    MultiFlavorsComponent
   ],
   imports: [
     BrowserModule,

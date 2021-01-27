@@ -6,6 +6,10 @@ export interface Option {
 }
 
 export interface Product {
+    secondOptionHeading?: string;
+    allowMultiFlavor?: boolean;
+    multiFlavors?: object;
+    hasFilling?: boolean;
     variations?: Option[];
     flavors: string[];
     imageUrls: string[];
