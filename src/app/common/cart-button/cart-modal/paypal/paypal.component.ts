@@ -36,7 +36,10 @@ export class PaypalComponent implements OnInit {
     ngOnInit(): void {
         this.cartService.orderForm.subscribe((orderForm: OrderForm) => {
             this.orderForm = orderForm;
-            this.initConfig();
+            this.payPalConfig = undefined;
+            setTimeout(() => {
+                this.initConfig();
+            }, 200);
         });
     }
 

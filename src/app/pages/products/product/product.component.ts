@@ -128,7 +128,9 @@ export class ProductComponent implements OnInit {
     this.selectedFlavors = [];
     this.selectedOptionIndex = index;
     this.selectedOption = this.product.variations[this.selectedOptionIndex];
-    this.openCal();
+    if (this.product.hasFilling) {
+      this.openCal();
+    }
   }
 
   getRemainingFlavorsCount(): number {
@@ -266,6 +268,8 @@ export class ProductComponent implements OnInit {
     });
     this.selectedFlavors = [];
     product.quantity = 1;
-    this.openCal();
+    if (this.product.hasFilling) {
+      this.openCal();
+    }
   }
 }
