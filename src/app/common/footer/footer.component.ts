@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalConstants } from './../../utils/global-constants';
 import * as _ from 'lodash';
-import { AngularFirestore } from '@angular/fire/firestore';
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
@@ -54,12 +53,11 @@ export class FooterComponent implements OnInit {
         url: '#/terms'
       }
   ];
-  public year = '2021';
+  public year: number;
 
-  constructor(firestore: AngularFirestore) {
-    firestore.collection('settings').doc('copyright').valueChanges().subscribe((copyright) => {
-      this.year = _.get(copyright, ['year']);
-    });
+  constructor() {
+    const currentDate = new Date();
+    this.year = currentDate.getFullYear();
   }
 
   ngOnInit(): void {
