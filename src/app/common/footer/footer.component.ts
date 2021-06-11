@@ -53,8 +53,12 @@ export class FooterComponent implements OnInit {
         url: '#/terms'
       }
   ];
+  public year: number;
 
-  constructor() { }
+  constructor() {
+    const currentDate = new Date();
+    this.year = currentDate.getFullYear();
+  }
 
   ngOnInit(): void {
   }

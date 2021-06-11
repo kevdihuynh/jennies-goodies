@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, EventEmitter } from '@angular/core';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource, NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Option, Product } from 'src/app/interfaces/products';
 import { Order, OrderForm } from 'src/app/interfaces/cart';
@@ -38,6 +38,7 @@ export class ProductComponent implements OnInit {
     disabled: ['slug']
   };
   orderForm: OrderForm;
+  toggleCalEvent: EventEmitter<{ type: string, data: string }> = new EventEmitter();
 
   constructor(
     public cartService: CartService,
@@ -51,12 +52,63 @@ export class ProductComponent implements OnInit {
   ngOnInit(): void {
     // custom adding quantity
     this.product.quantity = 1;
-
+    const hasFilling = _.get(this.product, 'allowMultiFlavor', false) && this.hasFilling(this.product.flavors);
+    this.product.hasFilling = hasFilling;
+    if (this.product.hasFilling) {
+      this.product.multiFlavors = this.transformToFillings(this.product.flavors);
+    }
     this.selectedOption = _.get(this.product.variations, [this.selectedOptionIndex], undefined);
     if (_.get(this.product, 'imageUrls', []).length > 1) {
       this.showNavigationArrows = true;
       this.showNavigationIndicators = true;
     }
+  }
+
+  removeSelectedFlavorPill(i) {
+    this.selectedFlavors.splice(i, 1);
+    if (this.product.hasFilling) {
+      this.openCal();
+    }
+  }
+
+  openCal() {
+    this.toggleCalEvent.next({ type: 'action', data: 'clear' });
+  }
+
+  modifySelectedFlavors(selected: string){
+    if (selected) {
+      this.selectedFlavors.push(selected);
+    } else {
+      this.selectedFlavors.shift();
+    }
+  }
+
+  transformToFillings(options) {
+    const transformMap = {};
+    function trimSides(x) {
+      return x.replace(/^\s+|\s+$/gm,'');
+    }
+    options.map((option) => {
+      const splitOption = option.split('with');
+      const flavor = trimSides(splitOption[0]);
+      const filling = trimSides(splitOption[1]);
+      if (!transformMap[flavor]) {
+        transformMap[flavor] = new Set([filling]);
+      } else {
+        transformMap[flavor].add(filling);
+      }
+    });
+    return transformMap;
+  }
+
+  hasFilling(flavors) {
+    let hasFilling = false;
+    flavors.map((flavor) => {
+      if (flavor.toLowerCase().indexOf('with') >= 0) {
+        hasFilling = true;
+      }
+    });
+    return hasFilling;
   }
 
   togglePaused() {
@@ -83,6 +135,9 @@ export class ProductComponent implements OnInit {
     this.selectedFlavors = [];
     this.selectedOptionIndex = index;
     this.selectedOption = this.product.variations[this.selectedOptionIndex];
+    if (this.product.hasFilling) {
+      this.openCal();
+    }
   }
 
   getRemainingFlavorsCount(): number {
@@ -220,5 +275,8 @@ export class ProductComponent implements OnInit {
     });
     this.selectedFlavors = [];
     product.quantity = 1;
+    if (this.product.hasFilling) {
+      this.openCal();
+    }
   }
 }
