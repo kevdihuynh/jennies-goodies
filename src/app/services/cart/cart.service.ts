@@ -31,7 +31,12 @@ const DEFAULT_ORDER_FORM: OrderForm = {
 })
 export class CartService {
   private orderFormSubject = new BehaviorSubject<OrderForm>(
-    _.assign(DEFAULT_ORDER_FORM, JSON.parse(localStorage.getItem(`order_form`)), _.pick(DEFAULT_ORDER_FORM, ['date']))
+    _.assign(
+      DEFAULT_ORDER_FORM,
+      // JSON.parse(localStorage.getItem(`order_form`))  /* CACHE */
+      {}, /* NO CACHE */
+      _.pick(DEFAULT_ORDER_FORM, ['date'])
+    )
   );
   public orderForm: Observable<OrderForm>  = this.orderFormSubject.asObservable();
   private discounts: any;
