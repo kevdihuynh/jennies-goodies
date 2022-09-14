@@ -10,13 +10,15 @@
     "module": "es2020",
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
+    "target": "es2020",
     "lib": [
       "es2018",
       "dom"
     ]
   },
   "angularCompilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
   }

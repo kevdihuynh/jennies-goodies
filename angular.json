@@ -146,6 +146,9 @@
           }
         }
       }
-    }},
-  "defaultProject": "jennies-goodies"
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
 }

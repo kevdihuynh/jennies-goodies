@@ -41,49 +41,48 @@ import { SeeMoreComponent } from './common/see-more/see-more.component';
 import { MultiFlavorsComponent } from './common/multi-flavors/multi-flavors.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavComponent,
-    FooterComponent,
-    AdminComponent,
-    ProductsComponent,
-    ProductComponent,
-    CartButtonComponent,
-    CartModalComponent,
-    TimePickerComponent,
-    DatePickerComponent,
-    PaypalComponent,
-    NgbToDatePipe,
-    EditButtonComponent,
-    EditModalContentComponent,
-    EditModalConfirmComponent,
-    SeeMoreComponent,
-    MultiFlavorsComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    NgbModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AngularFireFunctionsModule,
-    HttpClientModule,
-    BrowserAnimationsModule, // required animations module for ngx-toastr
-    ToastrModule.forRoot(),
-    NgxSpinnerModule,
-    NgxPayPalModule,
-    AutocompleteLibModule,
-    QuillModule.forRoot(),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
-  ],
-  entryComponents: [],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
-  ],
-  providers: [
-    DatePipe
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        NavComponent,
+        FooterComponent,
+        AdminComponent,
+        ProductsComponent,
+        ProductComponent,
+        CartButtonComponent,
+        CartModalComponent,
+        TimePickerComponent,
+        DatePickerComponent,
+        PaypalComponent,
+        NgbToDatePipe,
+        EditButtonComponent,
+        EditModalContentComponent,
+        EditModalConfirmComponent,
+        SeeMoreComponent,
+        MultiFlavorsComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        NgbModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularFireFunctionsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        ToastrModule.forRoot(),
+        NgxSpinnerModule,
+        NgxPayPalModule,
+        AutocompleteLibModule,
+        QuillModule.forRoot(),
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ],
+    schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+    ],
+    providers: [
+        DatePipe
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
